@@ -2653,6 +2653,12 @@
                     class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 uppercase focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white" />
                 </div>
                 <div>
+                  <label for="studioLandlordAadhaarInput" class="block text-xs font-bold text-slate-700 mb-1">Landlord Aadhaar
+                    Number</label>
+                  <input id="studioLandlordAadhaarInput" type="text" maxlength="14" placeholder="e.g. 1234 5678 9012"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500 bg-white" />
+                </div>
+                <div>
                   <label for="studioLandlordPhoneInput" class="block text-xs font-bold text-slate-700 mb-1">Mobile /
                     Phone Number *</label>
                   <input id="studioLandlordPhoneInput" type="tel" placeholder="e.g. +91 98110 02233"
@@ -2745,6 +2751,18 @@
                     ID No.</label>
                   <input id="studioTenantIdInput" type="text" placeholder="e.g. Aadhaar: XXXX-XXXX-1234"
                     class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                </div>
+                <div>
+                  <label for="studioTenantPanInput" class="block text-xs font-bold text-slate-700 mb-1">Tenant PAN
+                    Number</label>
+                  <input id="studioTenantPanInput" type="text" maxlength="10" placeholder="e.g. ABCPK1234D"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs uppercase font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                </div>
+                <div>
+                  <label for="studioTenantAadhaarInput" class="block text-xs font-bold text-slate-700 mb-1">Tenant
+                    Aadhaar Number</label>
+                  <input id="studioTenantAadhaarInput" type="text" maxlength="14" placeholder="e.g. 1234 5678 9012"
+                    class="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs font-mono focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                 </div>
                 <div>
                   <label for="studioMobileInput" class="block text-xs font-bold text-slate-700 mb-1">Mobile
@@ -3110,7 +3128,8 @@
                 <!-- Agreement Title -->
                 <div class="text-center mb-8">
                   <h3
-                    class="text-lg sm:text-xl font-black uppercase tracking-widest text-slate-950 font-serif-title border-b-2 border-slate-900 pb-2 inline-block">
+                    class="text-lg sm:text-xl font-black uppercase tracking-widest text-slate-950 font-serif-title border-b-2 border-slate-900 pb-2 inline-block"
+                    id="preview2Title">
                     RENTAL AGREEMENT
                   </h3>
                 </div>
@@ -3123,9 +3142,9 @@
                 </p>
 
                 <!-- OWNER Details -->
-                <div
+                <div id="preview2OwnerContainer"
                   class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-4 text-xs sm:text-[13px] leading-relaxed">
-                  <p>
+                  <p id="preview2OwnerDetailsText">
                     <strong><span id="preview2OwnerName">Rajesh Sharma</span></strong>,<br>
                     S/o or D/o. <strong><span id="preview2OwnerFather">Late Sh. O.P. Sharma</span></strong>,<br>
                     <strong><span id="preview2OwnerAddress">A-42, Hauz Khas Enclave, New Delhi -
@@ -3140,9 +3159,9 @@
                   of:</p>
 
                 <!-- TENANT Details -->
-                <div
+                <div id="preview2TenantContainer"
                   class="bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6 text-xs sm:text-[13px] leading-relaxed">
-                  <p>
+                  <p id="preview2TenantDetailsText">
                     <strong><span id="preview2TenantName">Rohan Khanna</span></strong>,<br>
                     S/o or D/o. <strong><span id="preview2TenantFather">Sh. K.L. Khanna</span></strong>,<br>
                     Working/Studying at <strong><span id="preview2TenantWork">DLF Cyber City, Building 10, Gurugram,
@@ -3162,7 +3181,7 @@
                     Annexure-I, hereinafter referred to as <strong>"Demised Premises"</strong>.
                   </p>
 
-                  <p>
+                  <p id="preview2Recital">
                     WHEREAS the Tenant has requested the Owner to grant Rent with respect to the Schedule Premises and
                     the Owner has agreed to rent out to the Tenant the Property with two-wheeler and four-wheeler
                     parking space in the ground floor for residential purposes only, on the following terms and
@@ -3176,19 +3195,19 @@
 
                   <!-- All 21 Clauses exactly as given by user -->
                   <ol class="list-decimal list-outside pl-4 space-y-3">
-                    <li>
+                    <li id="preview2Clause1">
                       The rent in respect of the “Demised Premises” shall commence from <strong
                         id="preview2StartDate">01-Nov-2026</strong> and shall be valid till <strong
                         id="preview2EndDate">30-Sep-2027</strong>. Thereafter, the same may be extended further on
                       mutual consent of both the parties.
                     </li>
-                    <li>
+                    <li id="preview2Clause2">
                       That the Tenant shall pay to the Owner a monthly rent of <strong class="text-slate-950">Rs.<span
                           id="preview2RentAmount">24,000</span>/- (<span id="preview2RentWords">Twenty Four Thousand
                           Rupees only</span>)</strong>, excluding electricity and water bill. The rent shall be paid on
                       or before 7th day of each month without fail.
                     </li>
-                    <li>
+                    <li id="preview2Clause3">
                       That the Tenant shall pay to the Owner a monthly maintenance charge of <strong
                         class="text-slate-950">Rs.<span id="preview2MaintenanceAmount">2,500</span>/-</strong> towards
                       the maintenance of Generator &amp; Elevator, Salaries towards guards, Charges for Electricity
@@ -3228,7 +3247,7 @@
                       That all the sanitary, electrical and other fittings and fixtures and appliances in the premises
                       shall be handed over from the Owner to the Tenant in good working condition.
                     </li>
-                    <li>
+                    <li id="preview2Clause8">
                       That the Tenant shall not sublet, assign or part with the demised premises in whole or part
                       thereof to any person in any circumstances whatsoever and the same shall be used for the bonafide
                       residential purposes only.
@@ -3250,7 +3269,7 @@
                       servants, workmen etc., to enter upon the demised premises for inspection (not exceeding once in a
                       month) or to carry out repairs / construction, as and when required.
                     </li>
-                    <li>
+                    <li id="preview2Clause12">
                       That the Tenant shall comply with all the rules and regulations of the local authority applicable
                       to the demised premises. The premises will be used only for residential purposes of its employees,
                       families and guests.
@@ -3265,7 +3284,7 @@
                       That the Owner will keep the Tenant free and harmless from any claims, proceedings, demands, or
                       actions by others with respect to quiet possession of the premises.
                     </li>
-                    <li>
+                    <li id="preview2Clause15">
                       That this Rent Agreement can be terminated before the expiry of this tenancy period by serving One
                       month prior notice in writing by either party.
                     </li>
@@ -3380,10 +3399,11 @@
                 <!-- Agreement Title -->
                 <div class="text-center mb-8">
                   <h3
-                    class="text-lg sm:text-xl font-black uppercase tracking-widest text-slate-950 font-serif-title border-b-2 border-slate-900 pb-2 inline-block">
+                    class="text-lg sm:text-xl font-black uppercase tracking-widest text-slate-950 font-serif-title border-b-2 border-slate-900 pb-2 inline-block"
+                    id="preview1Title">
                     RENT AGREEMENT / LEASE DEED
                   </h3>
-                  <p class="text-xs font-semibold text-slate-600 mt-2">
+                  <p class="text-xs font-semibold text-slate-600 mt-2" id="preview1Subtitle">
                     (FOR RESIDENTIAL / COMMERCIAL PREMISES FOR 11 MONTHS)
                   </p>
                 </div>
@@ -3395,8 +3415,8 @@
                 </p>
 
                 <!-- Lessor Box -->
-                <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 mb-4 text-xs sm:text-[13px]">
-                  <p>
+                <div id="previewLessorContainer" class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 mb-4 text-xs sm:text-[13px] leading-relaxed">
+                  <p id="previewLessorDetailsText">
                     <strong><span id="previewLessorName">Rajesh Sharma</span></strong>, PAN: <strong
                       id="previewLessorPan">ABCPS1234D</strong>,
                     residing at New Delhi (hereinafter called the <strong>"FIRST PARTY / LESSOR"</strong>, which
@@ -3408,7 +3428,7 @@
                 <p class="text-center font-bold text-xs uppercase tracking-widest my-2 text-slate-500">AND</p>
 
                 <!-- Lessee Box -->
-                <div class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 mb-6 text-xs sm:text-[13px]">
+                <div id="previewLesseeContainer" class="bg-slate-50 p-3.5 rounded-lg border border-slate-200 mb-6 text-xs sm:text-[13px]">
                   <p>
                     <strong><span id="previewLesseeName">Rohan Khanna</span></strong>, ID / PAN / Aadhaar: <strong><span
                         id="previewLesseeId">Aadhaar: XXXX-XXXX-1234</span></strong>,
@@ -3432,7 +3452,7 @@
                     <strong>"DEMISED PREMISES"</strong>.
                   </p>
 
-                  <p>
+                  <p id="preview1Recital">
                     AND WHEREAS the Second Party has approached the First Party to let out the Demised Premises for
                     lawful residential purposes on an 11-month lease term, and the First Party has agreed to the same on
                     the mutually agreed covenants hereinafter stated:
@@ -3443,13 +3463,13 @@
                   </h4>
 
                   <ol class="list-decimal list-outside pl-4 space-y-2.5">
-                    <li>
+                    <li id="preview1Clause1">
                       <strong>TENURE:</strong> That this lease is granted for a fixed period of <strong>11 (Eleven)
                         Months</strong> commencing from
                       <strong id="previewStartDate">01-Nov-2026</strong> and expiring on <strong
                         id="previewEndDate">30-Sep-2027</strong>.
                     </li>
-                    <li>
+                    <li id="preview1Clause2">
                       <strong>MONTHLY RENT:</strong> That the Second Party shall pay a monthly rent of
                       <strong class="text-slate-900">₹<span id="previewRentAmount">24,000</span>/- (<span
                           id="previewRentWords">Twenty Four Thousand Rupees only</span>)</strong>
@@ -3470,7 +3490,7 @@
                       (Meter CA: <span id="previewMeterClause">BSES-10294811</span>). Property tax (MCD) shall be the
                       responsibility of the First Party.
                     </li>
-                    <li>
+                    <li id="preview1Clause5">
                       <strong>PERMITTED USE &amp; SUB-LETTING:</strong> That the Demised Premises shall be used strictly
                       for lawful residential purposes by the Second Party and family. Sub-letting or parting with
                       possession to any third party is strictly prohibited.
@@ -3480,12 +3500,12 @@
                       sanitary fittings, electrical switches, and fixtures in clean working condition. Minor day-to-day
                       repairs shall be borne by the Second Party.
                     </li>
-                    <li>
+                    <li id="preview1Clause7">
                       <strong>TERMINATION &amp; NOTICE PERIOD:</strong> That either party may terminate this agreement
                       prior to expiry by giving
                       <strong id="previewNoticePeriod">1 (One) Month</strong> written notice or rent in lieu thereof.
                     </li>
-                    <li>
+                    <li id="preview1Clause8">
                       <strong>RENEWAL &amp; ESCALATION:</strong> That if both parties mutually agree in writing to renew
                       the lease for another term, the monthly rent shall be escalated by
                       <strong id="previewEscalationRate">10% (Ten Percent)</strong> on the existing rental amount.
@@ -8704,6 +8724,10 @@
         landlord: {
           name: "Rajesh Sharma",
           pan: "ABCPS1234D",
+          aadhaar: "",
+          fatherName: "Late Sh. O.P. Sharma",
+          address: "A-42, Hauz Khas Enclave, New Delhi - 110016",
+          phone: "+91 98110 02233",
           email: "abcltd9925@gmail.com"
         },
         activeFilter: "all", // 'all' | 'occupied' | 'vacant' | 'os' | 'expiring' | 'paid'
@@ -16482,9 +16506,11 @@
         const slEmail = document.getElementById("studioLandlordEmailInput");
         const slAddress = document.getElementById("studioLandlordAddressInput");
         const slUpi = document.getElementById("studioLandlordUpiInput");
+        const slAadhaar = document.getElementById("studioLandlordAadhaarInput");
 
         if (slName) slName.value = l.name || "Rajesh Sharma";
         if (slPan) slPan.value = l.pan || "ABCPS1234D";
+        if (slAadhaar) slAadhaar.value = l.aadhaar || "";
         if (slFather) slFather.value = l.fatherName || document.getElementById("studioOwnerFatherInput")?.value || "Late Sh. O.P. Sharma";
         if (slPhone) slPhone.value = l.phone || "+91 98110 02233";
         if (slEmail) slEmail.value = l.email || "abcltd9925@gmail.com";
@@ -16525,6 +16551,10 @@
             statusBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300";
           }
           document.getElementById("studioTenantNameInput").value = tenant.name || "";
+          const tPanInput = document.getElementById("studioTenantPanInput");
+          if (tPanInput) tPanInput.value = tenant.pan || "";
+          const tAadhaarInput = document.getElementById("studioTenantAadhaarInput");
+          if (tAadhaarInput) tAadhaarInput.value = tenant.aadhaar || "";
           document.getElementById("studioTenantIdInput").value = tenant.tenantIdNumber || (tenant.aadhaar ? `Aadhaar: ${tenant.aadhaar}` : (tenant.pan ? `PAN: ${tenant.pan}` : "Aadhaar: XXXX-XXXX-1234"));
           document.getElementById("studioMobileInput").value = tenant.mobile || "";
           document.getElementById("studioEmailInput").value = tenant.email || "";
@@ -16558,13 +16588,18 @@
 
         // Load custom agreement clauses for this property or tenant
         if (prop && prop.customClauses && Array.isArray(prop.customClauses)) {
-          state.customAgreementClauses = [...prop.customClauses];
+          state.customAgreementClauses = typeof deduplicateClauses === "function"
+            ? deduplicateClauses(prop.customClauses)
+            : [...prop.customClauses];
         } else if (tenant && tenant.customClauses && Array.isArray(tenant.customClauses)) {
-          state.customAgreementClauses = [...tenant.customClauses];
+          const isB2B = !!(tenant.isB2B || tenant.gstin);
+          state.customAgreementClauses = typeof deduplicateClauses === "function"
+            ? deduplicateClauses(tenant.customClauses, { removeB2bPresets: isB2B })
+            : [...tenant.customClauses];
         } else {
           try {
             const raw = localStorage.getItem(STORAGE_KEY_AGREEMENT_CUSTOM_CLAUSES);
-            state.customAgreementClauses = raw ? JSON.parse(raw) : [];
+            state.customAgreementClauses = raw ? (typeof deduplicateClauses === "function" ? deduplicateClauses(JSON.parse(raw)) : JSON.parse(raw)) : [];
           } catch (e) {
             state.customAgreementClauses = state.customAgreementClauses || [];
           }
@@ -16585,6 +16620,10 @@
             statusBadge.textContent = "Custom / Direct Entry";
             statusBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600 border border-slate-200";
           }
+          const pEl = document.getElementById("studioTenantPanInput");
+          if (pEl) pEl.value = "";
+          const aEl = document.getElementById("studioTenantAadhaarInput");
+          if (aEl) aEl.value = "";
           return;
         }
 
@@ -16593,10 +16632,15 @@
 
         if (select) select.value = tenant.id;
 
+        const isB2B = !!(tenant.isB2B || tenant.gstin);
+
         if (statusBadge) {
           if (tenant.status === "Vacated") {
             statusBadge.textContent = "⚠️ Vacated Tenant Profile";
             statusBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300";
+          } else if (isB2B) {
+            statusBadge.textContent = `🏢 B2B Commercial: ${tenant.unit || "Active"}`;
+            statusBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-100 text-indigo-800 border border-indigo-300";
           } else {
             statusBadge.textContent = `🟢 Master: ${tenant.unit || "Active"}`;
             statusBadge.className = "text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300";
@@ -16607,9 +16651,18 @@
         const nameEl = document.getElementById("studioTenantNameInput");
         if (nameEl) nameEl.value = tenant.name || "";
 
+        const studioTenantPanEl = document.getElementById("studioTenantPanInput");
+        if (studioTenantPanEl) studioTenantPanEl.value = tenant.pan || "";
+
+        const studioTenantAadhaarEl = document.getElementById("studioTenantAadhaarInput");
+        if (studioTenantAadhaarEl) studioTenantAadhaarEl.value = tenant.aadhaar || "";
+
         const idEl = document.getElementById("studioTenantIdInput");
         if (idEl) {
-          const idVal = tenant.tenantIdNumber || (tenant.aadhaar ? `Aadhaar: ${tenant.aadhaar}` : (tenant.pan ? `PAN: ${tenant.pan}` : ""));
+          const b2bIdStr = [tenant.gstin ? `GSTIN: ${tenant.gstin}` : "", tenant.pan ? `PAN: ${tenant.pan}` : "", tenant.aadhaar ? `Aadhaar: ${tenant.aadhaar}` : ""].filter(Boolean).join(" · ");
+          const idVal = isB2B
+            ? (b2bIdStr || tenant.tenantIdNumber || "GSTIN: Registered Entity")
+            : (tenant.tenantIdNumber || (tenant.aadhaar ? `Aadhaar: ${tenant.aadhaar}` : (tenant.pan ? `PAN: ${tenant.pan}` : "")));
           idEl.value = idVal || "Aadhaar: XXXX-XXXX-1234";
         }
 
@@ -16620,18 +16673,22 @@
         if (emailEl) emailEl.value = tenant.email || "";
 
         const fatherEl = document.getElementById("studioTenantFatherInput");
-        if (fatherEl && (tenant.fatherName || tenant.father)) {
-          fatherEl.value = tenant.fatherName || tenant.father;
+        if (fatherEl) {
+          if (tenant.fatherName || tenant.father) {
+            fatherEl.value = tenant.fatherName || tenant.father;
+          } else if (isB2B) {
+            fatherEl.value = "Authorized Signatory";
+          }
         }
 
         const permEl = document.getElementById("studioTenantPermAddressInput");
-        if (permEl && tenant.permAddress) {
-          permEl.value = tenant.permAddress;
+        if (permEl) {
+          permEl.value = (isB2B && tenant.billingAddress) ? tenant.billingAddress : (tenant.permAddress || "");
         }
 
         const workEl = document.getElementById("studioTenantWorkInput");
-        if (workEl && (tenant.workplace || tenant.work || tenant.occupation)) {
-          workEl.value = tenant.workplace || tenant.work || tenant.occupation;
+        if (workEl) {
+          workEl.value = (isB2B && tenant.businessName) ? tenant.businessName : (tenant.workplace || tenant.work || tenant.occupation || "");
         }
 
         // Financials & Dates
@@ -16644,7 +16701,24 @@
           if (depEl) depEl.value = tenant.deposit;
         } else if (tenant.rent) {
           const depEl = document.getElementById("studioDepositInput");
-          if (depEl && !depEl.value) depEl.value = tenant.rent * 2;
+          if (depEl && !depEl.value) depEl.value = tenant.rent * (tenant.depositMonths || 2);
+        }
+
+        // CAM / Maintenance
+        const maintEl = document.getElementById("studioMaintenanceInput");
+        if (maintEl && tenant.camAmount) {
+          maintEl.value = tenant.camAmount;
+        }
+
+        // Escalation & Lock-in
+        const escEl = document.getElementById("studioEscalationInput");
+        if (escEl && isB2B && tenant.incrementPct) {
+          escEl.value = `${tenant.incrementPct}% (${tenant.incrementPeriod || "Every Year"})`;
+        }
+
+        const noticeEl = document.getElementById("studioNoticeInput");
+        if (noticeEl && isB2B && tenant.lockInPeriod) {
+          noticeEl.value = `${tenant.lockInPeriod} Lock-in / 1 Month Notice`;
         }
 
         if (tenant.startDate) {
@@ -16673,9 +16747,14 @@
           }
         }
 
-        // Custom clauses if any
+        // Custom clauses if any - deduplicate and prune any B2B increment clause
         if (tenant.customClauses && Array.isArray(tenant.customClauses) && tenant.customClauses.length > 0) {
-          state.customAgreementClauses = [...tenant.customClauses];
+          state.customAgreementClauses = typeof deduplicateClauses === "function"
+            ? deduplicateClauses(tenant.customClauses, { removeB2bPresets: isB2B })
+            : [...tenant.customClauses];
+          renderCustomClauses();
+        } else {
+          state.customAgreementClauses = [];
           renderCustomClauses();
         }
 
@@ -16729,14 +16808,47 @@
         sublet: "STRICT PROHIBITION ON SUBLETTING: The Tenant shall not sublet, license, transfer, or part with possession of any room or portion of the demised premises to any paying guest, relative, or third party without the Owner's prior written consent."
       };
 
+      // --- HELPER: DEDUPLICATE AGREEMENT CLAUSES ---
+      function deduplicateClauses(clausesList, options = {}) {
+        if (!Array.isArray(clausesList)) return [];
+        const removeB2bPresets = !!(options && options.removeB2bPresets);
+        const seen = new Set();
+        const result = [];
+        for (const raw of clausesList) {
+          if (!raw) continue;
+          const clause = typeof raw === "string" ? raw.trim() : String(raw).trim();
+          if (!clause) continue;
+          if (removeB2bPresets && (/^B2B COMMERCIAL LEASE/i.test(clause) || /RENTAL INCREMENT CLAUSE/i.test(clause))) {
+            continue;
+          }
+          const norm = clause.toLowerCase().replace(/\s+/g, " ");
+          if (!seen.has(norm)) {
+            seen.add(norm);
+            result.push(clause);
+          }
+        }
+        return result;
+      }
+      window.deduplicateClauses = deduplicateClauses;
+
       function renderCustomClauses() {
         const listEl = document.getElementById("customClausesList");
         const countBadge = document.getElementById("customClausesCountBadge");
         const preview1List = document.getElementById("preview1CustomClausesList");
         const preview2List = document.getElementById("preview2CustomClausesList");
 
-        state.customAgreementClauses = state.customAgreementClauses || [];
-        const clauses = state.customAgreementClauses;
+        state.customAgreementClauses = deduplicateClauses(state.customAgreementClauses || []);
+
+        const selectedTenantId = document.getElementById("studioTenantSelect")?.value;
+        const selectedTenant = state.tenants.find((t) => t.id === selectedTenantId);
+        const isB2B = !!(selectedTenant && (selectedTenant.isB2B || selectedTenant.gstin));
+
+        // When B2B is active, B2B lease, CAM, lock-in, and escalation terms are natively integrated
+        // into the main agreement deed clauses. Filter out any redundant duplicate B2B clause so
+        // there is zero clause duplication.
+        const clauses = isB2B
+          ? state.customAgreementClauses.filter((c) => !/^B2B COMMERCIAL LEASE/i.test(c) && !/RENTAL INCREMENT CLAUSE/i.test(c))
+          : state.customAgreementClauses;
 
         if (countBadge) {
           countBadge.textContent = `${clauses.length} Custom Clause${clauses.length === 1 ? "" : "s"}`;
@@ -16810,7 +16922,15 @@
       function addCustomClause(text) {
         const trimmed = (text || "").trim();
         if (!trimmed) return;
-        state.customAgreementClauses = state.customAgreementClauses || [];
+        state.customAgreementClauses = deduplicateClauses(state.customAgreementClauses || []);
+        const norm = trimmed.toLowerCase().replace(/\s+/g, " ");
+        const alreadyExists = state.customAgreementClauses.some(
+          (c) => c.trim().toLowerCase().replace(/\s+/g, " ") === norm
+        );
+        if (alreadyExists) {
+          showFeedback("This custom clause already exists in the agreement.", "warning");
+          return;
+        }
         state.customAgreementClauses.push(trimmed);
         try {
           localStorage.setItem(STORAGE_KEY_AGREEMENT_CUSTOM_CLAUSES, JSON.stringify(state.customAgreementClauses));
@@ -16897,6 +17017,7 @@
         // Landlord particulars from Studio Landlord Inputs
         const studioLName = document.getElementById("studioLandlordNameInput")?.value;
         const studioLPan = document.getElementById("studioLandlordPanInput")?.value;
+        const studioLAadhaar = document.getElementById("studioLandlordAadhaarInput")?.value;
         const studioLFather = document.getElementById("studioLandlordFatherInput")?.value;
         const studioLAddress = document.getElementById("studioLandlordAddressInput")?.value;
         const studioLPhone = document.getElementById("studioLandlordPhoneInput")?.value;
@@ -16905,6 +17026,7 @@
 
         if (studioLName && state.landlord) state.landlord.name = studioLName.trim();
         if (studioLPan && state.landlord) state.landlord.pan = studioLPan.trim().toUpperCase();
+        if (studioLAadhaar && state.landlord) state.landlord.aadhaar = studioLAadhaar.trim();
         if (studioLFather && state.landlord) state.landlord.fatherName = studioLFather.trim();
         if (studioLAddress && state.landlord) state.landlord.address = studioLAddress.trim();
         if (studioLPhone && state.landlord) state.landlord.phone = studioLPhone.trim();
@@ -16913,7 +17035,10 @@
         if (typeof updateStudioLandlordSummaryBadge === "function") updateStudioLandlordSummaryBadge();
 
         const landlordName = (studioLName || document.getElementById("landlordNameInput")?.value || state.landlord?.name || "Rajesh Sharma").trim();
-        const landlordPan = (studioLPan || document.getElementById("landlordPanInput")?.value || state.landlord?.pan || "ABCPS1234D").trim();
+        const landlordPan = (studioLPan || document.getElementById("landlordPanInput")?.value || state.landlord?.pan || "ABCPS1234D").trim().toUpperCase();
+        const landlordAadhaar = (studioLAadhaar || state.landlord?.aadhaar || "").trim();
+        const landlordPhone = (studioLPhone || state.landlord?.phone || "+91 98110 02233").trim();
+        const landlordEmail = (studioLEmail || state.landlord?.email || "abcltd9925@gmail.com").trim();
         const ownerFather = (studioLFather || document.getElementById("studioOwnerFatherInput")?.value || state.landlord?.fatherName || "Late Sh. O.P. Sharma").trim();
         const ownerAddress = (studioLAddress || document.getElementById("studioOwnerAddressInput")?.value || state.landlord?.address || "A-42, Hauz Khas Enclave, New Delhi - 110016").trim();
 
@@ -16934,16 +17059,43 @@
         const propType = document.getElementById("studioTypeInput")?.value.trim() || "2 BHK Residential Flat";
         const meterNo = document.getElementById("studioMeterInput")?.value.trim() || "BSES-10294811";
 
-        const tenantName = document.getElementById("studioTenantNameInput")?.value.trim() || "Rohan Khanna";
-        const tenantId = document.getElementById("studioTenantIdInput")?.value.trim() || "Aadhaar: XXXX-XXXX-1234";
-        const tenantMobile = document.getElementById("studioMobileInput")?.value.trim() || "9810112233";
+        const selectedTenantId = document.getElementById("studioTenantSelect")?.value;
+        const selectedTenant = state.tenants.find((t) => t.id === selectedTenantId);
+        const isB2B = !!(selectedTenant && (selectedTenant.isB2B || selectedTenant.gstin));
 
-        const rent = Number(document.getElementById("studioRentInput")?.value) || 24000;
+        const tenantName = document.getElementById("studioTenantNameInput")?.value.trim() || (selectedTenant ? selectedTenant.name : "Rohan Khanna");
+        const studioTPan = document.getElementById("studioTenantPanInput")?.value?.trim();
+        const studioTAadhaar = document.getElementById("studioTenantAadhaarInput")?.value?.trim();
+        const tenantPan = (studioTPan || (selectedTenant ? selectedTenant.pan : "") || "").toUpperCase();
+        const tenantAadhaar = studioTAadhaar || (selectedTenant ? selectedTenant.aadhaar : "") || "";
+        const rawTenantId = document.getElementById("studioTenantIdInput")?.value?.trim();
+        const tenantId = rawTenantId || (tenantAadhaar ? `Aadhaar: ${tenantAadhaar}` : (tenantPan ? `PAN: ${tenantPan}` : (selectedTenant?.tenantIdNumber || "Aadhaar: XXXX-XXXX-1234")));
+        const tenantMobile = document.getElementById("studioMobileInput")?.value.trim() || (selectedTenant ? selectedTenant.mobile : "9810112233");
+        const tenantEmail = document.getElementById("studioEmailInput")?.value?.trim() || (selectedTenant ? selectedTenant.email : "") || "";
+
+        const rent = Number(document.getElementById("studioRentInput")?.value) || (selectedTenant ? selectedTenant.rent : 24000);
         const deposit = Number(document.getElementById("studioDepositInput")?.value) || rent * 2;
-        const startDate = document.getElementById("studioStartInput")?.value || "2026-11-01";
-        const endDate = document.getElementById("studioEndInput")?.value || "2027-09-30";
+        const startDate = document.getElementById("studioStartInput")?.value || (selectedTenant ? selectedTenant.startDate : "2026-11-01") || "2026-11-01";
+        const endDate = document.getElementById("studioEndInput")?.value || (selectedTenant ? selectedTenant.endDate : "2027-09-30") || "2027-09-30";
         const noticePeriod = document.getElementById("studioNoticeInput")?.value || "1 (One) Month";
         const escalation = document.getElementById("studioEscalationInput")?.value || "10% (Ten Percent)";
+
+        // B2B specific particulars
+        const b2bBusinessName = (selectedTenant?.businessName || document.getElementById("studioTenantWorkInput")?.value || "").trim();
+        const b2bLogo = selectedTenant?.b2bLogo || null;
+        const b2bGstin = (selectedTenant?.gstin || "").trim();
+        const b2bPan = (selectedTenant?.pan || "").trim();
+        const b2bBillingAddress = (selectedTenant?.billingAddress || document.getElementById("studioTenantPermAddressInput")?.value || "").trim();
+        const b2bAreaSqFt = Number(selectedTenant?.areaSqFt) || 0;
+        const b2bRentPerSqFt = Number(selectedTenant?.rentPerSqFt) || (b2bAreaSqFt > 0 && rent > 0 ? Math.round((rent / b2bAreaSqFt) * 100) / 100 : 0);
+        const b2bCamAmount = Number(selectedTenant?.camAmount) || Number(document.getElementById("studioMaintenanceInput")?.value) || 0;
+        const b2bCamRatePerSqFt = Number(selectedTenant?.camRatePerSqFt) || 0;
+        const b2bLeasePeriod = (selectedTenant?.leasePeriod || "3 Years (36 Months)").trim();
+        const b2bLockInPeriod = (selectedTenant?.lockInPeriod || "1 Year (12 Months)").trim();
+        const b2bIncrementPeriod = (selectedTenant?.incrementPeriod || "Every Year").trim();
+        const b2bIncrementPct = Number(selectedTenant?.incrementPct !== undefined ? selectedTenant.incrementPct : 10);
+        const b2bAutoCamSeparate = !!selectedTenant?.autoBillCamSeparateInvoice;
+        const b2bRentStartDate = selectedTenant?.rentStartDate || startDate;
 
         // Option 2 Specific Fields
         const place = document.getElementById("studioPlaceInput")?.value.trim() || "New Delhi";
@@ -16958,12 +17110,11 @@
           }
         }
 
-        // ownerFather and ownerAddress already computed from studioLandlord inputs / defaults above
-        const tenantFather = document.getElementById("studioTenantFatherInput")?.value.trim() || "Sh. K.L. Khanna";
-        const tenantWork = document.getElementById("studioTenantWorkInput")?.value.trim() || "DLF Cyber City, Building 10, Gurugram, Haryana";
-        const tenantPermAddress = document.getElementById("studioTenantPermAddressInput")?.value.trim() || "H.No. 142, Sector 14, Chandigarh - 160014";
+        const tenantFather = document.getElementById("studioTenantFatherInput")?.value.trim() || (isB2B ? "Authorized Signatory" : "Sh. K.L. Khanna");
+        const tenantWork = document.getElementById("studioTenantWorkInput")?.value.trim() || (isB2B ? (b2bBusinessName || "Corporate Office") : "DLF Cyber City, Building 10, Gurugram, Haryana");
+        const tenantPermAddress = document.getElementById("studioTenantPermAddressInput")?.value.trim() || (isB2B ? (b2bBillingAddress || "Corporate Registered Office") : "H.No. 142, Sector 14, Chandigarh - 160014");
 
-        const maint = Number(document.getElementById("studioMaintenanceInput")?.value) || 2500;
+        const maint = Number(document.getElementById("studioMaintenanceInput")?.value) || (b2bCamAmount || 2500);
         const chequeNo = document.getElementById("studioChequeNoInput")?.value.trim() || "CHQ-892104";
         const chequeDateVal = document.getElementById("studioChequeDateInput")?.value || execDateVal;
 
@@ -16989,6 +17140,11 @@
         const fullPropStr = prop ? `${propAddress} (${prop.name})` : propAddress;
 
         // --- UPDATE OPTION 2 PREVIEW DOM ---
+        const p2Title = document.getElementById("preview2Title");
+        if (p2Title) {
+          p2Title.textContent = isB2B ? "COMMERCIAL LEASE AGREEMENT" : "RENTAL AGREEMENT";
+        }
+
         const p2Place = document.getElementById("preview2Place");
         if (p2Place) p2Place.textContent = place;
         const p2Date = document.getElementById("preview2Date");
@@ -16998,37 +17154,126 @@
         const p2Year = document.getElementById("preview2Year");
         if (p2Year) p2Year.textContent = execYear;
 
-        const p2OwnerName = document.getElementById("preview2OwnerName");
-        if (p2OwnerName) p2OwnerName.textContent = landlordName;
-        const p2OwnerFather = document.getElementById("preview2OwnerFather");
-        if (p2OwnerFather) p2OwnerFather.textContent = ownerFather;
-        const p2OwnerAddress = document.getElementById("preview2OwnerAddress");
-        if (p2OwnerAddress) p2OwnerAddress.textContent = ownerAddress;
+        // Option 2 Owner Container
+        const p2OwnerContainer = document.getElementById("preview2OwnerContainer");
+        if (p2OwnerContainer) {
+          const aadhaarSnippet = landlordAadhaar ? ` | Aadhaar: <strong><span id="preview2OwnerAadhaar">${escapeHtml(landlordAadhaar)}</span></strong>` : "";
+          const phoneSnippet = landlordPhone ? `Mobile: <strong>${escapeHtml(landlordPhone)}</strong>` : "";
+          const emailSnippet = landlordEmail ? `Email: <strong>${escapeHtml(landlordEmail)}</strong>` : "";
+          const contactLine = [phoneSnippet, emailSnippet].filter(Boolean).join(" | ");
 
-        const p2TenantName = document.getElementById("preview2TenantName");
-        if (p2TenantName) p2TenantName.textContent = tenantName;
-        const p2TenantFather = document.getElementById("preview2TenantFather");
-        if (p2TenantFather) p2TenantFather.textContent = tenantFather;
-        const p2TenantWork = document.getElementById("preview2TenantWork");
-        if (p2TenantWork) p2TenantWork.textContent = tenantWork;
-        const p2TenantPermAddress = document.getElementById("preview2TenantPermAddress");
-        if (p2TenantPermAddress) p2TenantPermAddress.textContent = tenantPermAddress;
+          p2OwnerContainer.innerHTML = `
+            <p id="preview2OwnerDetailsText">
+              <strong><span id="preview2OwnerName">${escapeHtml(landlordName)}</span></strong>,<br>
+              S/o or D/o <strong><span id="preview2OwnerFather">${escapeHtml(ownerFather)}</span></strong>,<br>
+              PAN: <strong><span id="preview2OwnerPan">${escapeHtml(landlordPan || "N/A")}</span></strong>${aadhaarSnippet},<br>
+              ${contactLine ? `${contactLine},<br>` : ""}
+              Permanent Address: <strong><span id="preview2OwnerAddress">${escapeHtml(ownerAddress)}</span></strong><br>
+              (hereinafter jointly and severally called the <strong>“OWNER”</strong>, which expression shall include their heirs, legal representatives, successors and assigns) of the <strong>ONE PART</strong>:
+            </p>
+          `;
+        } else {
+          const p2OwnerName = document.getElementById("preview2OwnerName");
+          if (p2OwnerName) p2OwnerName.textContent = landlordName;
+          const p2OwnerFather = document.getElementById("preview2OwnerFather");
+          if (p2OwnerFather) p2OwnerFather.textContent = ownerFather;
+          const p2OwnerAddress = document.getElementById("preview2OwnerAddress");
+          if (p2OwnerAddress) p2OwnerAddress.textContent = ownerAddress;
+        }
+
+        // Option 2 Tenant Container (B2B vs Residential)
+        const p2TenantContainer = document.getElementById("preview2TenantContainer");
+        if (p2TenantContainer) {
+          if (isB2B) {
+            const logoBlock = b2bLogo
+              ? `<div class="mb-2 flex items-center justify-between pb-2 border-b border-slate-200">
+                   <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-100 text-indigo-900 border border-indigo-200">B2B Commercial Lessee Entity</span>
+                   <img src="${escapeHtml(b2bLogo)}" alt="Entity Logo" class="h-9 max-h-9 max-w-[140px] object-contain rounded bg-white p-1 border border-slate-200 shadow-2xs" />
+                 </div>`
+              : `<div class="mb-1.5"><span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-100 text-indigo-900 border border-indigo-200">B2B Commercial Lessee Entity</span></div>`;
+            const signatoryAadhaarSnippet = tenantAadhaar ? `, Aadhaar: <strong><span id="preview2TenantAadhaar">${escapeHtml(tenantAadhaar)}</span></strong>` : "";
+            const signatoryPanSnippet = tenantPan ? `, Signatory PAN: <strong>${escapeHtml(tenantPan)}</strong>` : "";
+            const signatoryEmailSnippet = tenantEmail ? `, Email: <strong>${escapeHtml(tenantEmail)}</strong>` : "";
+
+            p2TenantContainer.innerHTML = `
+              ${logoBlock}
+              <p id="preview2TenantDetailsText">
+                <strong>M/s <span id="preview2TenantName">${escapeHtml(b2bBusinessName || tenantName)}</span></strong>,<br>
+                GSTIN: <strong><span id="preview2TenantGstin">${escapeHtml(b2bGstin || "N/A")}</span></strong> | Entity PAN: <strong><span id="preview2TenantPan">${escapeHtml(b2bPan || tenantPan || "N/A")}</span></strong>,<br>
+                having Registered Billing Address at: <strong><span id="preview2TenantPermAddress">${escapeHtml(b2bBillingAddress || tenantPermAddress)}</span></strong>,<br>
+                represented herein by its Authorized Signatory: <strong>${escapeHtml(tenantName)}</strong>
+                (S/o or D/o <strong><span id="preview2TenantFather">${escapeHtml(tenantFather)}</span></strong>${signatoryAadhaarSnippet}${signatoryPanSnippet},
+                Executive Office: <strong><span id="preview2TenantWork">${escapeHtml(b2bBusinessName || tenantWork)}</span></strong>,
+                Contact: <strong>${escapeHtml(tenantMobile)}</strong>${signatoryEmailSnippet})<br>
+                (hereinafter called the <strong>“TENANT / LESSEE”</strong>, which expression shall include its legal representatives, successors and assigns) of the <strong>OTHER PART</strong>.
+              </p>
+            `;
+          } else {
+            const aadhaarSnippet = tenantAadhaar ? ` | Aadhaar: <strong><span id="preview2TenantAadhaar">${escapeHtml(tenantAadhaar)}</span></strong>` : "";
+            const panSnippet = tenantPan ? `PAN: <strong><span id="preview2TenantPan">${escapeHtml(tenantPan)}</span></strong> | ` : "";
+            const emailSnippet = tenantEmail ? ` | Email: <strong>${escapeHtml(tenantEmail)}</strong>` : "";
+
+            p2TenantContainer.innerHTML = `
+              <p id="preview2TenantDetailsText">
+                <strong><span id="preview2TenantName">${escapeHtml(tenantName)}</span></strong>,<br>
+                S/o or D/o <strong><span id="preview2TenantFather">${escapeHtml(tenantFather)}</span></strong>,<br>
+                ${panSnippet}Mobile: <strong>${escapeHtml(tenantMobile)}</strong>${aadhaarSnippet}${emailSnippet},<br>
+                Working/Studying at <strong><span id="preview2TenantWork">${escapeHtml(tenantWork)}</span></strong>,<br>
+                having permanent address at <strong><span id="preview2TenantPermAddress">${escapeHtml(tenantPermAddress)}</span></strong><br>
+                (hereinafter called the <strong>“TENANT”</strong>, which expression shall include its legal
+                representatives, successors and assigns) of the <strong>OTHER PART</strong>.
+              </p>
+            `;
+          }
+        }
 
         const p2PropAddress = document.getElementById("preview2PropAddress");
         if (p2PropAddress) p2PropAddress.textContent = fullPropStr;
 
-        const p2StartDate = document.getElementById("preview2StartDate");
-        if (p2StartDate) p2StartDate.textContent = formatDateReadable(startDate);
-        const p2EndDate = document.getElementById("preview2EndDate");
-        if (p2EndDate) p2EndDate.textContent = formatDateReadable(endDate);
+        const p2Recital = document.getElementById("preview2Recital");
+        if (p2Recital) {
+          if (isB2B) {
+            p2Recital.innerHTML = `WHEREAS the Tenant has requested the Owner to grant Commercial Lease with respect to the Schedule Premises ${b2bAreaSqFt > 0 ? `(admeasuring approx. <strong>${b2bAreaSqFt.toLocaleString("en-IN")} Sq. Ft.</strong>) ` : ""}and the Owner has agreed to lease out to the Tenant the Property with dedicated parking space for commercial, corporate office, and lawful business operations, on the following terms and conditions:`;
+          } else {
+            p2Recital.innerHTML = `WHEREAS the Tenant has requested the Owner to grant Rent with respect to the Schedule Premises and the Owner has agreed to rent out to the Tenant the Property with two-wheeler and four-wheeler parking space in the ground floor for residential purposes only, on the following terms and conditions:`;
+          }
+        }
 
-        const p2RentAmount = document.getElementById("preview2RentAmount");
-        if (p2RentAmount) p2RentAmount.textContent = rent.toLocaleString("en-IN");
-        const p2RentWords = document.getElementById("preview2RentWords");
-        if (p2RentWords) p2RentWords.textContent = numberToWords(rent);
+        // Clause 1 (Tenure)
+        const p2Clause1 = document.getElementById("preview2Clause1");
+        if (p2Clause1) {
+          if (isB2B) {
+            const rentStartNote = (b2bRentStartDate && b2bRentStartDate !== startDate)
+              ? ` (with Rent / Billing Commencement from <strong>${formatDateReadable(b2bRentStartDate)}</strong>)`
+              : ``;
+            p2Clause1.innerHTML = `The commercial lease in respect of the “Demised Premises” shall be for a fixed term of <strong>${escapeHtml(b2bLeasePeriod)}</strong> commencing from <strong id="preview2StartDate">${formatDateReadable(startDate)}</strong> and shall be valid till <strong id="preview2EndDate">${formatDateReadable(endDate)}</strong>${rentStartNote}. Thereafter, the same may be extended further on mutual written consent of both the parties.`;
+          } else {
+            p2Clause1.innerHTML = `The rent in respect of the “Demised Premises” shall commence from <strong id="preview2StartDate">${formatDateReadable(startDate)}</strong> and shall be valid till <strong id="preview2EndDate">${formatDateReadable(endDate)}</strong>. Thereafter, the same may be extended further on mutual consent of both the parties.`;
+          }
+        }
 
-        const p2MaintenanceAmount = document.getElementById("preview2MaintenanceAmount");
-        if (p2MaintenanceAmount) p2MaintenanceAmount.textContent = maint.toLocaleString("en-IN");
+        // Clause 2 (Rent)
+        const p2Clause2 = document.getElementById("preview2Clause2");
+        if (p2Clause2) {
+          if (isB2B) {
+            const rateNote = b2bRentPerSqFt > 0 ? ` (@ <strong>Rs.${b2bRentPerSqFt}/sq.ft.</strong>)` : "";
+            p2Clause2.innerHTML = `That the Tenant shall pay to the Owner a monthly commercial rent of <strong class="text-slate-950">Rs.<span id="preview2RentAmount">${rent.toLocaleString("en-IN")}</span>/- (<span id="preview2RentWords">${numberToWords(rent)}</span>)</strong>${rateNote}, excluding electricity and water bill. The rent shall be paid on or before 7th day of each calendar month without fail via RTGS / NEFT / electronic transfer.`;
+          } else {
+            p2Clause2.innerHTML = `That the Tenant shall pay to the Owner a monthly rent of <strong class="text-slate-950">Rs.<span id="preview2RentAmount">${rent.toLocaleString("en-IN")}</span>/- (<span id="preview2RentWords">${numberToWords(rent)}</span>)</strong>, excluding electricity and water bill. The rent shall be paid on or before 7th day of each month without fail.`;
+          }
+        }
+
+        // Clause 3 (Maintenance / CAM)
+        const p2Clause3 = document.getElementById("preview2Clause3");
+        if (p2Clause3) {
+          if (isB2B && b2bCamAmount > 0) {
+            const camSeparateNote = b2bAutoCamSeparate ? " (invoiced under separate CAM Tax Invoice)" : "";
+            const camRateNote = b2bCamRatePerSqFt > 0 ? ` (@ Rs.${b2bCamRatePerSqFt}/sq.ft.)` : "";
+            p2Clause3.innerHTML = `That the Tenant shall pay to the Owner a monthly Common Area Maintenance (CAM) charge of <strong class="text-slate-950">Rs.<span id="preview2MaintenanceAmount">${b2bCamAmount.toLocaleString("en-IN")}</span>/-</strong>${camRateNote}${camSeparateNote} towards the maintenance of Generator &amp; Elevator, Salaries towards guards, Charges for Electricity Maintenance for Common Areas, Charges towards cleaning of Common Areas and upkeep.`;
+          } else {
+            p2Clause3.innerHTML = `That the Tenant shall pay to the Owner a monthly maintenance charge of <strong class="text-slate-950">Rs.<span id="preview2MaintenanceAmount">${maint.toLocaleString("en-IN")}</span>/-</strong> towards the maintenance of Generator &amp; Elevator, Salaries towards guards, Charges for Electricity Maintenance for Common Areas, Charges towards cleaning of Common Areas and towards maintaining the lawn.`;
+          }
+        }
 
         const p2DepositAmount = document.getElementById("preview2DepositAmount");
         if (p2DepositAmount) p2DepositAmount.textContent = deposit.toLocaleString("en-IN");
@@ -17039,6 +17284,36 @@
         if (p2ChequeNo) p2ChequeNo.textContent = chequeNo;
         const p2ChequeDate = document.getElementById("preview2ChequeDate");
         if (p2ChequeDate) p2ChequeDate.textContent = formatDateReadable(chequeDateVal);
+
+        // Clause 8 (Permitted Use)
+        const p2Clause8 = document.getElementById("preview2Clause8");
+        if (p2Clause8) {
+          if (isB2B) {
+            p2Clause8.innerHTML = `That the Tenant shall not sublet, assign or part with the demised premises in whole or part thereof to any third party in any circumstances whatsoever and the same shall be used for lawful commercial office, retail, or corporate business operations only.`;
+          } else {
+            p2Clause8.innerHTML = `That the Tenant shall not sublet, assign or part with the demised premises in whole or part thereof to any person in any circumstances whatsoever and the same shall be used for the bonafide residential purposes only.`;
+          }
+        }
+
+        // Clause 12 (Compliance)
+        const p2Clause12 = document.getElementById("preview2Clause12");
+        if (p2Clause12) {
+          if (isB2B) {
+            p2Clause12.innerHTML = `That the Tenant shall comply with all the rules and regulations of the local authority, municipal body, and fire safety norms applicable to commercial demised premises. The premises will be used only for lawful business operations by its executives, staff, and authorized clients.`;
+          } else {
+            p2Clause12.innerHTML = `That the Tenant shall comply with all the rules and regulations of the local authority applicable to the demised premises. The premises will be used only for residential purposes of its employees, families and guests.`;
+          }
+        }
+
+        // Clause 15 (Lock-in & Termination)
+        const p2Clause15 = document.getElementById("preview2Clause15");
+        if (p2Clause15) {
+          if (isB2B) {
+            p2Clause15.innerHTML = `That this Commercial Agreement incorporates a mandatory <strong>Lock-in Period of ${escapeHtml(b2bLockInPeriod)}</strong> during which neither party shall terminate this tenancy. After the expiry of the Lock-in Period, this Rent Agreement can be terminated before the expiry of this tenancy period by serving One month prior notice in writing by either party. The rent shall be escalated by <strong>${b2bIncrementPct}% ${escapeHtml(b2bIncrementPeriod)}</strong> as agreed.`;
+          } else {
+            p2Clause15.innerHTML = `That this Rent Agreement can be terminated before the expiry of this tenancy period by serving One month prior notice in writing by either party.`;
+          }
+        }
 
         const p2CourtCity = document.getElementById("preview2CourtCity");
         if (p2CourtCity) p2CourtCity.textContent = courtCity;
@@ -17059,56 +17334,183 @@
         const p2SignOwner = document.getElementById("preview2SignOwner");
         if (p2SignOwner) p2SignOwner.textContent = landlordName;
         const p2SignTenant = document.getElementById("preview2SignTenant");
-        if (p2SignTenant) p2SignTenant.textContent = tenantName;
+        if (p2SignTenant) {
+          if (isB2B) {
+            p2SignTenant.innerHTML = `For <strong>${escapeHtml(b2bBusinessName || tenantName)}</strong><br><span class="text-[10px] text-slate-500 font-normal">Authorized Signatory: ${escapeHtml(tenantName)}</span>`;
+          } else {
+            p2SignTenant.textContent = tenantName;
+          }
+        }
 
         // --- UPDATE OPTION 1 PREVIEW DOM ---
-        const previewLessorName = document.getElementById("previewLessorName");
-        const previewLessorPan = document.getElementById("previewLessorPan");
-        const previewLesseeName = document.getElementById("previewLesseeName");
-        const previewLesseeId = document.getElementById("previewLesseeId");
-        const previewLesseeMobile = document.getElementById("previewLesseeMobile");
+        const p1Title = document.getElementById("preview1Title");
+        if (p1Title) {
+          p1Title.textContent = isB2B ? "COMMERCIAL LEASE AGREEMENT / LEASE DEED" : "RENT AGREEMENT / LEASE DEED";
+        }
+        const p1Sub = document.getElementById("preview1Subtitle");
+        if (p1Sub) {
+          p1Sub.textContent = isB2B ? "(FOR COMMERCIAL OFFICE / RETAIL / BUSINESS PREMISES)" : "(FOR RESIDENTIAL / COMMERCIAL PREMISES FOR 11 MONTHS)";
+        }
+
+        // Option 1 Lessor Container
+        const previewLessorContainer = document.getElementById("previewLessorContainer");
+        if (previewLessorContainer) {
+          const aadhaarSnippet = landlordAadhaar ? `, Aadhaar: <strong><span id="previewLessorAadhaar">${escapeHtml(landlordAadhaar)}</span></strong>` : "";
+          const phoneSnippet = landlordPhone ? `Mobile: <strong>${escapeHtml(landlordPhone)}</strong>` : "";
+          const emailSnippet = landlordEmail ? `Email: <strong>${escapeHtml(landlordEmail)}</strong>` : "";
+          const contactLine = [phoneSnippet, emailSnippet].filter(Boolean).join(", ");
+          const fatherSnippet = ownerFather ? `, S/o or D/o <strong>${escapeHtml(ownerFather)}</strong>` : "";
+          const addrSnippet = ownerAddress ? `, residing at <strong>${escapeHtml(ownerAddress)}</strong>` : " residing at New Delhi";
+
+          previewLessorContainer.innerHTML = `
+            <p id="previewLessorDetailsText">
+              <strong><span id="previewLessorName">${escapeHtml(landlordName)}</span></strong>${fatherSnippet},
+              PAN: <strong id="previewLessorPan">${escapeHtml(landlordPan || "N/A")}</strong>${aadhaarSnippet},
+              ${contactLine ? `${contactLine}, ` : ""}${addrSnippet}
+              (hereinafter called the <strong>"FIRST PARTY / LESSOR"</strong>, which expression shall unless repugnant to the context mean and include his legal heirs, executors, administrators, and assigns) of the <strong>ONE PART</strong>;
+            </p>
+          `;
+        } else {
+          const previewLessorName = document.getElementById("previewLessorName");
+          const previewLessorPan = document.getElementById("previewLessorPan");
+          if (previewLessorName) previewLessorName.textContent = landlordName;
+          if (previewLessorPan) previewLessorPan.textContent = landlordPan;
+        }
+
+        // Option 1 Lessee Container
+        const p1LesseeBox = document.getElementById("previewLesseeContainer");
+        if (p1LesseeBox) {
+          if (isB2B) {
+            const logoBlock = b2bLogo
+              ? `<div class="mb-2 flex items-center justify-between pb-2 border-b border-slate-200">
+                   <span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-100 text-indigo-900 border border-indigo-200">B2B Commercial Lessee Entity</span>
+                   <img src="${escapeHtml(b2bLogo)}" alt="Entity Logo" class="h-9 max-h-9 max-w-[140px] object-contain rounded bg-white p-1 border border-slate-200 shadow-2xs" />
+                 </div>`
+              : `<div class="mb-1.5"><span class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded bg-indigo-100 text-indigo-900 border border-indigo-200">B2B Commercial Lessee Entity</span></div>`;
+            const signatoryAadhaarSnippet = tenantAadhaar ? `, Aadhaar: <strong><span id="previewLesseeAadhaar">${escapeHtml(tenantAadhaar)}</span></strong>` : "";
+            const signatoryPanSnippet = tenantPan ? `, Signatory PAN: <strong>${escapeHtml(tenantPan)}</strong>` : "";
+            const signatoryEmailSnippet = tenantEmail ? `, Email: <strong>${escapeHtml(tenantEmail)}</strong>` : "";
+            const signatoryFatherSnippet = tenantFather ? `, S/o or D/o <strong>${escapeHtml(tenantFather)}</strong>` : "";
+
+            p1LesseeBox.innerHTML = `
+              ${logoBlock}
+              <p>
+                <strong>M/s <span id="previewLesseeName">${escapeHtml(b2bBusinessName || tenantName)}</span></strong>,
+                a commercial entity having GSTIN: <strong><span id="previewLesseeGstin">${escapeHtml(b2bGstin || "N/A")}</span></strong> and Entity PAN: <strong><span id="previewLesseePan">${escapeHtml(b2bPan || tenantPan || "N/A")}</span></strong>,
+                having its Registered Billing Address at: <strong><span id="previewLesseeAddress">${escapeHtml(b2bBillingAddress || tenantPermAddress)}</span></strong>,
+                represented herein by its Authorized Signatory <strong>${escapeHtml(tenantName)}</strong>
+                (${signatoryFatherSnippet ? `${signatoryFatherSnippet}, ` : ""}${signatoryAadhaarSnippet ? `${signatoryAadhaarSnippet}, ` : ""}${signatoryPanSnippet ? `${signatoryPanSnippet}, ` : ""}Contact No.: <strong><span id="previewLesseeMobile">${escapeHtml(tenantMobile)}</span></strong>${signatoryEmailSnippet},
+                ID: <strong><span id="previewLesseeId">${escapeHtml(tenantId)}</span></strong>)
+                (hereinafter called the <strong>"SECOND PARTY / LESSEE"</strong>, which expression shall unless repugnant to the context mean and include its successors, administrators, and permitted assigns) of the <strong>OTHER PART</strong>.
+              </p>
+            `;
+          } else {
+            const aadhaarSnippet = tenantAadhaar ? `, Aadhaar: <strong><span id="previewLesseeAadhaar">${escapeHtml(tenantAadhaar)}</span></strong>` : "";
+            const panSnippet = tenantPan ? `, PAN: <strong><span id="previewLesseePan">${escapeHtml(tenantPan)}</span></strong>` : "";
+            const emailSnippet = tenantEmail ? `, Email: <strong>${escapeHtml(tenantEmail)}</strong>` : "";
+            const fatherSnippet = tenantFather ? `, S/o or D/o <strong>${escapeHtml(tenantFather)}</strong>` : "";
+            const addrSnippet = tenantPermAddress ? `, residing at <strong>${escapeHtml(tenantPermAddress)}</strong>` : "";
+
+            p1LesseeBox.innerHTML = `
+              <p>
+                <strong><span id="previewLesseeName">${escapeHtml(tenantName)}</span></strong>${fatherSnippet}${panSnippet}${aadhaarSnippet},
+                ID / PAN / Aadhaar: <strong><span id="previewLesseeId">${escapeHtml(tenantId)}</span></strong>,
+                Contact No.: <strong><span id="previewLesseeMobile">${escapeHtml(tenantMobile)}</span></strong>${emailSnippet}${addrSnippet}
+                (hereinafter called the <strong>"SECOND PARTY / LESSEE"</strong>, which expression shall unless repugnant to the context mean and include his successors, representatives, and assigns) of the <strong>OTHER PART</strong>.
+              </p>
+            `;
+          }
+        }
+
         const previewPropertyAddress = document.getElementById("previewPropertyAddress");
         const previewPropertyType = document.getElementById("previewPropertyType");
         const previewPropertyMeter = document.getElementById("previewPropertyMeter");
         const previewMeterClause = document.getElementById("previewMeterClause");
-        const previewStartDate = document.getElementById("previewStartDate");
-        const previewEndDate = document.getElementById("previewEndDate");
-        const previewRentAmount = document.getElementById("previewRentAmount");
-        const previewRentWords = document.getElementById("previewRentWords");
-        const previewDepositAmount = document.getElementById("previewDepositAmount");
-        const previewDepositWords = document.getElementById("previewDepositWords");
-        const previewNoticePeriod = document.getElementById("previewNoticePeriod");
-        const previewEscalationRate = document.getElementById("previewEscalationRate");
-        const previewSignLessor = document.getElementById("previewSignLessor");
-        const previewSignLessee = document.getElementById("previewSignLessee");
 
-        if (previewLessorName) previewLessorName.textContent = landlordName;
-        if (previewLessorPan) previewLessorPan.textContent = landlordPan;
-        if (previewLesseeName) previewLesseeName.textContent = tenantName;
-        if (previewLesseeId) previewLesseeId.textContent = tenantId;
-        if (previewLesseeMobile) previewLesseeMobile.textContent = tenantMobile;
-
-        if (previewPropertyAddress) {
-          previewPropertyAddress.textContent = fullPropStr;
-        }
+        if (previewPropertyAddress) previewPropertyAddress.textContent = fullPropStr;
         if (previewPropertyType) previewPropertyType.textContent = propType;
         if (previewPropertyMeter) previewPropertyMeter.textContent = meterNo;
         if (previewMeterClause) previewMeterClause.textContent = meterNo;
 
-        if (previewStartDate) previewStartDate.textContent = formatDateReadable(startDate);
-        if (previewEndDate) previewEndDate.textContent = formatDateReadable(endDate);
+        // Recital Option 1
+        const p1Recital = document.getElementById("preview1Recital");
+        if (p1Recital) {
+          if (isB2B) {
+            p1Recital.innerHTML = `AND WHEREAS the Second Party has approached the First Party to let out the Demised Premises ${b2bAreaSqFt > 0 ? `(admeasuring approx. <strong>${b2bAreaSqFt.toLocaleString("en-IN")} Sq. Ft.</strong>) ` : ""}for lawful commercial office, retail, corporate, or business operations on a commercial lease tenure of <strong>${escapeHtml(b2bLeasePeriod)}</strong>, and the First Party has agreed to demise the same on the mutually agreed terms and covenants hereinafter stated:`;
+          } else {
+            p1Recital.innerHTML = `AND WHEREAS the Second Party has approached the First Party to let out the Demised Premises for lawful residential purposes on an 11-month lease term, and the First Party has agreed to the same on the mutually agreed covenants hereinafter stated:`;
+          }
+        }
 
-        if (previewRentAmount) previewRentAmount.textContent = rent.toLocaleString("en-IN");
-        if (previewRentWords) previewRentWords.textContent = numberToWords(rent);
+        // Clause 1 (Tenure)
+        const p1Clause1 = document.getElementById("preview1Clause1");
+        if (p1Clause1) {
+          if (isB2B) {
+            const rentStartNote = (b2bRentStartDate && b2bRentStartDate !== startDate)
+              ? ` (with Rent / Billing Commencement from <strong>${formatDateReadable(b2bRentStartDate)}</strong>)`
+              : ``;
+            p1Clause1.innerHTML = `<strong>TENURE:</strong> That this commercial lease is granted for an agreed period of <strong>${escapeHtml(b2bLeasePeriod)}</strong> commencing from <strong id="previewStartDate">${formatDateReadable(startDate)}</strong> and expiring on <strong id="previewEndDate">${formatDateReadable(endDate)}</strong>${rentStartNote}.`;
+          } else {
+            p1Clause1.innerHTML = `<strong>TENURE:</strong> That this lease is granted for a fixed period of <strong>11 (Eleven) Months</strong> commencing from <strong id="previewStartDate">${formatDateReadable(startDate)}</strong> and expiring on <strong id="previewEndDate">${formatDateReadable(endDate)}</strong>.`;
+          }
+        }
 
+        // Clause 2 (Rent)
+        const p1Clause2 = document.getElementById("preview1Clause2");
+        if (p1Clause2) {
+          if (isB2B) {
+            const rateNote = b2bRentPerSqFt > 0 ? ` (@ <strong>₹${b2bRentPerSqFt}/sq.ft.</strong>)` : "";
+            p1Clause2.innerHTML = `<strong>MONTHLY RENT:</strong> That the Second Party shall pay a monthly commercial rent of <strong class="text-slate-900">₹<span id="previewRentAmount">${rent.toLocaleString("en-IN")}</span>/- (<span id="previewRentWords">${numberToWords(rent)}</span>)</strong>${rateNote} per month, payable in advance on or before the <strong>7th day</strong> of each calendar month through electronic bank transfer / RTGS / NEFT / UPI.`;
+          } else {
+            p1Clause2.innerHTML = `<strong>MONTHLY RENT:</strong> That the Second Party shall pay a monthly rent of <strong class="text-slate-900">₹<span id="previewRentAmount">${rent.toLocaleString("en-IN")}</span>/- (<span id="previewRentWords">${numberToWords(rent)}</span>)</strong> per month, payable in advance on or before the <strong>7th day</strong> of each English calendar month through bank transfer / UPI.`;
+          }
+        }
+
+        const previewDepositAmount = document.getElementById("previewDepositAmount");
         if (previewDepositAmount) previewDepositAmount.textContent = deposit.toLocaleString("en-IN");
+        const previewDepositWords = document.getElementById("previewDepositWords");
         if (previewDepositWords) previewDepositWords.textContent = numberToWords(deposit);
 
-        if (previewNoticePeriod) previewNoticePeriod.textContent = noticePeriod;
-        if (previewEscalationRate) previewEscalationRate.textContent = escalation;
+        // Clause 5 (Permitted Use)
+        const p1Clause5 = document.getElementById("preview1Clause5");
+        if (p1Clause5) {
+          if (isB2B) {
+            p1Clause5.innerHTML = `<strong>PERMITTED COMMERCIAL USE:</strong> That the Demised Premises shall be used strictly for lawful commercial office, retail, corporate, or business operations. Sub-letting or parting with possession in whole or part to any third party is strictly prohibited without prior written consent of the First Party.`;
+          } else {
+            p1Clause5.innerHTML = `<strong>PERMITTED USE &amp; SUB-LETTING:</strong> That the Demised Premises shall be used strictly for lawful residential purposes by the Second Party and family. Sub-letting or parting with possession to any third party is strictly prohibited.`;
+          }
+        }
 
+        // Clause 7 (Termination & Lock-in)
+        const p1Clause7 = document.getElementById("preview1Clause7");
+        if (p1Clause7) {
+          if (isB2B) {
+            p1Clause7.innerHTML = `<strong>LOCK-IN PERIOD &amp; TERMINATION:</strong> That this lease incorporates a mandatory <strong>Lock-in Period of ${escapeHtml(b2bLockInPeriod)}</strong> during which neither party shall terminate this agreement. Following expiry of the lock-in period, either party may terminate this agreement by giving <strong id="previewNoticePeriod">${escapeHtml(noticePeriod)}</strong> written notice or rent in lieu thereof.`;
+          } else {
+            p1Clause7.innerHTML = `<strong>TERMINATION &amp; NOTICE PERIOD:</strong> That either party may terminate this agreement prior to expiry by giving <strong id="previewNoticePeriod">${escapeHtml(noticePeriod)}</strong> written notice or rent in lieu thereof.`;
+          }
+        }
+
+        // Clause 8 (Escalation)
+        const p1Clause8 = document.getElementById("preview1Clause8");
+        if (p1Clause8) {
+          if (isB2B) {
+            p1Clause8.innerHTML = `<strong>RENTAL ESCALATION &amp; RENEWAL:</strong> That the monthly rent shall be subject to a mandatory upward escalation of <strong id="previewEscalationRate">${b2bIncrementPct}% ${escapeHtml(b2bIncrementPeriod)}</strong> over the last paid monthly rent. Any subsequent renewal beyond the lease tenure shall be mutually agreed in writing.`;
+          } else {
+            p1Clause8.innerHTML = `<strong>RENEWAL &amp; ESCALATION:</strong> That if both parties mutually agree in writing to renew the lease for another term, the monthly rent shall be escalated by <strong id="previewEscalationRate">${escapeHtml(escalation)}</strong> on the existing rental amount.`;
+          }
+        }
+
+        const previewSignLessor = document.getElementById("previewSignLessor");
         if (previewSignLessor) previewSignLessor.textContent = landlordName;
-        if (previewSignLessee) previewSignLessee.textContent = tenantName;
+        const previewSignLessee = document.getElementById("previewSignLessee");
+        if (previewSignLessee) {
+          if (isB2B) {
+            previewSignLessee.innerHTML = `For <strong>${escapeHtml(b2bBusinessName || tenantName)}</strong><br><span class="text-[10px] text-slate-500 font-normal">Authorized Signatory: ${escapeHtml(tenantName)}</span>`;
+          } else {
+            previewSignLessee.textContent = tenantName;
+          }
+        }
 
         renderCustomClauses();
       }
@@ -20600,8 +21002,8 @@
               targetTenant.leasePeriod = isB2B ? leasePeriod : "";
               targetTenant.b2bIncrementClause = isB2B ? b2bIncrementClause : "";
               if (isB2B && b2bIncrementClause) {
-                targetTenant.customClauses = Array.isArray(targetTenant.customClauses)
-                  ? [b2bIncrementClause, ...targetTenant.customClauses.filter(c => !c.startsWith("B2B COMMERCIAL LEASE"))]
+                targetTenant.customClauses = typeof deduplicateClauses === "function"
+                  ? deduplicateClauses([b2bIncrementClause, ...(Array.isArray(targetTenant.customClauses) ? targetTenant.customClauses.filter(c => !c.startsWith("B2B COMMERCIAL LEASE")) : [])])
                   : [b2bIncrementClause];
               }
               targetTenant.pan = pan;
@@ -20633,7 +21035,6 @@
                 isB2B,
                 businessName: isB2B ? businessName : "",
                 b2bLogo: isB2B ? currentModalB2bLogo : null,
-                b2bLogo: isB2B ? currentTmB2bLogo : null,
                 gstin: isB2B ? gstin : "",
                 billingAddress: isB2B ? billingAddress : "",
                 areaSqFt: isB2B ? areaSqFt : 0,
@@ -20784,8 +21185,8 @@
                 targetTenant.leasePeriod = isB2B ? leasePeriod : "";
                 targetTenant.b2bIncrementClause = isB2B ? b2bIncrementClause : "";
                 if (isB2B && b2bIncrementClause) {
-                  targetTenant.customClauses = Array.isArray(targetTenant.customClauses)
-                    ? [b2bIncrementClause, ...targetTenant.customClauses.filter(c => !c.startsWith("B2B COMMERCIAL LEASE"))]
+                  targetTenant.customClauses = typeof deduplicateClauses === "function"
+                    ? deduplicateClauses([b2bIncrementClause, ...(Array.isArray(targetTenant.customClauses) ? targetTenant.customClauses.filter(c => !c.startsWith("B2B COMMERCIAL LEASE")) : [])])
                     : [b2bIncrementClause];
                 }
                 targetTenant.pan = pan;
@@ -21799,6 +22200,7 @@
           "studioLandlordNameInput",
           "studioLandlordFatherInput",
           "studioLandlordPanInput",
+          "studioLandlordAadhaarInput",
           "studioLandlordPhoneInput",
           "studioLandlordEmailInput",
           "studioLandlordAddressInput",
@@ -21807,6 +22209,8 @@
           "studioTypeInput",
           "studioMeterInput",
           "studioTenantNameInput",
+          "studioTenantPanInput",
+          "studioTenantAadhaarInput",
           "studioTenantIdInput",
           "studioMobileInput",
           "studioEmailInput",
@@ -21930,7 +22334,7 @@
           prop.deposit = deposit;
 
           // Save custom clauses with property & tenant
-          prop.customClauses = [...(state.customAgreementClauses || [])];
+          prop.customClauses = typeof deduplicateClauses === "function" ? deduplicateClauses(state.customAgreementClauses || []) : [...(state.customAgreementClauses || [])];
 
           // Check if tenant was selected from Tenant Master or matches unit
           const selectedTenantId = document.getElementById("studioTenantSelect")?.value;
@@ -21959,7 +22363,7 @@
             if (tenantFather) targetTenant.fatherName = tenantFather;
             if (tenantPermAddress) targetTenant.permAddress = tenantPermAddress;
             if (tenantWork) targetTenant.workplace = tenantWork;
-            targetTenant.customClauses = [...(state.customAgreementClauses || [])];
+            targetTenant.customClauses = typeof deduplicateClauses === "function" ? deduplicateClauses(state.customAgreementClauses || []) : [...(state.customAgreementClauses || [])];
           } else {
             const newTen = {
               id: "ten_" + Date.now(),
@@ -21977,7 +22381,7 @@
               fatherName: tenantFather,
               permAddress: tenantPermAddress,
               workplace: tenantWork,
-              customClauses: [...(state.customAgreementClauses || [])]
+              customClauses: typeof deduplicateClauses === "function" ? deduplicateClauses(state.customAgreementClauses || []) : [...(state.customAgreementClauses || [])]
             };
             state.tenants.unshift(newTen);
             if (document.getElementById("studioTenantSelect")) {
@@ -27513,6 +27917,10 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         window.state = state;
         window.computeTenantScore = computeTenantScore;
         window.parseLeaseStartYearMonth = parseLeaseStartYearMonth;
+        window.updateLiveAgreementPreview = updateLiveAgreementPreview;
+        window.populateAgreementStudioFromProperty = populateAgreementStudioFromProperty;
+        window.populateAgreementStudioFromTenant = populateAgreementStudioFromTenant;
+        window.deduplicateClauses = deduplicateClauses;
       });
     })();
   </script>
