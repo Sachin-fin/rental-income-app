@@ -547,17 +547,43 @@ assert.strictEqual(advInv.rentStartDate, "2026-10-15", "Invoice must record rent
 assert.strictEqual(advInv.invoiceDate, "15-Oct-2026", "Advance Invoice Date for initial month must start from exact Rent Start Date '15-Oct-2026'");
 assert.strictEqual(advInv.billingPeriodRange, "15-Oct-2026 to 31-Oct-2026", "Billing Period for initial month must be '15-Oct-2026 to 31-Oct-2026'");
 
-// Verify Rental Schedule respects Rent Start Date (Aug & Sep = ₹0 Fit-out, Oct starts on 15-Oct-2026)
+// Verify proportional rent calculation for the remaining 17 days in October (31 - 15 + 1 = 17 days):
+// Proportional rent: Math.round(150000 * 17 / 31) = 82258
+assert.strictEqual(advInv.taxableRent, 82258, "Taxable rent must be proportionally calculated for remaining 17 days: ₹82,258");
+assert.strictEqual(advInv.isProrated, true, "Advance Invoice must be marked isProrated: true");
+assert.strictEqual(advInv.proratedDays, 17, "Invoice must record 17 prorated days");
+assert(advInv.prorationNote.includes("Rent calculated for 17 Days"), "Proration note must state 'Rent calculated for 17 Days'");
+assert(advInv.escalationSummary.includes("Rent calculated for 17 Days"), "Escalation/Proration summary must state 'Rent calculated for 17 Days'");
+
+// Test opening the GST Invoice Modal to verify modal UI displays proportional calculation and 'Rent calculated for 17 Days'
+sandbox.openGstInvoiceModal(advInvId);
+const itemDesc = getEl("invItemDescription").textContent;
+const itemNote = getEl("invItemPeriodNote").textContent;
+const escCond = getEl("invEscalationConditionTag").textContent;
+const escSumm = getEl("invEscalationSummaryText").textContent;
+assert(itemDesc.includes("Rent calculated for 17 Days"), "Line item description must state 'Rent calculated for 17 Days'");
+assert(itemNote.includes("Rent calculated for 17 Days"), "Line item period note must state 'Rent calculated for 17 Days'");
+assert(escCond.includes("Rent calculated for 17 Days"), "Escalation condition tag must state 'Rent calculated for 17 Days'");
+assert(escSumm.includes("Rent calculated for 17 Days"), "Escalation summary must state 'Rent calculated for 17 Days'");
+
+// Verify Rental Schedule respects Rent Start Date (Aug & Sep = ₹0 Fit-out, Oct is proportional for 17 days)
 const rsSched = sandbox.generateTenantRentalSchedule(rentStartTenant);
 assert.strictEqual(rsSched.rows[0].billingMonth, "Aug 2026");
 assert.strictEqual(rsSched.rows[0].monthlyRent, 0, "Aug 2026 (before Rent Start Date) must have ₹0 rent");
 assert.strictEqual(rsSched.rows[1].billingMonth, "Sep 2026");
 assert.strictEqual(rsSched.rows[1].monthlyRent, 0, "Sep 2026 (before Rent Start Date) must have ₹0 rent");
 assert.strictEqual(rsSched.rows[2].billingMonth, "Oct 2026");
-assert.strictEqual(rsSched.rows[2].monthlyRent, 150000, "Oct 2026 (Rent Start month) must bill full rent ₹1,50,000 in advance");
+assert.strictEqual(rsSched.rows[2].monthlyRent, 82258, "Oct 2026 (Rent Start month) must bill proportional rent ₹82,258 for 17 days");
+assert.strictEqual(rsSched.rows[2].isProrated, true, "Oct 2026 schedule row must be flagged as isProrated: true");
+assert.strictEqual(rsSched.rows[2].proratedDays, 17, "Oct 2026 schedule row must record 17 prorated days");
 assert.strictEqual(rsSched.rows[2].periodRange, "15-Oct-2026 to 31-Oct-2026", "Oct 2026 schedule row must start on 15-Oct-2026");
 assert.strictEqual(rsSched.rows[2].advanceInvoiceDate, "15-Oct-2026", "Oct 2026 Advance Invoice Date must be 15-Oct-2026");
-console.log("PASS 13: Rent Start Date in Tenant Master & automatic Advance Invoice generation from Rent Start Date verified.");
+
+// Verify subsequent month (Nov 2026) bills full standard monthly rent ₹1,50,000
+assert.strictEqual(rsSched.rows[3].billingMonth, "Nov 2026");
+assert.strictEqual(rsSched.rows[3].monthlyRent, 150000, "Nov 2026 onwards must bill full scheduled rent ₹1,50,000");
+assert.strictEqual(rsSched.rows[3].isProrated, false, "Nov 2026 must not be prorated");
+console.log("PASS 13: Rent Start Date in Tenant Master & proportional Advance Invoice (17 Days) from Rent Start Date verified.");
 
 // 16. Test Tab 8 Excel Export & One-Page Tenant Master UI view
 assert(htmlContent.includes('id="exportRentalSchedulesExcelBtn"'), "Tab 8 must have #exportRentalSchedulesExcelBtn for Excel download");

@@ -25047,6 +25047,49 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         }
       }
 
+      function getProratedRentCalculation(fullAmount, billingMonth, rentStartDate, leaseStartDate) {
+        const amt = Number(fullAmount) || 0;
+        if (!amt || !rentStartDate) {
+          return { isProrated: false, proratedAmount: amt, daysCount: 0, totalDays: 0, note: "" };
+        }
+
+        const cleanRentStart = String(rentStartDate).trim();
+        const cleanLeaseStart = String(leaseStartDate || "").trim();
+
+        const rYmd = cleanRentStart.match(/^(\d{4})[-/](\d{1,2})[-/](\d{1,2})/);
+        if (!rYmd) {
+          return { isProrated: false, proratedAmount: amt, daysCount: 0, totalDays: 0, note: "" };
+        }
+        const rYear = parseInt(rYmd[1], 10);
+        const rMonth = parseInt(rYmd[2], 10);
+        const rDay = parseInt(rYmd[3], 10);
+
+        const bmYm = parseYearMonthFromAny(billingMonth);
+        if (!bmYm || bmYm.year !== rYear || bmYm.month !== rMonth) {
+          return { isProrated: false, proratedAmount: amt, daysCount: 0, totalDays: 0, note: "" };
+        }
+
+        const totalDaysInMonth = new Date(rYear, rMonth, 0).getDate();
+        const remainingDays = Math.max(1, totalDaysInMonth - rDay + 1);
+
+        const isDifferentFromLeaseStart = !cleanLeaseStart || (cleanRentStart !== cleanLeaseStart);
+
+        if (!isDifferentFromLeaseStart || remainingDays >= totalDaysInMonth) {
+          return { isProrated: false, proratedAmount: amt, daysCount: totalDaysInMonth, totalDays: totalDaysInMonth, note: "" };
+        }
+
+        const proratedAmount = Math.round((amt * remainingDays) / totalDaysInMonth);
+        const note = `Rent calculated for ${remainingDays} Days`;
+
+        return {
+          isProrated: true,
+          proratedAmount,
+          daysCount: remainingDays,
+          totalDays: totalDaysInMonth,
+          note
+        };
+      }
+
       function getBillingMonthDateRange(billingMonth, rentStartDate) {
         const raw = String(billingMonth || "Oct 2026").trim();
         const formattedMonth = raw.replace(/\s+/g, "-");
@@ -25238,6 +25281,11 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         const effRentStartDate = getTenantRentStartDate(tenant);
         const periodDates = getBillingMonthDateRange(billingMonth, effRentStartDate);
 
+        // Rent & GST calculation (automatically incorporates rental increment and pro-rata rent calculation)
+        const fullRentForMonth = Number(rentInfo.effectiveRent) || 12000;
+        const rentProration = getProratedRentCalculation(fullRentForMonth, billingMonth, effRentStartDate, tenant.startDate);
+        const taxableRent = rentProration.isProrated ? rentProration.proratedAmount : fullRentForMonth;
+
         if (state.gstInvoices[invoiceId] && !forceRefresh) {
           const existingInv = state.gstInvoices[invoiceId];
           existingInv.invoiceDate = periodDates.startDate;
@@ -25245,8 +25293,12 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
           existingInv.billingPeriodRange = periodDates.rangeText;
           existingInv.rentStartDate = effRentStartDate;
           existingInv.billingMode = "Advance";
+          existingInv.isProrated = rentProration.isProrated;
+          existingInv.proratedDays = rentProration.daysCount;
+          existingInv.totalDaysInMonth = rentProration.totalDays;
+          existingInv.prorationNote = rentProration.note;
           if (
-            Number(existingInv.taxableRent) === Number(rentInfo.effectiveRent) &&
+            Number(existingInv.taxableRent) === Number(taxableRent) &&
             (existingInv.incrementPeriod || "") === (rentInfo.incrementPeriod || "") &&
             Number(existingInv.incrementPct || 0) === Number(rentInfo.incrementPct || 0)
           ) {
@@ -25276,8 +25328,6 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         const invoicePrefix = isGstEnabled ? "GST" : "BILL";
         const invoiceNo = invoicePrefix + "/" + fy + "/" + monthPart + "/" + unitCode;
 
-        // Rent & GST calculation (automatically incorporates rental increment when applicable)
-        const taxableRent = Number(rentInfo.effectiveRent) || 12000;
         let cgstRate = 0;
         let sgstRate = 0;
         let cgstAmount = 0;
@@ -25300,11 +25350,14 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         const billingPeriodRange = periodDates.rangeText;
         const dueDate = "07-" + formattedMonth;
 
-        const escalationSummary = rentInfo.isEscalated
-          ? `Automatic Rental Increment Applied: Base Rent ₹${rentInfo.baseRent.toLocaleString("en-IN")}/mo increased by +${rentInfo.incrementPct}% (${rentInfo.incrementPeriod} · Cycle #${rentInfo.completedIntervals}, +₹${rentInfo.escalationAmount.toLocaleString("en-IN")}/mo) → Effective Taxable Rent ₹${taxableRent.toLocaleString("en-IN")}/mo.`
-          : (rentInfo.intervalMonths > 0 && rentInfo.incrementPct > 0
-            ? `Active Increment Clause: +${rentInfo.incrementPct}% ${rentInfo.incrementPeriod} on Base Rent ₹${rentInfo.baseRent.toLocaleString("en-IN")}/mo${rentInfo.nextIncrementMonth ? ` (Next automatic increase on ${rentInfo.nextIncrementMonth} → ₹${rentInfo.nextEscalatedRent.toLocaleString("en-IN")}/mo)` : ""}.`
-            : "");
+        let escalationSummary = "";
+        if (rentProration.isProrated) {
+          escalationSummary = `Pro-rata Advance Billing: Rent calculated for ${rentProration.daysCount} Days (${periodDates.startDate} to ${periodDates.endDate} · ${rentProration.daysCount} of ${rentProration.totalDays} days in ${billingMonth}) based on Rent Start Date (${formatDateDdMmmYyyy(effRentStartDate) || periodDates.startDate}) differing from Lease Start Date (${formatDateDdMmmYyyy(tenant.startDate)}). Full Monthly Rent: ₹${fullRentForMonth.toLocaleString("en-IN")}/mo → Proportional Taxable Rent: ₹${taxableRent.toLocaleString("en-IN")}.`;
+        } else if (rentInfo.isEscalated) {
+          escalationSummary = `Automatic Rental Increment Applied: Base Rent ₹${rentInfo.baseRent.toLocaleString("en-IN")}/mo increased by +${rentInfo.incrementPct}% (${rentInfo.incrementPeriod} · Cycle #${rentInfo.completedIntervals}, +₹${rentInfo.escalationAmount.toLocaleString("en-IN")}/mo) → Effective Taxable Rent ₹${taxableRent.toLocaleString("en-IN")}/mo.`;
+        } else if (rentInfo.intervalMonths > 0 && rentInfo.incrementPct > 0) {
+          escalationSummary = `Active Increment Clause: +${rentInfo.incrementPct}% ${rentInfo.incrementPeriod} on Base Rent ₹${rentInfo.baseRent.toLocaleString("en-IN")}/mo${rentInfo.nextIncrementMonth ? ` (Next automatic increase on ${rentInfo.nextIncrementMonth} → ₹${rentInfo.nextEscalatedRent.toLocaleString("en-IN")}/mo)` : ""}.`;
+        }
 
         const unitAreaSqFt = Number(tenant.areaSqFt) || getPropertyAreaForUnit(tenant.unit) || 0;
         const effectiveRentPerSqFt = unitAreaSqFt > 0
@@ -25345,7 +25398,12 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
           billingMode: "Advance",
           sacCode: state.landlord.sacCode || "997212",
           baseRent: rentInfo.baseRent,
+          fullMonthlyRent: fullRentForMonth,
           taxableRent,
+          isProrated: rentProration.isProrated,
+          proratedDays: rentProration.daysCount,
+          totalDaysInMonth: rentProration.totalDays,
+          prorationNote: rentProration.note,
           isEscalated: rentInfo.isEscalated,
           completedIntervals: rentInfo.completedIntervals,
           incrementPct: rentInfo.incrementPct,
@@ -25385,8 +25443,8 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
 
         const unitAreaSqFt = Number(tenant.areaSqFt) || getPropertyAreaForUnit(tenant.unit) || 0;
         const camRatePerSqFt = Number(tenant.camRatePerSqFt) || 0;
-        const taxableCam = Number(tenant.camAmount) || (unitAreaSqFt > 0 && camRatePerSqFt > 0 ? Math.round(unitAreaSqFt * camRatePerSqFt) : 0);
-        if (taxableCam <= 0) return null;
+        const fullTaxableCam = Number(tenant.camAmount) || (unitAreaSqFt > 0 && camRatePerSqFt > 0 ? Math.round(unitAreaSqFt * camRatePerSqFt) : 0);
+        if (fullTaxableCam <= 0) return null;
 
         const billingMonth = targetMonth || getEffectiveBillingMonth();
         const monthSlug = billingMonth.replace(/\s+/g, "_").toLowerCase();
@@ -25395,12 +25453,22 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
 
         state.gstInvoices = state.gstInvoices || {};
 
-        const camPeriodDates = getBillingMonthDateRange(billingMonth);
+        const effRentStartDate = getTenantRentStartDate(tenant);
+        const camPeriodDates = getBillingMonthDateRange(billingMonth, effRentStartDate);
+
+        const camProration = getProratedRentCalculation(fullTaxableCam, billingMonth, effRentStartDate, tenant.startDate);
+        const taxableCam = camProration.isProrated ? camProration.proratedAmount : fullTaxableCam;
 
         if (state.gstInvoices[camInvoiceId] && !forceRefresh) {
           const existingCam = state.gstInvoices[camInvoiceId];
+          existingCam.invoiceDate = camPeriodDates.startDate;
           existingCam.invoiceEndDate = camPeriodDates.endDate;
           existingCam.billingPeriodRange = camPeriodDates.rangeText;
+          existingCam.rentStartDate = effRentStartDate;
+          existingCam.isProrated = camProration.isProrated;
+          existingCam.proratedDays = camProration.daysCount;
+          existingCam.totalDaysInMonth = camProration.totalDays;
+          existingCam.prorationNote = camProration.isProrated ? `CAM calculated for ${camProration.daysCount} Days` : "";
           if (Number(existingCam.taxableRent) === Number(taxableCam)) {
             return existingCam;
           }
@@ -25448,7 +25516,9 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         const dueDate = "07-" + formattedMonth;
         const effectiveCamRate = camRatePerSqFt || (unitAreaSqFt > 0 ? Math.round((taxableCam / unitAreaSqFt) * 100) / 100 : 0);
 
-        const camSummary = `Separate Monthly CAM (Common Area Maintenance) Invoice: ${unitAreaSqFt > 0 ? `Chargeable Area ${unitAreaSqFt.toLocaleString("en-IN")} Sq.Ft × ₹${effectiveCamRate}/Sq.Ft/Mo = ` : ""}Taxable CAM ₹${taxableCam.toLocaleString("en-IN")}/mo + 18% GST (Billed separately from Rent Invoice).`;
+        const camSummary = camProration.isProrated
+          ? `Pro-rata CAM Billing: CAM calculated for ${camProration.daysCount} Days (${camPeriodDates.startDate} to ${camPeriodDates.endDate} · ${camProration.daysCount} of ${camProration.totalDays} days in ${billingMonth}) based on Rent Start Date (${formatDateDdMmmYyyy(effRentStartDate) || camPeriodDates.startDate}). Full Monthly CAM: ₹${fullTaxableCam.toLocaleString("en-IN")}/mo → Proportional Taxable CAM: ₹${taxableCam.toLocaleString("en-IN")} + 18% GST.`
+          : `Separate Monthly CAM (Common Area Maintenance) Invoice: ${unitAreaSqFt > 0 ? `Chargeable Area ${unitAreaSqFt.toLocaleString("en-IN")} Sq.Ft × ₹${effectiveCamRate}/Sq.Ft/Mo = ` : ""}Taxable CAM ₹${taxableCam.toLocaleString("en-IN")}/mo + 18% GST (Billed separately from Rent Invoice).`;
 
         const camInvoiceRecord = {
           id: camInvoiceId,
@@ -25471,12 +25541,20 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
           invoiceDate,
           invoiceEndDate,
           dueDate,
+          rentStartDate: effRentStartDate,
+          rentStartFormatted: formatDateDdMmmYyyy(effRentStartDate) || invoiceDate,
+          billingMode: "Advance",
           sacCode: "997222",
           areaSqFt: unitAreaSqFt,
           camRatePerSqFt: effectiveCamRate,
           camAmount: taxableCam,
+          fullMonthlyCam: fullTaxableCam,
           baseRent: taxableCam,
           taxableRent: taxableCam,
+          isProrated: camProration.isProrated,
+          proratedDays: camProration.daysCount,
+          totalDaysInMonth: camProration.totalDays,
+          prorationNote: camProration.isProrated ? `CAM calculated for ${camProration.daysCount} Days` : "",
           isEscalated: false,
           completedIntervals: 0,
           incrementPct: 0,
@@ -25745,38 +25823,45 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
             ? ` · Area: ${Number(inv.areaSqFt).toLocaleString("en-IN")} Sq.Ft @ ₹${inv.camRatePerSqFt || Math.round((inv.taxableRent / inv.areaSqFt) * 100) / 100}/Sq.Ft/Mo`
             : ` · Area: ${Number(inv.areaSqFt).toLocaleString("en-IN")} Sq.Ft @ ₹${inv.rentPerSqFt || Math.round((inv.taxableRent / inv.areaSqFt) * 100) / 100}/Sq.Ft/Mo`)
           : "";
+        const prorationSuffix = inv.isProrated
+          ? ` — ${inv.prorationNote || `Rent calculated for ${inv.proratedDays} Days`}`
+          : "";
         document.getElementById("invItemDescription").textContent = isCamInv
-          ? ("Monthly Common Area Maintenance (CAM) Services for Unit: " + inv.tenantUnit)
-          : ("Monthly Rental Services for Unit: " + inv.tenantUnit);
+          ? ("Monthly Common Area Maintenance (CAM) Services for Unit: " + inv.tenantUnit + (inv.isProrated ? ` — CAM calculated for ${inv.proratedDays} Days` : ""))
+          : ("Monthly Rental Services for Unit: " + inv.tenantUnit + prorationSuffix);
         const basePeriodNote = "Service Period: " + exactPeriodRange + sqFtNote;
         document.getElementById("invItemPeriodNote").textContent = isCamInv
-          ? `${basePeriodNote} · 🛠️ Separate CAM Tax Invoice (Billed Separately from Monthly Rent)`
-          : (inv.isEscalated
-            ? `${basePeriodNote} · 📈 Includes +${inv.incrementPct}% Rental Increment (${inv.incrementPeriod}, Cycle #${inv.completedIntervals} on Base ₹${Number(inv.baseRent).toLocaleString("en-IN")})`
-            : basePeriodNote);
+          ? `${basePeriodNote}${inv.isProrated ? ` · 🛠️ CAM calculated for ${inv.proratedDays} Days (${inv.proratedDays} of ${inv.totalDaysInMonth || 31} days pro-rata)` : ""} · 🛠️ Separate CAM Tax Invoice (Billed Separately from Monthly Rent)`
+          : (inv.isProrated
+            ? `${basePeriodNote} · 🗓️ Rent calculated for ${inv.proratedDays} Days (${inv.proratedDays} of ${inv.totalDaysInMonth || 31} days pro-rata from Rent Start Date: ${inv.invoiceDate})`
+            : (inv.isEscalated
+              ? `${basePeriodNote} · 📈 Includes +${inv.incrementPct}% Rental Increment (${inv.incrementPeriod}, Cycle #${inv.completedIntervals} on Base ₹${Number(inv.baseRent).toLocaleString("en-IN")})`
+              : basePeriodNote));
         document.getElementById("invItemSac").textContent = inv.sacCode || "997212";
         document.getElementById("invItemTaxable").textContent = formatGstCurrency(inv.taxableRent);
         document.getElementById("invItemCgst").textContent = formatGstCurrency(inv.cgstAmount);
         document.getElementById("invItemSgst").textContent = formatGstCurrency(inv.sgstAmount);
         document.getElementById("invItemTotal").textContent = formatGstCurrency(inv.totalAmount);
 
-        // Escalation Banner inside Tax Invoice Print Area
+        // Escalation / Pro-rata Banner inside Tax Invoice Print Area
         const escBanner = document.getElementById("invEscalationBanner");
         const escStatusBadge = document.getElementById("invEscalationStatusBadge");
         const escConditionTag = document.getElementById("invEscalationConditionTag");
         const escSummaryText = document.getElementById("invEscalationSummaryText");
         if (escBanner) {
-          if (inv.escalationSummary) {
+          if (inv.escalationSummary || inv.isProrated) {
             escBanner.classList.remove("hidden");
             if (escStatusBadge) {
               escStatusBadge.textContent = isCamInv
-                ? "🛠️ Separate Monthly CAM Invoice"
-                : (inv.isEscalated ? `✓ Auto-Escalated (Cycle #${inv.completedIntervals})` : "Active Increment Clause");
+                ? (inv.isProrated ? `🗓️ Pro-rata CAM (${inv.proratedDays} Days)` : "🛠️ Separate Monthly CAM Invoice")
+                : (inv.isProrated ? `🗓️ Pro-rata Rent (${inv.proratedDays} Days)` : (inv.isEscalated ? `✓ Auto-Escalated (Cycle #${inv.completedIntervals})` : "Active Increment Clause"));
             }
             if (escConditionTag) {
-              escConditionTag.textContent = isCamInv
-                ? (inv.areaSqFt > 0 ? `${inv.areaSqFt} Sq.Ft × ₹${inv.camRatePerSqFt}/Sq.Ft` : "SAC 997222 · CAM Services")
-                : `+${inv.incrementPct}% ${inv.incrementPeriod}`;
+              escConditionTag.textContent = inv.isProrated
+                ? (isCamInv ? `CAM calculated for ${inv.proratedDays} Days` : `Rent calculated for ${inv.proratedDays} Days`)
+                : (isCamInv
+                  ? (inv.areaSqFt > 0 ? `${inv.areaSqFt} Sq.Ft × ₹${inv.camRatePerSqFt}/Sq.Ft` : "SAC 997222 · CAM Services")
+                  : `+${inv.incrementPct}% ${inv.incrementPeriod}`);
             }
             if (escSummaryText) {
               escSummaryText.textContent = inv.escalationSummary;
@@ -26148,11 +26233,13 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
             </td>
             <td class="py-2 px-3 text-right font-mono font-bold text-slate-900 dark:text-white text-xs whitespace-nowrap">
               <div>${formatGstCurrency(inv.taxableRent)}</div>
-              ${inv.isEscalated
-              ? `<div class="text-[9px] font-sans font-extrabold text-amber-700 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200 inline-block mt-0.5" title="Auto-escalated from Base Rent ₹${Number(inv.baseRent).toLocaleString("en-IN")}">📈 +${inv.incrementPct}% (${escapeHtml(inv.incrementPeriod)})</div>`
-              : (inv.incrementPct > 0 && inv.incrementPeriod && inv.incrementPeriod !== "No Escalation"
-                ? `<div class="text-[9px] font-sans font-semibold text-slate-400">Clause: +${inv.incrementPct}% ${escapeHtml(inv.incrementPeriod)}</div>`
-                : "")
+              ${inv.isProrated
+              ? `<div class="text-[9px] font-sans font-extrabold text-amber-800 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-300 inline-block mt-0.5" title="Rent calculated for ${inv.proratedDays} Days">🗓️ ${inv.proratedDays} Days Pro-rata</div>`
+              : (inv.isEscalated
+                ? `<div class="text-[9px] font-sans font-extrabold text-amber-700 bg-amber-50 px-1.5 py-0.2 rounded border border-amber-200 inline-block mt-0.5" title="Auto-escalated from Base Rent ₹${Number(inv.baseRent).toLocaleString("en-IN")}">📈 +${inv.incrementPct}% (${escapeHtml(inv.incrementPeriod)})</div>`
+                : (inv.incrementPct > 0 && inv.incrementPeriod && inv.incrementPeriod !== "No Escalation"
+                  ? `<div class="text-[9px] font-sans font-semibold text-slate-400">Clause: +${inv.incrementPct}% ${escapeHtml(inv.incrementPeriod)}</div>`
+                  : ""))
             }
             </td>
             <td class="py-2 px-3 text-right font-mono text-slate-600 dark:text-slate-400 text-xs whitespace-nowrap">${formatGstCurrency(inv.cgstAmount)}</td>
@@ -26473,15 +26560,27 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
           const isBeforeRentStart = (yr < rentStartYm.year) || (yr === rentStartYm.year && mo < rentStartYm.month);
           const rentInfo = getEffectiveRentForTenant(tenant, monthLabel);
 
-          const scheduledRent = isBeforeRentStart ? 0 : (Number(rentInfo.effectiveRent) || Number(tenant.rent) || 0);
+          let scheduledRent = isBeforeRentStart ? 0 : (Number(rentInfo.effectiveRent) || Number(tenant.rent) || 0);
+          let scheduledCam = monthlyCam;
+
+          const rentProration = getProratedRentCalculation(scheduledRent, monthLabel, effRentStartStr, tenant.startDate);
+          const camProration = getProratedRentCalculation(monthlyCam, monthLabel, effRentStartStr, tenant.startDate);
+
+          if (!isBeforeRentStart && rentProration.isProrated) {
+            scheduledRent = rentProration.proratedAmount;
+          }
+          if (!isBeforeRentStart && camProration.isProrated) {
+            scheduledCam = camProration.proratedAmount;
+          }
+
           const rentPerSqFt = unitAreaSqFt > 0
             ? Math.round((scheduledRent / unitAreaSqFt) * 100) / 100
             : (Number(tenant.rentPerSqFt) || 0);
 
           const rentGst = Math.round(scheduledRent * (gstRate / 100) * 100) / 100;
-          const camGst = Math.round(monthlyCam * (gstRate / 100) * 100) / 100;
+          const camGst = Math.round(scheduledCam * (gstRate / 100) * 100) / 100;
           const totalGst = Math.round((rentGst + camGst) * 100) / 100;
-          const totalMonthlyOutflow = Math.round((scheduledRent + monthlyCam + totalGst) * 100) / 100;
+          const totalMonthlyOutflow = Math.round((scheduledRent + scheduledCam + totalGst) * 100) / 100;
 
           let timelineStatus = "Upcoming";
           if (yr < currentEffYm.year || (yr === currentEffYm.year && mo < currentEffYm.month)) {
@@ -26502,6 +26601,10 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
             endDate: dateRange.endDate,
             advanceInvoiceDate: isBeforeRentStart ? "—" : dateRange.startDate,
             isBeforeRentStart,
+            isProrated: rentProration.isProrated,
+            proratedDays: rentProration.daysCount,
+            totalDaysInMonth: rentProration.totalDays,
+            prorationNote: rentProration.note,
             completedIntervals: rentInfo.completedIntervals,
             isEscalated: rentInfo.isEscalated,
             isIncrementStepMonth,
@@ -26538,7 +26641,7 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
               monthsCount: 0,
               monthlyRent: scheduledRent,
               rentPerSqFt,
-              monthlyCam,
+              monthlyCam: scheduledCam,
               monthlyGst: totalGst,
               monthlyTotal: totalMonthlyOutflow,
               slabTotalRent: 0,
@@ -26685,9 +26788,11 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
                   <td class="py-2 px-3 text-[11px] whitespace-nowrap">
                     ${r.isBeforeRentStart
                       ? `<span class="px-2 py-0.5 rounded-md font-bold text-[10px] bg-purple-100 text-purple-900 border border-purple-300">🛠️ Fit-Out (₹0 Rent)</span>`
-                      : (r.isEscalated
-                        ? `<span class="px-2 py-0.5 rounded-md font-bold text-[10px] ${r.isIncrementStepMonth ? "bg-amber-500 text-slate-950 shadow-2xs" : "bg-amber-100 text-amber-900 border border-amber-300"}">📈 Cycle #${r.completedIntervals} (+${r.incrementPct}% ${escapeHtml(r.incrementPeriod)})</span>`
-                        : `<span class="px-2 py-0.5 rounded-md font-semibold text-[10px] bg-slate-100 text-slate-600 border border-slate-200">Base Rent Term</span>`)
+                      : (r.isProrated
+                        ? `<span class="px-2 py-0.5 rounded-md font-bold text-[10px] bg-amber-100 text-amber-900 border border-amber-300">🗓️ Pro-rata (${r.proratedDays} Days)</span>`
+                        : (r.isEscalated
+                          ? `<span class="px-2 py-0.5 rounded-md font-bold text-[10px] ${r.isIncrementStepMonth ? "bg-amber-500 text-slate-950 shadow-2xs" : "bg-amber-100 text-amber-900 border border-amber-300"}">📈 Cycle #${r.completedIntervals} (+${r.incrementPct}% ${escapeHtml(r.incrementPeriod)})</span>`
+                          : `<span class="px-2 py-0.5 rounded-md font-semibold text-[10px] bg-slate-100 text-slate-600 border border-slate-200">Base Rent Term</span>`))
                     }
                   </td>
                   <td class="py-2 px-3 text-right font-mono text-[11px] text-indigo-800 dark:text-indigo-300 whitespace-nowrap">
@@ -26708,11 +26813,13 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
                   <td class="py-2 px-3 text-center whitespace-nowrap">
                     ${r.isBeforeRentStart
                       ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 border border-purple-200">🛠️ Fit-Out</span>`
-                      : (r.timelineStatus === "Completed"
-                        ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-300">✅ Billed / Past</span>`
-                        : (r.timelineStatus === "Current"
-                          ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300">🟢 Current Month</span>`
-                          : `<span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">🗓️ Scheduled</span>`))
+                      : (r.isProrated
+                        ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">🗓️ ${r.proratedDays} Days Rent</span>`
+                        : (r.timelineStatus === "Completed"
+                          ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-300">✅ Billed / Past</span>`
+                          : (r.timelineStatus === "Current"
+                            ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300">🟢 Current Month</span>`
+                            : `<span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">🗓️ Scheduled</span>`)))
                     }
                   </td>
                 </tr>
@@ -27223,6 +27330,7 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         window.renderRentalSchedulesTab = renderRentalSchedulesTab;
         window.exportRentalSchedulesExcel = exportRentalSchedulesExcel;
         window.getBillingMonthDateRange = getBillingMonthDateRange;
+        window.getProratedRentCalculation = getProratedRentCalculation;
         window.saveCompanyLogoDataUrl = saveCompanyLogoDataUrl;
         window.updateInvoiceCompanyLogoUI = updateInvoiceCompanyLogoUI;
         window.generateGstInvoiceForTenant = generateGstInvoiceForTenant;

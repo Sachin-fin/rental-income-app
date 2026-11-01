@@ -386,10 +386,13 @@ assert.strictEqual(fitoutSched.rows[1].monthLabel, "Sep 2026");
 assert.strictEqual(fitoutSched.rows[1].monthlyRent, 0, "Sep 2026 must be ₹0 (Fit-Out period)");
 assert.strictEqual(fitoutSched.rows[1].isBeforeRentStart, true);
 
-// Oct 2026: Month of Rent Start Date -> starts on 15-Oct-2026
+// Oct 2026: Month of Rent Start Date -> starts on 15-Oct-2026 (17 days remaining in 31-day month)
+// Proportional rent: Math.round(100000 * 17 / 31) = 54839
 assert.strictEqual(fitoutSched.rows[2].monthLabel, "Oct 2026");
 assert.strictEqual(fitoutSched.rows[2].isBeforeRentStart, false);
-assert.strictEqual(fitoutSched.rows[2].monthlyRent, 100000);
+assert.strictEqual(fitoutSched.rows[2].monthlyRent, 54839, "Oct 2026 must be proportionally calculated for 17 days (₹54,839 of ₹100,000)");
+assert.strictEqual(fitoutSched.rows[2].isProrated, true, "Oct 2026 row must be marked isProrated");
+assert.strictEqual(fitoutSched.rows[2].proratedDays, 17, "Oct 2026 row must record 17 prorated days");
 assert.strictEqual(fitoutSched.rows[2].periodRange, "15-Oct-2026 to 31-Oct-2026");
 assert.strictEqual(fitoutSched.rows[2].advanceInvoiceDate, "15-Oct-2026");
 
