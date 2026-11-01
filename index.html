@@ -25090,6 +25090,11 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         };
       }
 
+      function sanitizeInvoiceNo(invNo) {
+        if (!invNo) return "";
+        return String(invNo).replace(/^BILL\//, "").replace(/^CAM-BILL\//, "CAM/");
+      }
+
       function getBillingMonthDateRange(billingMonth, rentStartDate) {
         const raw = String(billingMonth || "Oct 2026").trim();
         const formattedMonth = raw.replace(/\s+/g, "-");
@@ -25309,7 +25314,7 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         const existingChannels = state.gstInvoices[invoiceId]?.dispatchedChannels || [];
         const existingDispatchedAt = state.gstInvoices[invoiceId]?.dispatchedAt || null;
 
-        // Generate consecutive invoice number: GST/YY-YY/MMM/UNIT or BILL/...
+        // Generate consecutive invoice number: GST/YY-YY/MMM/UNIT or YY-YY/MMM/UNIT
         const parsedBillingYm = parseYearMonthFromAny(billingMonth);
         const curYear = parsedBillingYm ? parsedBillingYm.year : new Date().getFullYear();
         const nextYearShort = String(curYear + 1).slice(-2);
@@ -25325,8 +25330,7 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         }
 
         const isGstEnabled = state.landlord.gstEnabled !== false;
-        const invoicePrefix = isGstEnabled ? "GST" : "BILL";
-        const invoiceNo = invoicePrefix + "/" + fy + "/" + monthPart + "/" + unitCode;
+        const invoiceNo = (isGstEnabled ? "GST/" : "") + fy + "/" + monthPart + "/" + unitCode;
 
         let cgstRate = 0;
         let sgstRate = 0;
@@ -25492,8 +25496,7 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         }
 
         const isGstEnabled = state.landlord.gstEnabled !== false;
-        const invoicePrefix = isGstEnabled ? "CAM-GST" : "CAM-BILL";
-        const invoiceNo = invoicePrefix + "/" + fy + "/" + monthPart + "/" + unitCode;
+        const invoiceNo = (isGstEnabled ? "CAM-GST/" : "CAM/") + fy + "/" + monthPart + "/" + unitCode;
 
         let cgstRate = 0;
         let sgstRate = 0;
@@ -25620,6 +25623,13 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
           }
         } catch (e) { }
 
+        // Sanitize any legacy invoice numbers starting with BILL/
+        Object.values(state.gstInvoices || {}).forEach((inv) => {
+          if (inv && inv.invoiceNo) {
+            inv.invoiceNo = sanitizeInvoiceNo(inv.invoiceNo);
+          }
+        });
+
         let billingMonth = targetMonth || getEffectiveBillingMonth();
         if (isFutureBillingMonth(billingMonth)) {
           billingMonth = getEffectiveBillingMonth();
@@ -25694,6 +25704,9 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
 
         activeGstInvoiceId = invoiceId;
         ensureLandlordGstDefaults();
+        if (inv.invoiceNo) {
+          inv.invoiceNo = sanitizeInvoiceNo(inv.invoiceNo);
+        }
 
         const modal = document.getElementById("gstInvoiceModal");
         if (!modal) return;
@@ -25923,6 +25936,7 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         const inv = state.gstInvoices && state.gstInvoices[idToPrint || activeGstInvoiceId];
         const prevTitle = document.title;
         if (inv && inv.invoiceNo) {
+          inv.invoiceNo = sanitizeInvoiceNo(inv.invoiceNo);
           document.title = inv.invoiceNo;
         }
         document.body.classList.remove("print-receipt-modal", "print-agreement", "print-police", "print-report", "print-gst-register");
@@ -26206,7 +26220,7 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
             <td class="py-2 px-3 whitespace-nowrap">
               <div class="flex items-center gap-1.5">
                 <span class="inline-flex items-center font-mono font-bold text-[11px] ${inv.invoiceType === "CAM" ? "text-amber-900 bg-amber-50 border-amber-300" : "text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/60 border-teal-200/80 dark:border-teal-800/80"} px-2 py-0.5 rounded border">
-                  ${inv.invoiceNo}
+                  ${sanitizeInvoiceNo(inv.invoiceNo)}
                 </span>
                 ${inv.invoiceType === "CAM"
                   ? `<span class="text-[9px] font-extrabold px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 border border-amber-300 uppercase">🛠️ CAM</span>`
@@ -27331,6 +27345,7 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         window.exportRentalSchedulesExcel = exportRentalSchedulesExcel;
         window.getBillingMonthDateRange = getBillingMonthDateRange;
         window.getProratedRentCalculation = getProratedRentCalculation;
+        window.sanitizeInvoiceNo = sanitizeInvoiceNo;
         window.saveCompanyLogoDataUrl = saveCompanyLogoDataUrl;
         window.updateInvoiceCompanyLogoUI = updateInvoiceCompanyLogoUI;
         window.generateGstInvoiceForTenant = generateGstInvoiceForTenant;
