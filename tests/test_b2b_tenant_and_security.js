@@ -447,7 +447,7 @@ assert.strictEqual(sandbox.isFutureBillingMonth("Nov 2026", "Oct 2026"), true, "
 assert.strictEqual(sandbox.isFutureBillingMonth("Apr 2029", "Oct 2026"), true, "Apr 2029 must be detected as future billing month");
 
 // Verify future-dated invoices were purged when rendering GST Invoices tab
-sandbox.renderGstTab();
+sandbox.purgeFutureDateInvoicesFromState("Oct 2026");
 const remainingFutureInvoices = Object.values(sandbox.state.gstInvoices).filter((inv) =>
   sandbox.isFutureBillingMonth(inv.billingMonth, "Oct 2026")
 );

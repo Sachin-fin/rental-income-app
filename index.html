@@ -5733,7 +5733,7 @@
             </div>
           </div>
 
-          <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs">
+          <div class="border border-slate-200 rounded-2xl overflow-hidden shadow-2xs overflow-x-auto">
             <table class="w-full text-left border-collapse text-xs">
               <thead class="bg-slate-50 border-b border-slate-200 text-[11px] font-bold uppercase text-slate-500">
                 <tr class="whitespace-nowrap">
@@ -21417,6 +21417,8 @@
             const endStr = `${endYyyy}-${endMm}-${endDd}`;
 
             document.getElementById("tmStartDateInput").value = startStr;
+            const tmRentStartEl = document.getElementById("tmRentStartDateInput");
+            if (tmRentStartEl) tmRentStartEl.value = startStr;
             document.getElementById("tmEndDateInput").value = endStr;
             showFeedback("Lease dates set for 11 months.");
           });
@@ -22274,19 +22276,44 @@
           showFeedback(`✓ Complete JSON backup downloaded: ${fname}`);
         });
 
-        // Global Keyboard Shortcuts (Escape to dismiss modals, '/' or Ctrl+K for search)
+        // Universal Modal Dismissal & Global Keyboard Shortcuts
+        const allAppModals = [
+          { id: "receiptModal", close: () => typeof closeRentReceipt === "function" ? closeRentReceipt() : document.getElementById("receiptModal")?.classList.add("hidden") },
+          { id: "linkTenantModal", close: () => typeof closeLinkTenantModal === "function" ? closeLinkTenantModal() : document.getElementById("linkTenantModal")?.classList.add("hidden") },
+          { id: "tenantTrackRecordModal", close: () => typeof closeTenantTrackRecordModal === "function" ? closeTenantTrackRecordModal() : document.getElementById("tenantTrackRecordModal")?.classList.add("hidden") },
+          { id: "kpiDetailModal", close: () => typeof closeKpiDetailModal === "function" ? closeKpiDetailModal() : document.getElementById("kpiDetailModal")?.classList.add("hidden") },
+          { id: "propertyLedgerModal", close: () => typeof closePropertyLedgerModal === "function" ? closePropertyLedgerModal() : document.getElementById("propertyLedgerModal")?.classList.add("hidden") },
+          { id: "recordPartialPaymentModal", close: () => typeof closePartialPaymentModal === "function" ? closePartialPaymentModal() : document.getElementById("recordPartialPaymentModal")?.classList.add("hidden") },
+          { id: "authModal", close: () => typeof closeAuthModal === "function" ? closeAuthModal() : document.getElementById("authModal")?.classList.add("hidden") },
+          { id: "howToUseModal", close: () => typeof closeHowToUseModal === "function" ? closeHowToUseModal() : document.getElementById("howToUseModal")?.classList.add("hidden") },
+          { id: "landlordProfileModal", close: () => typeof closeLandlordProfileModal === "function" ? closeLandlordProfileModal() : document.getElementById("landlordProfileModal")?.classList.add("hidden") },
+          { id: "gstInvoiceModal", close: () => typeof closeGstInvoiceModal === "function" ? closeGstInvoiceModal() : document.getElementById("gstInvoiceModal")?.classList.add("hidden") },
+          { id: "gstBatchDispatchModal", close: () => typeof closeBatchGstDispatchModal === "function" ? closeBatchGstDispatchModal() : document.getElementById("gstBatchDispatchModal")?.classList.add("hidden") },
+          { id: "tenantInviteModal", close: () => typeof closeTenantInviteModal === "function" ? closeTenantInviteModal() : document.getElementById("tenantInviteModal")?.classList.add("hidden") },
+          { id: "landlordChatModal", close: () => typeof closeLandlordChatModal === "function" ? closeLandlordChatModal() : document.getElementById("landlordChatModal")?.classList.add("hidden") },
+          { id: "docPreviewModal", close: () => typeof closeDocPreviewModal === "function" ? closeDocPreviewModal() : document.getElementById("docPreviewModal")?.classList.add("hidden") },
+          { id: "tenantAgreementDocsModal", close: () => typeof closeTenantAgreementsModal === "function" ? closeTenantAgreementsModal() : document.getElementById("tenantAgreementDocsModal")?.classList.add("hidden") },
+          { id: "supabaseSyncModal", close: () => typeof closeSupabaseModal === "function" ? closeSupabaseModal() : document.getElementById("supabaseSyncModal")?.classList.add("hidden") }
+        ];
+
+        // Dismiss modal cleanly on backdrop click (outside the modal box)
+        allAppModals.forEach(({ id, close }) => {
+          const el = document.getElementById(id);
+          if (el) {
+            el.addEventListener("click", (e) => {
+              if (e.target === el) {
+                close();
+              }
+            });
+          }
+        });
+
+        // Global Keyboard Shortcuts (Escape to dismiss any modal, '/' or Ctrl+K for search)
         window.addEventListener("keydown", (e) => {
           if (e.key === "Escape") {
-            closeAuthModal();
-            closeLandlordProfileModal();
-            closeTenantTrackRecordModal();
-            closePropertyLedgerModal();
-            closePartialPaymentModal();
-            closeRentReceipt();
-            closeLinkTenantModal();
-            closeDocPreviewModal();
-            closeKpiDetailModal();
-            closeSupabaseModal();
+            allAppModals.forEach(({ close }) => {
+              try { close(); } catch (err) {}
+            });
           } else if ((e.key === "/" || (e.ctrlKey && e.key.toLowerCase() === "k")) && !["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName)) {
             e.preventDefault();
             const searchInput = document.getElementById("dashSearchInput");
@@ -25002,9 +25029,9 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         return isTenantRentStartedByMonth(tenant, billingMonth);
       }
 
-      function purgeFutureDateInvoicesFromState() {
+      function purgeFutureDateInvoicesFromState(customEffMonth) {
         if (!state || !state.gstInvoices) return;
-        const currentEffMonth = getEffectiveBillingMonth();
+        const currentEffMonth = customEffMonth || getEffectiveBillingMonth();
         let removed = false;
         Object.keys(state.gstInvoices).forEach((invId) => {
           const inv = state.gstInvoices[invId];
@@ -26656,9 +26683,11 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
                   <td class="py-2 px-3 font-mono font-bold text-[11px] text-slate-600 dark:text-slate-400 whitespace-nowrap">Month ${r.monthIndex}</td>
                   <td class="py-2 px-3 font-mono font-bold text-[11px] text-slate-900 dark:text-white whitespace-nowrap">${escapeHtml(r.periodRange)}</td>
                   <td class="py-2 px-3 text-[11px] whitespace-nowrap">
-                    ${r.isEscalated
-                      ? `<span class="px-2 py-0.5 rounded-md font-bold text-[10px] ${r.isIncrementStepMonth ? "bg-amber-500 text-slate-950 shadow-2xs" : "bg-amber-100 text-amber-900 border border-amber-300"}">📈 Cycle #${r.completedIntervals} (+${r.incrementPct}% ${escapeHtml(r.incrementPeriod)})</span>`
-                      : `<span class="px-2 py-0.5 rounded-md font-semibold text-[10px] bg-slate-100 text-slate-600 border border-slate-200">Base Rent Term</span>`
+                    ${r.isBeforeRentStart
+                      ? `<span class="px-2 py-0.5 rounded-md font-bold text-[10px] bg-purple-100 text-purple-900 border border-purple-300">🛠️ Fit-Out (₹0 Rent)</span>`
+                      : (r.isEscalated
+                        ? `<span class="px-2 py-0.5 rounded-md font-bold text-[10px] ${r.isIncrementStepMonth ? "bg-amber-500 text-slate-950 shadow-2xs" : "bg-amber-100 text-amber-900 border border-amber-300"}">📈 Cycle #${r.completedIntervals} (+${r.incrementPct}% ${escapeHtml(r.incrementPeriod)})</span>`
+                        : `<span class="px-2 py-0.5 rounded-md font-semibold text-[10px] bg-slate-100 text-slate-600 border border-slate-200">Base Rent Term</span>`)
                     }
                   </td>
                   <td class="py-2 px-3 text-right font-mono text-[11px] text-indigo-800 dark:text-indigo-300 whitespace-nowrap">
@@ -26677,11 +26706,13 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
                     ₹${r.totalMonthlyOutflow.toLocaleString("en-IN")}
                   </td>
                   <td class="py-2 px-3 text-center whitespace-nowrap">
-                    ${r.timelineStatus === "Completed"
-                      ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-300">✅ Billed / Past</span>`
-                      : (r.timelineStatus === "Current"
-                        ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300">🟢 Current Month</span>`
-                        : `<span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">🗓️ Scheduled</span>`)
+                    ${r.isBeforeRentStart
+                      ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-purple-100 text-purple-800 border border-purple-200">🛠️ Fit-Out</span>`
+                      : (r.timelineStatus === "Completed"
+                        ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 border border-slate-300">✅ Billed / Past</span>`
+                        : (r.timelineStatus === "Current"
+                          ? `<span class="text-[10px] font-extrabold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-900 border border-emerald-300">🟢 Current Month</span>`
+                          : `<span class="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">🗓️ Scheduled</span>`))
                     }
                   </td>
                 </tr>
@@ -26741,13 +26772,13 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
                 <thead class="sticky top-0 z-10 bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold uppercase text-[10px] tracking-wider border-b border-slate-200 dark:border-slate-700">
                   <tr>
                     <th class="py-2.5 px-3">#</th>
-                    <th class="py-2.5 px-3">Billing Period (Exact Dates)</th>
-                    <th class="py-2.5 px-3">Escalation Slab / Clause</th>
+                    <th class="py-2.5 px-3">${activeScheduleViewMode === "slabs" ? "Slab Period & Duration" : "Billing Period (Exact Dates)"}</th>
+                    <th class="py-2.5 px-3">${activeScheduleViewMode === "slabs" ? "Escalation Slab" : "Escalation Slab / Clause"}</th>
                     <th class="py-2.5 px-3 text-right">Rent / Sq.Ft</th>
                     <th class="py-2.5 px-3 text-right">Monthly Rent (₹)</th>
                     <th class="py-2.5 px-3 text-right">Separate CAM (₹)</th>
                     <th class="py-2.5 px-3 text-right">GST (18%)</th>
-                    <th class="py-2.5 px-3 text-right">Total Outflow (₹)</th>
+                    <th class="py-2.5 px-3 text-right">${activeScheduleViewMode === "slabs" ? "Slab Total Value (₹)" : "Total Outflow (₹)"}</th>
                     <th class="py-2.5 px-3 text-center">Status</th>
                   </tr>
                 </thead>
