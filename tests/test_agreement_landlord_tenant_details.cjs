@@ -297,3 +297,4 @@ console.log("  ✔ populateAgreementStudioFromProperty correctly auto-fills Tena
 console.log("======================================================================");
 console.log("🎉 ALL AGREEMENT LANDLORD & TENANT DETAILS TESTS PASSED (100%)");
 console.log("======================================================================");
+
