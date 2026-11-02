@@ -107,9 +107,62 @@
       font-family: 'Cinzel', serif;
     }
 
+    /* =========================================================
+       MODERN COLLAPSIBLE SIDEBAR & RESPONSIVE LAYOUT ENGINE
+       ========================================================= */
+    #appSidebar {
+      transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @media (min-width: 1024px) {
+      body.sidebar-collapsed #appSidebar {
+        width: 4.75rem !important; /* 76px */
+      }
+      body.sidebar-collapsed header#appTopHeader,
+      body.sidebar-collapsed main {
+        margin-left: 4.75rem !important;
+      }
+      body.sidebar-collapsed .sidebar-item-label,
+      body.sidebar-collapsed .sidebar-category-header,
+      body.sidebar-collapsed .sidebar-badge-count,
+      body.sidebar-collapsed .sidebar-brand-text,
+      body.sidebar-collapsed .sidebar-footer-text,
+      body.sidebar-collapsed #sidebarSyncCard,
+      body.sidebar-collapsed .sidebar-profile-details {
+        display: none !important;
+      }
+      body.sidebar-collapsed .tab-icon-wrap {
+        margin: 0 auto !important;
+      }
+      body.sidebar-collapsed #mainTabNav button {
+        justify-content: center !important;
+        padding-left: 0.5rem !important;
+        padding-right: 0.5rem !important;
+      }
+    }
+
     @media print {
       body * {
         visibility: hidden !important;
+      }
+
+      #appSidebar,
+      #sidebarBackdrop,
+      header#appTopHeader,
+      header {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
+      main {
+        margin-left: 0 !important;
+        padding: 0 !important;
+        max-width: 100% !important;
       }
 
       /* 1. HRA Rent Receipt Modal Print Rules (Zero Blank Pages) */
@@ -625,16 +678,23 @@
     }
 
     /* Header & Navigation */
-    body.dark-theme header {
+    body.dark-theme header,
+    body.dark-theme header#appTopHeader {
       background: rgba(15, 23, 42, 0.96) !important;
       border-color: #1e293b !important;
       box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.7) !important;
     }
 
-    body.dark-theme nav#mainTabNav {
-      background: rgba(15, 23, 42, 0.96) !important;
+    body.dark-theme aside#appSidebar {
+      background: rgba(15, 23, 42, 0.98) !important;
       border-color: #1e293b !important;
-      box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.6) !important;
+      box-shadow: 10px 0 30px -10px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    body.dark-theme nav#mainTabNav {
+      background: transparent !important;
+      border-color: transparent !important;
+      box-shadow: none !important;
     }
 
     body.dark-theme #mainTabNav button.tab-btn-active {
@@ -851,43 +911,320 @@
   <!-- =========================================================
        MAIN CONTAINER
        ========================================================= -->
-  <!-- =========================================================
-       UNIFIED STICKY TOP BAR & SLIM NAVIGATION (Combined height <= 96px)
-       ========================================================= -->
-  <header
-    class="sticky top-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/90 dark:border-slate-800/90 shadow-2xs transition-all">
-    <div class="max-w-[1600px] mx-auto px-3 sm:px-5">
-      <!-- 1. Unified Sticky Top Bar (Height: 52-54px) -->
-      <div class="flex items-center justify-between h-13 sm:h-14 gap-3">
-        <!-- Left: 36px Icon + Title 18-20px + Small Enterprise Badge -->
-        <div class="flex items-center gap-2.5 min-w-0">
-          <div
-            class="w-9 h-9 rounded-xl bg-gradient-to-tr from-slate-900 via-indigo-950 to-indigo-700 flex items-center justify-center text-white shadow-xs border border-indigo-400/30 shrink-0 cursor-pointer"
-            title="Unified Rental Suite · Property Master &amp; Legal Studio — Centralized inventory, automated rent roll accounting, and instant 11-month Indian Tenancy Agreements.">
-            <svg class="w-5 h-5 text-indigo-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
-                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
+
+  <!-- Sidebar Backdrop for Mobile Screens -->
+  <div id="sidebarBackdrop" class="fixed inset-0 bg-slate-950/60 backdrop-blur-xs z-40 hidden lg:hidden transition-opacity duration-200"></div>
+
+  <!-- Left-Side Collapsible Sidebar Navigation (Requirement 3) -->
+  <aside id="appSidebar"
+    class="fixed top-0 bottom-0 left-0 z-40 w-64 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-r border-slate-200/90 dark:border-slate-800/90 flex flex-col justify-between transition-all duration-200 -translate-x-full lg:translate-x-0 print:hidden shadow-2xl lg:shadow-none select-none">
+    
+    <!-- Top Brand Area -->
+    <div class="h-14 px-4 flex items-center justify-between border-b border-slate-200/80 dark:border-slate-800/80 shrink-0">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 via-indigo-700 to-indigo-900 text-white flex items-center justify-center text-sm font-black shadow-xs border border-indigo-400/30 shrink-0">
+          🏢
+        </div>
+        <div class="sidebar-brand-text min-w-0">
+          <div class="flex items-center gap-1.5">
+            <span class="font-extrabold text-sm text-slate-900 dark:text-white tracking-tight truncate">RentMaster</span>
+            <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60">ERP</span>
           </div>
-          <div class="flex items-center gap-2 min-w-0">
-            <h1 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white tracking-tight truncate">
-              Rent &amp; Property Manager
+          <p class="text-[10px] text-slate-400 dark:text-slate-500 font-medium truncate">Portfolio &amp; Legal Suite</p>
+        </div>
+      </div>
+      
+      <!-- Mobile Close Button (shown only on small screens) -->
+      <button type="button" id="sidebarMobileCloseBtn"
+        class="lg:hidden p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+        aria-label="Close Sidebar">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      <!-- Desktop Rail Toggle Button (shown only on desktop) -->
+      <button type="button" id="sidebarCollapseRailBtn"
+        class="hidden lg:flex p-1.5 rounded-lg text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+        title="Toggle sidebar width (Compact rail)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Navigation Scrollable Area with Categorized Menus -->
+    <div class="flex-1 overflow-y-auto px-3 py-3 space-y-4 scrollbar-thin">
+      <nav aria-label="Main Tabs" id="mainTabNav" class="space-y-4">
+        
+        <!-- Category 1: Overview -->
+        <div>
+          <div class="sidebar-category-header text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 pb-1">
+            Overview
+          </div>
+          <div class="space-y-1">
+            <button type="button" data-tab="dashboard" id="tabBtnDashboard"
+              class="tab-btn-active sidebar-nav-btn w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition-all duration-150 flex items-center justify-between bg-slate-900 text-white shadow-xs dark:bg-white dark:text-slate-950 cursor-pointer">
+              <span class="flex items-center gap-2.5 min-w-0">
+                <span class="tab-icon-wrap w-6 h-6 rounded-lg bg-white/20 text-white dark:bg-slate-900/15 dark:text-slate-900 flex items-center justify-center shrink-0">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </span>
+                <span class="sidebar-item-label truncate">1. Dashboard</span>
+              </span>
+              <span id="navDashUnitCount"
+                class="sidebar-badge-count text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-white/20 text-white dark:bg-slate-900/15 dark:text-slate-900 shrink-0">0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category 2: Portfolio & Assets -->
+        <div>
+          <div class="sidebar-category-header text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 pb-1">
+            Portfolio &amp; Tenants
+          </div>
+          <div class="space-y-1">
+            <button type="button" data-tab="properties" id="tabBtnProperties"
+              class="sidebar-nav-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-150 flex items-center justify-between text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 cursor-pointer">
+              <span class="flex items-center gap-2.5 min-w-0">
+                <span class="tab-icon-wrap w-6 h-6 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                  </svg>
+                </span>
+                <span class="sidebar-item-label truncate">2. Property Master</span>
+              </span>
+              <span id="navPropCount"
+                class="sidebar-badge-count text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 shrink-0">0</span>
+            </button>
+
+            <button type="button" data-tab="tenants" id="tabBtnTenants"
+              class="sidebar-nav-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-150 flex items-center justify-between text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 cursor-pointer">
+              <span class="flex items-center gap-2.5 min-w-0">
+                <span class="tab-icon-wrap w-6 h-6 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                </span>
+                <span class="sidebar-item-label truncate">3. Tenant Master</span>
+              </span>
+              <span id="navTenantCount"
+                class="sidebar-badge-count text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 shrink-0">0</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category 3: Legal & Statutory -->
+        <div>
+          <div class="sidebar-category-header text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 pb-1">
+            Legal &amp; Compliance
+          </div>
+          <div class="space-y-1">
+            <button type="button" data-tab="agreements" id="tabBtnAgreements"
+              class="sidebar-nav-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-150 flex items-center justify-between text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 cursor-pointer">
+              <span class="flex items-center gap-2.5 min-w-0">
+                <span class="tab-icon-wrap w-6 h-6 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </span>
+                <span class="sidebar-item-label truncate">4. Agreement Studio</span>
+              </span>
+            </button>
+
+            <button type="button" data-tab="police" id="tabBtnPolice"
+              class="sidebar-nav-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-150 flex items-center justify-between text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 cursor-pointer">
+              <span class="flex items-center gap-2.5 min-w-0">
+                <span class="tab-icon-wrap w-6 h-6 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                </span>
+                <span class="sidebar-item-label truncate">6. Police Verification</span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Category 4: Finance & Billing -->
+        <div>
+          <div class="sidebar-category-header text-[10px] font-extrabold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 pb-1">
+            Billing &amp; Finance
+          </div>
+          <div class="space-y-1">
+            <button type="button" data-tab="gst" id="tabBtnGst"
+              class="sidebar-nav-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-150 flex items-center justify-between text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 cursor-pointer">
+              <span class="flex items-center gap-2.5 min-w-0">
+                <span class="tab-icon-wrap w-6 h-6 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l4-2 4 2 4-2 4 2z" />
+                  </svg>
+                </span>
+                <span class="sidebar-item-label truncate">7. GST Invoices</span>
+              </span>
+              <span id="navGstInvoiceCount"
+                class="sidebar-badge-count text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 shrink-0">0</span>
+            </button>
+
+            <button type="button" data-tab="schedules" id="tabBtnSchedules"
+              class="sidebar-nav-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-150 flex items-center justify-between text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 cursor-pointer">
+              <span class="flex items-center gap-2.5 min-w-0">
+                <span class="tab-icon-wrap w-6 h-6 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                </span>
+                <span class="sidebar-item-label truncate">8. Rental Schedules</span>
+              </span>
+              <span id="navSchedulesCount"
+                class="sidebar-badge-count text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 shrink-0">0</span>
+            </button>
+
+            <button type="button" data-tab="reports" id="tabBtnReports"
+              class="sidebar-nav-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-150 flex items-center justify-between text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 cursor-pointer">
+              <span class="flex items-center gap-2.5 min-w-0">
+                <span class="tab-icon-wrap w-6 h-6 rounded-lg bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                  </svg>
+                </span>
+                <span class="sidebar-item-label truncate">5. Reports &amp; Exports</span>
+              </span>
+            </button>
+          </div>
+        </div>
+
+      </nav>
+    </div>
+
+    <!-- Bottom Sidebar Section: Cloud Sync + User Profile Card -->
+    <div class="p-3 border-t border-slate-200/80 dark:border-slate-800/80 space-y-2 shrink-0">
+      <!-- Cloud Sync Status Indicator -->
+      <div id="sidebarSyncCard" class="px-2.5 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60 flex items-center justify-between text-[11px]">
+        <div class="flex items-center gap-1.5 min-w-0">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse shrink-0"></span>
+          <span class="text-slate-600 dark:text-slate-300 font-medium truncate">Cloud Sync</span>
+        </div>
+        <span class="text-[9px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 dark:bg-emerald-950/70 text-emerald-800 dark:text-emerald-300">Live</span>
+      </div>
+
+      <!-- Landlord Mini Profile Quick Link -->
+      <div id="sidebarProfileCard" class="flex items-center justify-between p-1.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800/70 transition cursor-pointer" onclick="document.getElementById('authProfileMenuBtn')?.click()">
+        <div class="flex items-center gap-2 min-w-0">
+          <div class="w-7 h-7 rounded-lg bg-gradient-to-tr from-indigo-600 to-indigo-800 text-white font-bold text-xs flex items-center justify-center shrink-0 shadow-2xs">
+            RS
+          </div>
+          <div class="sidebar-profile-details min-w-0">
+            <p class="text-xs font-bold text-slate-800 dark:text-slate-100 truncate">Rajesh Sharma</p>
+            <p class="text-[10px] text-slate-400 truncate">Executive Landlord</p>
+          </div>
+        </div>
+        <span class="text-slate-400 text-xs">⚙️</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Top Application Header Bar (Sticky, Clean, Modern - Requirement 3) -->
+  <header id="appTopHeader"
+    class="sticky top-0 z-30 lg:ml-64 bg-white/95 dark:bg-slate-900/95 backdrop-blur-md border-b border-slate-200/90 dark:border-slate-800/90 shadow-2xs transition-all duration-200 print:hidden">
+    <div class="max-w-[1600px] mx-auto px-3 sm:px-5">
+      <div class="flex items-center justify-between h-13 sm:h-14 gap-2.5 sm:gap-3">
+        
+        <!-- Left: Mobile Toggle + Breadcrumb -->
+        <div class="flex items-center gap-2 min-w-0">
+          <!-- Mobile Hamburger Toggle Button -->
+          <button type="button" id="sidebarMobileOpenBtn"
+            class="lg:hidden p-2 rounded-xl text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+            aria-label="Open Navigation Menu">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+
+          <!-- Desktop Sidebar Rail Toggle Button -->
+          <button type="button" id="sidebarToggleRailBtn"
+            class="hidden lg:flex p-1.5 rounded-lg text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition cursor-pointer"
+            title="Toggle compact sidebar rail">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h10M4 18h16" />
+            </svg>
+          </button>
+
+          <!-- Breadcrumb & Active View Title -->
+          <div id="headerBreadcrumb" class="flex items-center gap-1.5 min-w-0">
+            <span class="hidden sm:inline text-xs text-slate-400 font-medium">RentMaster /</span>
+            <h1 id="headerCurrentPageTitle" class="text-xs sm:text-sm font-extrabold text-slate-900 dark:text-white tracking-tight truncate">
+              1. Dashboard
             </h1>
-            <span
-              class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-indigo-50 text-indigo-700 dark:bg-indigo-950/80 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800 shrink-0">
-              Enterprise
+            <span class="hidden md:inline-flex text-[9px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200/80 dark:border-indigo-800 shrink-0">
+              Enterprise ERP
             </span>
           </div>
         </div>
 
-        <!-- Right Hub: Theme Toggle, GST Bell, and Compact User Profile -->
-        <div class="flex items-center gap-2 shrink-0">
+        <!-- Center: Global Quick Search Bar with shortcut key -->
+        <div class="hidden md:flex items-center flex-1 max-w-sm mx-3 relative">
+          <div class="relative w-full">
+            <span class="absolute inset-y-0 left-0 pl-2.5 flex items-center pointer-events-none text-slate-400">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </span>
+            <input type="text" id="globalAppSearchInput"
+              placeholder="Quick search units, tenants, invoices... (Press ⌘K)"
+              class="w-full pl-8 pr-12 py-1.5 rounded-xl bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/80 dark:border-slate-700/80 text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-600 transition" />
+            <span class="absolute inset-y-0 right-0 pr-2 flex items-center pointer-events-none">
+              <kbd class="px-1.5 py-0.5 text-[9px] font-mono font-bold text-slate-400 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded shadow-2xs">⌘K</kbd>
+            </span>
+          </div>
+
+          <!-- Real-time Search Dropdown Menu -->
+          <div id="globalSearchDropdown"
+            class="hidden absolute top-full left-0 right-0 mt-1.5 z-50 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-800 p-2 max-h-80 overflow-y-auto">
+            <div id="globalSearchResultsContainer" class="space-y-1 text-xs">
+              <!-- Rendered via JS -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Hub: Theme Toggle, Bell, Profile, Quick Actions -->
+        <div class="flex items-center gap-1.5 sm:gap-2 shrink-0">
           <!-- Hidden inputs preserving DOM ID contracts for scripts and fallback values -->
           <input id="landlordPanInput" type="hidden" value="ABCPS1234D" />
           <input id="landlordNameInput" type="hidden" value="Rajesh Sharma" />
           <input id="landlordEmailInput" type="hidden" value="abcltd9925@gmail.com" />
 
-          <!-- Dark / Light Theme Toggle Button (Icon-only with tooltip) -->
+          <!-- Quick Action Dropdown Trigger -->
+          <div class="relative group" id="headerQuickActionContainer">
+            <button type="button" id="headerQuickActionBtn"
+              class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold text-xs shadow-2xs transition active:scale-95 cursor-pointer">
+              <span>⚡ Action</span>
+              <span class="text-[9px]">▼</span>
+            </button>
+            <div id="headerQuickActionDropdown"
+              class="hidden group-hover:block absolute right-0 top-full pt-1 z-50 w-52 animate-in fade-in zoom-in-95 duration-100 shadow-xl">
+              <div class="bg-white dark:bg-slate-900 rounded-xl shadow-xl border border-slate-200 dark:border-slate-800 p-1.5 space-y-0.5 text-xs text-left">
+                <button type="button" onclick="switchTab('properties')" class="w-full px-2.5 py-1.5 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold flex items-center gap-2 cursor-pointer transition">
+                  <span>🏢</span> <span>Add / View Flats</span>
+                </button>
+                <button type="button" onclick="switchTab('tenants')" class="w-full px-2.5 py-1.5 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold flex items-center gap-2 cursor-pointer transition">
+                  <span>👥</span> <span>Register Tenant</span>
+                </button>
+                <button type="button" onclick="switchTab('agreements')" class="w-full px-2.5 py-1.5 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold flex items-center gap-2 cursor-pointer transition">
+                  <span>📝</span> <span>Draft Agreement</span>
+                </button>
+                <button type="button" onclick="switchTab('gst')" class="w-full px-2.5 py-1.5 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold flex items-center gap-2 cursor-pointer transition">
+                  <span>🏛️</span> <span>GST Tax Invoices</span>
+                </button>
+                <button type="button" onclick="switchTab('schedules')" class="w-full px-2.5 py-1.5 rounded-lg text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-semibold flex items-center gap-2 cursor-pointer transition">
+                  <span>📊</span> <span>Rental Schedules</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dark / Light Theme Toggle Button -->
           <button id="themeToggleBtn" type="button"
             class="w-8 h-8 rounded-lg border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-700 dark:text-slate-200 flex items-center justify-center transition shadow-2xs cursor-pointer active:scale-95 group"
             title="Toggle Dark / Light Theme (or press Ctrl+D)" aria-label="Toggle Dark / Light Theme">
@@ -944,8 +1281,7 @@
                   <span id="authHeaderAvatar">RS</span>
                 </div>
                 <span id="authHeaderUserName"
-                  class="text-xs font-bold text-slate-800 dark:text-slate-100 max-w-[90px] sm:max-w-[130px] truncate inline-block">Rajesh
-                  Sharma</span>
+                  class="text-xs font-bold text-slate-800 dark:text-slate-100 max-w-[90px] sm:max-w-[130px] truncate inline-block">Rajesh Sharma</span>
                 <svg id="authProfileChevronIcon"
                   class="w-3 h-3 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-transform"
                   fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1009,117 +1345,13 @@
           </div>
         </div>
       </div>
-
-      <!-- 2. Navigation Tabs: Slim Strip (Height: 38-40px, under top bar, full width, no separate card) -->
-      <nav aria-label="Main Tabs"
-        class="flex items-center gap-1 overflow-x-auto py-1 scrollbar-none border-t border-slate-200/70 dark:border-slate-800/70"
-        id="mainTabNav">
-        <button type="button" data-tab="dashboard" id="tabBtnDashboard"
-          class="tab-btn-active px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 flex items-center gap-1.5 bg-slate-900 text-white shadow-2xs dark:bg-white dark:text-slate-950 whitespace-nowrap cursor-pointer">
-          <span
-            class="tab-icon-wrap w-5 h-5 rounded-md bg-white/20 text-white dark:bg-slate-900/15 dark:text-slate-900 flex items-center justify-center shrink-0">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-            </svg>
-          </span>
-          <span>1. Dashboard</span>
-          <span id="navDashUnitCount"
-            class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-white/20 text-white dark:bg-slate-900/15 dark:text-slate-900">0</span>
-        </button>
-        <button type="button" data-tab="properties" id="tabBtnProperties"
-          class="px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center gap-1.5 text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 whitespace-nowrap cursor-pointer">
-          <span
-            class="tab-icon-wrap w-5 h-5 rounded-md bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-            </svg>
-          </span>
-          <span>2. Property Master</span>
-          <span id="navPropCount"
-            class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">0</span>
-        </button>
-        <button type="button" data-tab="tenants" id="tabBtnTenants"
-          class="px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center gap-1.5 text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 whitespace-nowrap cursor-pointer">
-          <span
-            class="tab-icon-wrap w-5 h-5 rounded-md bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
-          </span>
-          <span>3. Tenant Master</span>
-          <span id="navTenantCount"
-            class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">0</span>
-        </button>
-        <button type="button" data-tab="agreements" id="tabBtnAgreements"
-          class="px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center gap-1.5 text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 whitespace-nowrap cursor-pointer">
-          <span
-            class="tab-icon-wrap w-5 h-5 rounded-md bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </span>
-          <span>4. Agreement Studio</span>
-        </button>
-        <button type="button" data-tab="reports" id="tabBtnReports"
-          class="px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center gap-1.5 text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 whitespace-nowrap cursor-pointer">
-          <span
-            class="tab-icon-wrap w-5 h-5 rounded-md bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-          </span>
-          <span>5. Reports &amp; Exports</span>
-        </button>
-        <button type="button" data-tab="police" id="tabBtnPolice"
-          class="px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center gap-1.5 text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 whitespace-nowrap cursor-pointer">
-          <span
-            class="tab-icon-wrap w-5 h-5 rounded-md bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-            </svg>
-          </span>
-          <span>6. Police Verification</span>
-        </button>
-        <button type="button" data-tab="gst" id="tabBtnGst"
-          class="px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center gap-1.5 text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 whitespace-nowrap cursor-pointer">
-          <span
-            class="tab-icon-wrap w-5 h-5 rounded-md bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l4-2 4 2 4-2 4 2z" />
-            </svg>
-          </span>
-          <span>7. GST Invoices</span>
-          <span id="navGstInvoiceCount"
-            class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">0</span>
-        </button>
-        <button type="button" data-tab="schedules" id="tabBtnSchedules"
-          class="px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center gap-1.5 text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 whitespace-nowrap cursor-pointer">
-          <span
-            class="tab-icon-wrap w-5 h-5 rounded-md bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400 flex items-center justify-center shrink-0">
-            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-          </span>
-          <span>8. Rental Schedules</span>
-          <span id="navSchedulesCount"
-            class="text-[10px] font-bold px-1.5 py-0.2 rounded-full bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400">0</span>
-        </button>
-      </nav>
     </div>
   </header>
 
   <!-- =========================================================
-       MAIN CONTENT CONTAINER (max-w-[1600px], 8px spacing scale)
+       MAIN CONTENT CONTAINER (Responsive lg:ml-64, max-w-[1600px])
        ========================================================= -->
-  <main class="max-w-[1600px] mx-auto px-3 sm:px-5 py-3 sm:py-3.5">
+  <main class="lg:ml-64 min-w-0 transition-all duration-200 max-w-[1600px] px-3 sm:px-6 py-3.5 sm:py-4">
 
     <!-- Feedback Message Banner (Shared across tabs) -->
     <div id="feedbackBanner"
@@ -9430,6 +9662,7 @@
         const emailEl = document.getElementById("authHeaderUserEmail");
         const verifiedEl = document.getElementById("authHeaderVerifiedBadge");
         const mainNav = document.getElementById("mainTabNav");
+        const appSidebar = document.getElementById("appSidebar");
         const tabViews = ["tabViewDashboard", "tabViewProperties", "tabViewTenants", "tabViewAgreements", "tabViewReports", "tabViewPolice", "tabViewGst", "tabViewSchedules"];
 
         if (currentAuthUser) {
@@ -9438,6 +9671,7 @@
 
           // Authenticated: show main navigation tabs & close button
           if (mainNav) mainNav.classList.remove("hidden");
+          if (appSidebar) appSidebar.classList.remove("hidden");
           const closeBtn = document.getElementById("closeAuthModalBtn");
           if (closeBtn) closeBtn.classList.remove("hidden");
 
@@ -9477,6 +9711,7 @@
 
           // Unauthenticated: hide main navigation tabs & all tab views
           if (mainNav) mainNav.classList.add("hidden");
+          if (appSidebar) appSidebar.classList.add("hidden");
           tabViews.forEach(id => {
             const el = document.getElementById(id);
             if (el) el.classList.add("hidden");
@@ -10896,15 +11131,39 @@
           if (t === tabId) {
             view.classList.remove("hidden");
             btn.className =
-              `tab-btn-active px-3 py-1.5 rounded-lg text-xs font-bold transition-all duration-150 flex items-center gap-1.5 whitespace-nowrap cursor-pointer shadow-2xs ${tabTheme[t].active}`;
-            if (iconSpan) iconSpan.className = `tab-icon-wrap w-5 h-5 rounded-md ${tabTheme[t].iconActive} flex items-center justify-center shrink-0 transition-colors`;
+              `tab-btn-active sidebar-nav-btn w-full text-left px-3 py-2 rounded-xl text-xs font-bold transition-all duration-150 flex items-center justify-between cursor-pointer shadow-xs ${tabTheme[t].active}`;
+            if (iconSpan) iconSpan.className = `tab-icon-wrap w-6 h-6 rounded-lg ${tabTheme[t].iconActive} flex items-center justify-center shrink-0 transition-colors`;
           } else {
             view.classList.add("hidden");
             btn.className =
-              "px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 flex items-center gap-1.5 text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 whitespace-nowrap cursor-pointer";
-            if (iconSpan) iconSpan.className = `tab-icon-wrap w-5 h-5 rounded-md ${tabTheme[t].iconInactive} flex items-center justify-center shrink-0 transition-colors`;
+              "sidebar-nav-btn w-full text-left px-3 py-2 rounded-xl text-xs font-semibold transition-all duration-150 flex items-center justify-between text-slate-600 hover:text-slate-950 hover:bg-slate-100 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-800/60 cursor-pointer";
+            if (iconSpan) iconSpan.className = `tab-icon-wrap w-6 h-6 rounded-lg ${tabTheme[t].iconInactive} flex items-center justify-center shrink-0 transition-colors`;
           }
         });
+
+        // Update Header Breadcrumb Title
+        const pageTitles = {
+          dashboard: "1. Dashboard",
+          properties: "2. Property Master",
+          tenants: "3. Tenant Master",
+          agreements: "4. Agreement Studio",
+          reports: "5. Reports & Exports",
+          police: "6. Police Verification",
+          gst: "7. GST Invoices",
+          schedules: "8. Rental Schedules"
+        };
+        const titleEl = document.getElementById("headerCurrentPageTitle");
+        if (titleEl && pageTitles[tabId]) {
+          titleEl.textContent = pageTitles[tabId];
+        }
+
+        // Close mobile drawer on tab switch
+        const mobileSidebar = document.getElementById("appSidebar");
+        const backdrop = document.getElementById("sidebarBackdrop");
+        if (mobileSidebar && backdrop && typeof window !== "undefined" && window.innerWidth < 1024) {
+          mobileSidebar.classList.add("-translate-x-full");
+          backdrop.classList.add("hidden");
+        }
 
         if (tabId === "reports") {
           renderReportsView();
@@ -20174,12 +20433,119 @@
       // --- DOM EVENT LISTENERS INITIALIZATION ---
       function initEventListeners() {
         // Tab switching
-        document.getElementById("mainTabNav").addEventListener("click", (e) => {
+        document.getElementById("mainTabNav")?.addEventListener("click", (e) => {
           const btn = e.target.closest("[data-tab]");
           if (!btn) return;
           const tabId = btn.getAttribute("data-tab");
           switchTab(tabId);
         });
+
+        // Mobile Sidebar Drawer Controls
+        const sidebar = document.getElementById("appSidebar");
+        const backdrop = document.getElementById("sidebarBackdrop");
+        const openBtn = document.getElementById("sidebarMobileOpenBtn");
+        const closeBtn = document.getElementById("sidebarMobileCloseBtn");
+
+        const openMobileSidebar = () => {
+          sidebar?.classList.remove("-translate-x-full");
+          backdrop?.classList.remove("hidden");
+        };
+        const closeMobileSidebar = () => {
+          sidebar?.classList.add("-translate-x-full");
+          backdrop?.classList.add("hidden");
+        };
+
+        openBtn?.addEventListener("click", openMobileSidebar);
+        closeBtn?.addEventListener("click", closeMobileSidebar);
+        backdrop?.addEventListener("click", closeMobileSidebar);
+
+        // Desktop Sidebar Rail Toggle Controls
+        const toggleRail = () => {
+          document.body.classList.toggle("sidebar-collapsed");
+          try {
+            const isCol = document.body.classList.contains("sidebar-collapsed");
+            localStorage.setItem("rentmaster_sidebar_collapsed", isCol ? "1" : "0");
+          } catch (e) {}
+        };
+        document.getElementById("sidebarToggleRailBtn")?.addEventListener("click", toggleRail);
+        document.getElementById("sidebarCollapseRailBtn")?.addEventListener("click", toggleRail);
+
+        try {
+          if (typeof localStorage !== "undefined" && localStorage.getItem("rentmaster_sidebar_collapsed") === "1") {
+            document.body.classList.add("sidebar-collapsed");
+          }
+        } catch (e) {}
+
+        // Global Quick Search (⌘K / Ctrl+K)
+        if (typeof window !== "undefined") {
+          window.addEventListener("keydown", (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key && e.key.toLowerCase() === "k") {
+              e.preventDefault();
+              document.getElementById("globalAppSearchInput")?.focus();
+            }
+          });
+        }
+
+        const globalSearchInput = document.getElementById("globalAppSearchInput");
+        const globalSearchDropdown = document.getElementById("globalSearchDropdown");
+        const globalResultsContainer = document.getElementById("globalSearchResultsContainer");
+
+        if (globalSearchInput && globalSearchDropdown && globalResultsContainer) {
+          globalSearchInput.addEventListener("input", (e) => {
+            const q = (e.target.value || "").trim().toLowerCase();
+            if (!q) {
+              globalSearchDropdown.classList.add("hidden");
+              globalResultsContainer.innerHTML = "";
+              return;
+            }
+
+            const matchedProps = (state.properties || []).filter(p =>
+              (p.name && p.name.toLowerCase().includes(q)) ||
+              (p.building && p.building.toLowerCase().includes(q))
+            ).slice(0, 4);
+
+            const matchedTenants = (state.tenants || []).filter(t =>
+              (t.name && t.name.toLowerCase().includes(q)) ||
+              (t.unit && t.unit.toLowerCase().includes(q)) ||
+              (t.mobile && t.mobile.includes(q))
+            ).slice(0, 4);
+
+            let html = "";
+            if (matchedProps.length === 0 && matchedTenants.length === 0) {
+              html = `<div class="p-3 text-center text-slate-400 text-xs">No matching flats or tenants for "${escapeHtml(q)}".</div>`;
+            } else {
+              if (matchedProps.length > 0) {
+                html += `<div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 py-1">Flats / Units</div>`;
+                matchedProps.forEach(p => {
+                  html += `<button type="button" class="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between text-xs text-slate-800 dark:text-slate-200 cursor-pointer" onclick="switchTab('properties'); state.pmSearchQuery = '${escapeHtml(p.name)}'; renderPropertyMasterDirectory(); document.getElementById('globalSearchDropdown').classList.add('hidden');">
+                    <span class="font-bold">🏢 ${escapeHtml(p.name)}</span>
+                    <span class="text-[10px] text-slate-400 font-mono">${escapeHtml(p.building || '')}</span>
+                  </button>`;
+                });
+              }
+              if (matchedTenants.length > 0) {
+                html += `<div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 px-2 py-1 mt-1">Tenants</div>`;
+                matchedTenants.forEach(t => {
+                  html += `<button type="button" class="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center justify-between text-xs text-slate-800 dark:text-slate-200 cursor-pointer" onclick="switchTab('tenants'); state.tmSearchQuery = '${escapeHtml(t.name)}'; renderTenantMaster(); document.getElementById('globalSearchDropdown').classList.add('hidden');">
+                    <span class="font-bold">👤 ${escapeHtml(t.name)}</span>
+                    <span class="text-[10px] text-indigo-600 dark:text-indigo-400 font-bold">${escapeHtml(t.unit || '')}</span>
+                  </button>`;
+                });
+              }
+            }
+            globalResultsContainer.innerHTML = html;
+            globalSearchDropdown.classList.remove("hidden");
+          });
+
+          // Close search dropdown on click outside
+          if (typeof document !== "undefined" && typeof document.addEventListener === "function") {
+            document.addEventListener("click", (e) => {
+              if (globalSearchInput && globalSearchDropdown && !globalSearchInput.contains(e.target) && !globalSearchDropdown.contains(e.target)) {
+                globalSearchDropdown.classList.add("hidden");
+              }
+            });
+          }
+        }
 
         // Quick navigation shortcuts
         document.getElementById("jumpToPropertyMasterBtn")?.addEventListener("click", () => {
