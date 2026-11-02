@@ -112,23 +112,132 @@
         visibility: hidden !important;
       }
 
+      /* 1. HRA Rent Receipt Modal Print Rules (Zero Blank Pages) */
+      body.print-receipt-modal > *:not(#receiptModal) {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
+      body.print-receipt-modal #receiptModal {
+        display: block !important;
+        position: static !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        overflow: visible !important;
+        max-height: none !important;
+      }
+
       body.print-receipt-modal #receiptModalContent,
       body.print-receipt-modal #receiptModalContent * {
         visibility: visible !important;
       }
 
       body.print-receipt-modal #receiptModalContent {
-        position: fixed !important;
-        left: 0 !important;
-        top: 0 !important;
+        position: static !important;
+        display: block !important;
         width: 100% !important;
+        max-width: 100% !important;
         max-height: none !important;
         overflow: visible !important;
         padding: 32px !important;
+        margin: 0 !important;
         background: white !important;
         color: black !important;
         border: none !important;
         box-shadow: none !important;
+      }
+
+      /* 2. Tenancy Agreement Print Rules (Zero Blank Pages) */
+      body.print-agreement > *:not(#printableAgreementSection):not(main) {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
+      body.print-agreement #printableAgreementSection,
+      body.print-agreement #printableAgreementSection:not(.hidden) {
+        display: block !important;
+        position: static !important;
+        left: auto !important;
+        top: auto !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: none !important;
+        overflow: visible !important;
+        padding: 8mm 10mm !important;
+        margin: 0 !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: none !important;
+        box-shadow: none !important;
+        visibility: visible !important;
+        box-sizing: border-box !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+
+      body.print-agreement #printableAgreementSection * {
+        visibility: visible !important;
+      }
+
+      /* In-place Agreement Studio Fallback Rules (Zero Blank Pages) */
+      body.print-agreement header,
+      body.print-agreement nav,
+      body.print-agreement #dashHeroSection,
+      body.print-agreement #floatingChatLauncherContainer,
+      body.print-agreement #floatingChatModal,
+      body.print-agreement main > div:not(#tabViewAgreements),
+      body.print-agreement #tabViewAgreements > div > section:first-child,
+      body.print-agreement #tabViewAgreements section.lg\:col-span-5,
+      body.print-agreement #prepareAgreementForm,
+      body.print-agreement #tabViewAgreements .border-b.bg-slate-100,
+      body.print-agreement #copyAgreementTextBtn {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
+      body.print-agreement main,
+      body.print-agreement #tabViewAgreements,
+      body.print-agreement #tabViewAgreements > div,
+      body.print-agreement #tabViewAgreements section.lg\:col-span-7,
+      body.print-agreement #tabViewAgreements section:has(#studioPrintableArea) {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        min-height: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
+
+      body.print-agreement #tabViewAgreements .max-h-\[780px\] {
+        max-height: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
       }
 
       body.print-agreement #studioPrintableArea,
@@ -148,11 +257,12 @@
         width: 100% !important;
         max-width: 100% !important;
         margin: 0 !important;
-        padding: 24px !important;
+        padding: 8mm 10mm !important;
         background: white !important;
         color: black !important;
         border: none !important;
         box-shadow: none !important;
+        box-sizing: border-box !important;
       }
 
       body.print-report {
@@ -218,6 +328,85 @@
         display: table-footer-group !important;
       }
 
+      /* 4. Police Verification Print Rules (Zero Blank Pages) */
+      body.print-police > *:not(#printablePoliceSection):not(main) {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
+      body.print-police #printablePoliceSection,
+      body.print-police #printablePoliceSection:not(.hidden) {
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: none !important;
+        overflow: visible !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: none !important;
+        box-shadow: none !important;
+        visibility: visible !important;
+      }
+
+      body.print-police #printablePoliceSection * {
+        visibility: visible !important;
+      }
+
+      /* In-place Police Form Fallback Rules */
+      body.print-police header,
+      body.print-police nav,
+      body.print-police #dashHeroSection,
+      body.print-police #floatingChatLauncherContainer,
+      body.print-police #floatingChatModal,
+      body.print-police main > div:not(#tabViewPolice),
+      body.print-police #tabViewPolice > div > div:first-child,
+      body.print-police #tabViewPolice .lg\:col-span-5,
+      body.print-police #policeForm,
+      body.print-police #tabViewPolice .border-b {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
+      body.print-police main,
+      body.print-police #tabViewPolice,
+      body.print-police #tabViewPolice > div,
+      body.print-police #tabViewPolice .lg\:col-span-7,
+      body.print-police #tabViewPolice div:has(#policePrintableArea) {
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        min-height: 0 !important;
+        height: auto !important;
+        overflow: visible !important;
+      }
+
+      body.print-police #tabViewPolice .max-h-\[850px\] {
+        max-height: none !important;
+        height: auto !important;
+        overflow: visible !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        background: transparent !important;
+      }
+
       body.print-police #policePrintableArea,
       body.print-police #policePrintableArea * {
         visibility: visible !important;
@@ -266,6 +455,16 @@
       }
 
       /* Print Rule for Statutory GST Tax Invoice (Rule 46 CGST Act) */
+      body.print-gst-invoice > *:not(#gstInvoiceModal) {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
       body.print-gst-invoice #gstInvoiceModal {
         position: static !important;
         display: block !important;
@@ -302,13 +501,11 @@
       }
 
       body.print-gst-invoice #gstInvoicePrintArea {
-        position: absolute !important;
-        left: 0 !important;
-        top: 0 !important;
+        position: static !important;
         width: 100% !important;
         max-height: none !important;
         overflow: visible !important;
-        padding: 20px !important;
+        padding: 10mm !important;
         margin: 0 !important;
         background: #ffffff !important;
         color: #0f172a !important;
@@ -316,6 +513,7 @@
         box-shadow: none !important;
         -webkit-print-color-adjust: exact !important;
         print-color-adjust: exact !important;
+        box-sizing: border-box !important;
       }
 
       body.print-gst-invoice .hidden,
@@ -325,21 +523,74 @@
       }
 
       /* Print Rule for Monthly GST Register Table */
+      body.print-gst-register > *:not(main) {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
+      body.print-gst-register header,
+      body.print-gst-register nav,
+      body.print-gst-register #dashHeroSection,
+      body.print-gst-register main > div:not(#tabViewGst) {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
       body.print-gst-register #gstTableViewContainer,
       body.print-gst-register #gstTableViewContainer * {
         visibility: visible !important;
       }
 
       body.print-gst-register #gstTableViewContainer {
-        position: absolute !important;
-        left: 0 !important;
-        top: 0 !important;
+        position: static !important;
         width: 100% !important;
         max-height: none !important;
         overflow: visible !important;
-        padding: 16px !important;
+        padding: 10mm !important;
         background: #ffffff !important;
         color: #0f172a !important;
+      }
+
+      /* Print Rule for Annual Rental Schedules & Cash Flow Roster */
+      body.print-schedules > *:not(#printableSchedulesSection) {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        max-height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+      }
+
+      body.print-schedules #printableSchedulesSection,
+      body.print-schedules #printableSchedulesSection:not(.hidden) {
+        display: block !important;
+        position: static !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        max-height: none !important;
+        overflow: visible !important;
+        padding: 10mm !important;
+        margin: 0 !important;
+        background: #ffffff !important;
+        color: #000000 !important;
+        border: none !important;
+        box-shadow: none !important;
+        visibility: visible !important;
+      }
+
+      body.print-schedules #printableSchedulesSection * {
+        visibility: visible !important;
       }
     }
 
@@ -5139,7 +5390,7 @@
             <span>📊 Export Excel (.CSV)</span>
           </button>
 
-          <button type="button" id="printRentalSchedulesBtn" onclick="window.print()"
+          <button type="button" id="printRentalSchedulesBtn" onclick="printRentalSchedules()"
             class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/20 text-xs font-bold transition flex items-center gap-1 cursor-pointer">
             <span>🖨️ Print Schedule</span>
           </button>
@@ -19864,6 +20115,62 @@
           .replace(/'/g, "&#039;");
       }
 
+      // Print Agreement Button & Engine (Zero Blank Pages)
+      function printAgreement() {
+        if (typeof updateLiveAgreementPreview === "function") {
+          updateLiveAgreementPreview();
+        }
+
+        const sourceArea = document.getElementById("studioPrintableArea");
+        if (!sourceArea) return;
+
+        document.body.classList.remove(
+          "print-receipt-modal",
+          "print-police",
+          "print-report",
+          "print-gst-invoice",
+          "print-gst-register",
+          "print-schedules"
+        );
+
+        let printSec = document.getElementById("printableAgreementSection");
+        if (!printSec) {
+          printSec = document.createElement("div");
+          printSec.id = "printableAgreementSection";
+          printSec.className = "hidden";
+          document.body.appendChild(printSec);
+        }
+
+        printSec.innerHTML = sourceArea.innerHTML;
+        printSec.classList.remove("hidden");
+
+        const prevTitle = document.title;
+        const tenantName = (document.getElementById("studioTenantNameInput")?.value || "Tenant").trim().replace(/[^a-zA-Z0-9_-]/g, "_");
+        const tmplOpt = document.getElementById("studioTemplateSelect")?.value || "opt2";
+        const agreementType = tmplOpt === "opt2" ? "21_Clause_Agreement" : "11_Month_Tenancy_Agreement";
+        document.title = `Rent_Agreement_${tenantName}_${agreementType}`;
+
+        document.body.classList.add("print-agreement");
+
+        const cleanup = () => {
+          document.body.classList.remove("print-agreement");
+          if (printSec) {
+            printSec.classList.add("hidden");
+            printSec.innerHTML = "";
+          }
+          document.title = prevTitle;
+          window.removeEventListener("afterprint", cleanup);
+        };
+
+        window.addEventListener("afterprint", cleanup, { once: true });
+
+        if (typeof window !== "undefined" && window.print) {
+          window.print();
+        }
+
+        setTimeout(cleanup, 2000);
+      }
+
       // --- DOM EVENT LISTENERS INITIALIZATION ---
       function initEventListeners() {
         // Tab switching
@@ -22394,12 +22701,8 @@
           showFeedback(`Agreement saved and synchronized with Property Master for ${prop.name}!`);
         });
 
-        // Print Agreement Button
-        document.getElementById("printAgreementBtn").addEventListener("click", () => {
-          document.body.classList.remove("print-receipt-modal");
-          document.body.classList.add("print-agreement");
-          window.print();
-        });
+        // Print Agreement Button Listener
+        document.getElementById("printAgreementBtn")?.addEventListener("click", printAgreement);
 
         // Share Agreement on WhatsApp
         document.getElementById("shareAgreementWhatsappBtn").addEventListener("click", () => {
@@ -22446,9 +22749,24 @@
         document.getElementById("closeReceiptModalBtn").addEventListener("click", closeRentReceipt);
         document.getElementById("closeReceiptFooterBtn").addEventListener("click", closeRentReceipt);
         document.getElementById("printReceiptBtn").addEventListener("click", () => {
-          document.body.classList.remove("print-agreement");
+          document.body.classList.remove("print-agreement", "print-police", "print-report", "print-gst-invoice", "print-gst-register", "print-schedules");
           document.body.classList.add("print-receipt-modal");
-          window.print();
+          const prevTitle = document.title;
+          const rcptNo = (document.getElementById("rcptNo")?.textContent || "Receipt").trim();
+          document.title = `HRA_Rent_Receipt_${rcptNo.replace(/[^a-zA-Z0-9_-]/g, "_")}`;
+
+          const cleanup = () => {
+            document.body.classList.remove("print-receipt-modal");
+            document.title = prevTitle;
+            window.removeEventListener("afterprint", cleanup);
+          };
+          window.addEventListener("afterprint", cleanup, { once: true });
+
+          if (typeof window !== "undefined" && window.print) {
+            window.print();
+          }
+
+          setTimeout(cleanup, 2000);
         });
 
         // Tenant Track Record Modal Handlers
@@ -23669,12 +23987,46 @@
       function printPoliceForm() {
         const previousView = currentPolicePageView;
         setPolicePageView("all");
+
+        const sourceArea = document.getElementById("policePrintableArea");
+        let printSec = document.getElementById("printablePoliceSection");
+        if (!printSec) {
+          printSec = document.createElement("div");
+          printSec.id = "printablePoliceSection";
+          printSec.className = "hidden";
+          document.body.appendChild(printSec);
+        }
+        if (sourceArea) {
+          printSec.innerHTML = sourceArea.innerHTML;
+          printSec.classList.remove("hidden");
+        }
+
+        const prevTitle = document.title;
+        const tenantName = (document.getElementById("policeTenantName")?.value || "Tenant").trim().replace(/[^a-zA-Z0-9_-]/g, "_");
+        const stateKey = document.getElementById("policeStateSelect")?.value || "delhi";
+        document.title = `Police_Verification_${stateKey.toUpperCase()}_${tenantName}`;
+
+        document.body.classList.remove("print-receipt-modal", "print-agreement", "print-report", "print-gst-invoice", "print-gst-register", "print-schedules");
         document.body.classList.add("print-police");
-        window.print();
-        setTimeout(() => {
+
+        const cleanup = () => {
           document.body.classList.remove("print-police");
+          if (printSec) {
+            printSec.classList.add("hidden");
+            printSec.innerHTML = "";
+          }
+          document.title = prevTitle;
           setPolicePageView(previousView);
-        }, 1000);
+          window.removeEventListener("afterprint", cleanup);
+        };
+
+        window.addEventListener("afterprint", cleanup, { once: true });
+
+        if (typeof window !== "undefined" && window.print) {
+          window.print();
+        }
+
+        setTimeout(cleanup, 2000);
       }
 
       function downloadPoliceFormHtml() {
@@ -27634,6 +27986,60 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         return csv;
       }
 
+      function printRentalSchedules() {
+        const schedContainer = document.getElementById("rentalSchedulesCardsContainer") || document.getElementById("rentalSchedulesContainer");
+        if (!schedContainer) return;
+
+        let printSec = document.getElementById("printableSchedulesSection");
+        if (!printSec) {
+          printSec = document.createElement("div");
+          printSec.id = "printableSchedulesSection";
+          printSec.className = "hidden";
+          document.body.appendChild(printSec);
+        }
+
+        const landlordName = (document.getElementById("landlordNameInput")?.value || state.landlord?.name || "Landlord").trim();
+        const now = new Date();
+        const dateStr = now.toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+
+        printSec.innerHTML = `
+          <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; padding: 10px; color: #0f172a; background: #ffffff;">
+            <div style="border-bottom: 2px solid #0f172a; padding-bottom: 12px; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: flex-end;">
+              <div>
+                <h1 style="font-size: 20px; font-weight: 800; margin: 0; text-transform: uppercase; letter-spacing: 0.5px; color: #0f172a;">Annual Rental Schedules &amp; Cash Flow Roster</h1>
+                <p style="font-size: 12px; color: #64748b; margin: 4px 0 0 0;">Property Estate Portfolio: <strong>${escapeHtml(landlordName)}</strong> | Generated on: <strong>${dateStr}</strong></p>
+              </div>
+            </div>
+            ${schedContainer.innerHTML}
+          </div>
+        `;
+        printSec.classList.remove("hidden");
+
+        const prevTitle = document.title;
+        document.title = `Rental_Schedules_${landlordName.replace(/[^a-zA-Z0-9_-]/g, "_")}`;
+
+        document.body.classList.remove("print-receipt-modal", "print-agreement", "print-police", "print-report", "print-gst-invoice", "print-gst-register");
+        document.body.classList.add("print-schedules");
+
+        const cleanup = () => {
+          document.body.classList.remove("print-schedules");
+          if (printSec) {
+            printSec.classList.add("hidden");
+            printSec.innerHTML = "";
+          }
+          document.title = prevTitle;
+          window.removeEventListener("afterprint", cleanup);
+        };
+
+        window.addEventListener("afterprint", cleanup, { once: true });
+
+        if (typeof window !== "undefined" && window.print) {
+          window.print();
+        }
+
+        setTimeout(cleanup, 2000);
+      }
+
       function initGstEngine() {
         if (typeof document === 'undefined') return;
 
@@ -27691,6 +28097,9 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         });
         document.getElementById("exportRentalSchedulesExcelBtn")?.addEventListener("click", () => {
           exportRentalSchedulesExcel();
+        });
+        document.getElementById("printRentalSchedulesBtn")?.addEventListener("click", () => {
+          printRentalSchedules();
         });
         document.getElementById("scheduleModeMonthlyBtn")?.addEventListener("click", () => {
           activeScheduleViewMode = "monthly";
@@ -27921,6 +28330,9 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         window.populateAgreementStudioFromProperty = populateAgreementStudioFromProperty;
         window.populateAgreementStudioFromTenant = populateAgreementStudioFromTenant;
         window.deduplicateClauses = deduplicateClauses;
+        window.printAgreement = printAgreement;
+        window.printPoliceForm = printPoliceForm;
+        window.printRentalSchedules = printRentalSchedules;
       });
     })();
   </script>
@@ -27940,8 +28352,11 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
     </button>
   </div>
 
-  <!-- Hidden Printable Report Layout for PDF Export -->
+  <!-- Hidden Dedicated Printable Layouts for Clean Multi-Page PDF Exports (Zero Blank Pages) -->
   <div id="printableReportSection" class="hidden"></div>
+  <div id="printableAgreementSection" class="hidden"></div>
+  <div id="printablePoliceSection" class="hidden"></div>
+  <div id="printableSchedulesSection" class="hidden"></div>
 </body>
 
 </html>
