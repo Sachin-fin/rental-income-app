@@ -436,6 +436,24 @@ const getEl = (id) => mockDoc.getElementById(id);
   }
   console.log("✓ PASS: Landlord Profile & Settings modal is NOT automatically opened on login!");
 
+  console.log("\n--- 11. Testing Page Refresh Session Persistence When User is Logged In ---");
+  // Simulate page refresh by calling initAuthSession()
+  mockWindow.initAuthSession();
+  const isPillVisibleAfterRefresh = !getEl("authHeaderUserPill").classList.contains("hidden");
+  const isAuthModalHiddenAfterRefresh = getEl("authModal").classList.contains("hidden");
+  const isNavVisibleAfterRefresh = !getEl("mainTabNav").classList.contains("hidden");
+  const refreshedUserName = getEl("authHeaderUserName")?.textContent;
+  console.log("User pill visible after refresh?:", isPillVisibleAfterRefresh);
+  console.log("Auth modal closed after refresh?:", isAuthModalHiddenAfterRefresh);
+  console.log("Navigation tabs visible after refresh?:", isNavVisibleAfterRefresh);
+  console.log("User name after refresh:", refreshedUserName);
+
+  if (!isPillVisibleAfterRefresh || !isAuthModalHiddenAfterRefresh || !isNavVisibleAfterRefresh || !refreshedUserName.includes("Rajesh Sharma")) {
+    console.error("❌ Session was lost on page refresh!");
+    process.exit(1);
+  }
+  console.log("✓ PASS: Authenticated user session persisted across page refresh!");
+
   console.log("\n====================================================================");
   console.log("🎉 ALL AUTHENTICATION, REGISTRATION, EMAIL OTP & RESET TESTS PASSED 100%!");
   console.log("====================================================================\n");

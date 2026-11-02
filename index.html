@@ -9662,10 +9662,19 @@
 
       function initAuthSession() {
         try {
-          // ALWAYS OPEN ON THE LOGIN PAGE:
-          // Unconditionally reset current session on load/reload so the app opens directly on the login page!
-          currentAuthUser = null;
-          localStorage.removeItem(STORAGE_KEY_AUTH_USER);
+          // Restore active session if user has logged in and has not explicitly logged out
+          const isLoggedOut = localStorage.getItem(STORAGE_KEY_AUTH_LOGGED_OUT) === "true";
+          const rawUser = localStorage.getItem(STORAGE_KEY_AUTH_USER);
+          if (!isLoggedOut && rawUser) {
+            const parsed = JSON.parse(rawUser);
+            if (parsed && (parsed.id || parsed.email)) {
+              currentAuthUser = parsed;
+            } else {
+              currentAuthUser = null;
+            }
+          } else {
+            currentAuthUser = null;
+          }
 
           // Pre-populate remembered or default demo identifier for quick 1-click access
           const remembered = localStorage.getItem("rpm_remembered_identifier") || DEFAULT_AUTH_LANDLORD.email;
@@ -9677,6 +9686,9 @@
           currentAuthUser = null;
         }
         updateAuthHeaderUI();
+        if (currentAuthUser) {
+          closeAuthModal(true);
+        }
       }
 
       function updateAuthHeaderUI() {
@@ -11200,6 +11212,13 @@
         if (tabId === "schedules" && typeof renderRentalSchedulesTab === "function") {
           renderRentalSchedulesTab();
         }
+
+        if (window.state) {
+          state.activeTab = tabId;
+        }
+        try {
+          localStorage.setItem("rpm_active_tab", tabId);
+        } catch (e) { }
       }
 
       // --- HELPER: TENANT TRACK RECORD COMPUTATION ---
@@ -28665,9 +28684,13 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         fetchVercelSupabaseConfig();
         initEventListeners();
         renderAll();
-        // Ensure Login Page is immediately presented upfront
+        // Ensure Login Page is immediately presented upfront if unauthenticated; otherwise ensure active tab is shown and modal closed
         if (!currentAuthUser) {
           openAuthModal("signIn");
+        } else {
+          closeAuthModal(true);
+          const activeTab = localStorage.getItem("rpm_active_tab") || (state && state.activeTab) || "dashboard";
+          switchTab(activeTab);
         }
         // Expose helpers for console inspection & automated testing
         window.state = state;
