@@ -2752,7 +2752,7 @@
                   <div class="flex-1 min-w-0">
                     <div class="flex items-center justify-between mb-0.5">
                       <label for="tmBusinessNameInput" class="block text-[10px] font-bold text-slate-700 dark:text-slate-200">Business / Legal Entity Name</label>
-                      <button type="button" id="tmB2bLogoUploadTextBtn" class="text-[9px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">🖼️ Add Logo</button>
+                      <button type="button" id="tmB2bLogoUploadTextBtn" class="hidden text-[9px] font-bold text-indigo-600 dark:text-indigo-400 hover:underline cursor-pointer">🖼️ Add Logo</button>
                     </div>
                     <input id="tmBusinessNameInput" type="text" placeholder="e.g. Apex Retail Solutions Pvt. Ltd."
                       class="w-full px-2.5 py-1 rounded-lg border border-indigo-200 bg-white text-xs font-semibold text-slate-900 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
@@ -5934,7 +5934,7 @@
                 <div class="flex-1 min-w-0">
                   <div class="flex items-center justify-between mb-0.5">
                     <label for="modalTenantBusinessName" class="block text-[10px] font-bold text-slate-700">Business / Legal Entity Name</label>
-                    <button type="button" id="modalTenantB2bLogoUploadBtn" class="text-[9px] font-bold text-indigo-600 hover:underline cursor-pointer">🖼️ Add Logo</button>
+                    <button type="button" id="modalTenantB2bLogoUploadBtn" class="hidden text-[9px] font-bold text-indigo-600 hover:underline cursor-pointer">🖼️ Add Logo</button>
                   </div>
                   <input id="modalTenantBusinessName" type="text" placeholder="e.g. Apex Retail Solutions Pvt. Ltd."
                     class="w-full px-3 py-1.5 rounded-lg border border-indigo-200 bg-white text-xs font-semibold" />
@@ -7734,8 +7734,8 @@
           <!-- Company Logo Upload for Tax Invoice Letterhead -->
           <div class="p-3.5 rounded-2xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200 dark:border-slate-700 flex flex-wrap items-center justify-between gap-3">
             <div class="flex items-center gap-3">
-              <div class="w-16 h-14 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex items-center justify-center overflow-hidden shrink-0 shadow-2xs">
-                <img id="landlordProfileLogoPreviewImg" src="" alt="Company Logo" class="hidden max-h-12 max-w-[56px] object-contain" />
+              <div class="w-28 h-14 rounded-xl bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 flex items-center justify-center overflow-hidden shrink-0 shadow-2xs px-2">
+                <img id="landlordProfileLogoPreviewImg" src="" alt="Company Logo" class="hidden max-h-12 max-w-[100px] object-contain" />
                 <span id="landlordProfileLogoEmptyIcon" class="text-lg text-slate-400">🖼️</span>
               </div>
               <div>
@@ -8055,12 +8055,12 @@
           <input type="file" id="gstInvoiceLogoFileInput" accept="image/*" class="hidden" />
           <button type="button" id="gstModalUploadLogoBtn"
             onclick="document.getElementById('gstInvoiceLogoFileInput')?.click()"
-            class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-teal-200 font-bold text-xs transition flex items-center gap-1 border border-teal-400/30 cursor-pointer"
+            class="hidden px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-teal-200 font-bold text-xs transition items-center gap-1 border border-teal-400/30 cursor-pointer"
             title="Upload or change Company Logo printed on the Tax Invoice">
             <span>🖼️ Upload Logo</span>
           </button>
           <button type="button" id="gstModalRemoveLogoBtn"
-            class="hidden px-2.5 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 font-bold text-xs transition flex items-center gap-1 border border-rose-400/30 cursor-pointer"
+            class="hidden px-2.5 py-1.5 rounded-xl bg-rose-500/20 hover:bg-rose-500/30 text-rose-200 font-bold text-xs transition items-center gap-1 border border-rose-400/30 cursor-pointer"
             title="Remove Company Logo from Invoice">
             <span>✕ Logo</span>
           </button>
@@ -8088,9 +8088,15 @@
             <!-- Left: Company Logo & Corporate Supplier Identity -->
             <div class="flex items-center gap-4">
               <!-- Uploaded Company Logo Box -->
-              <div id="invCompanyLogoContainer" class="hidden shrink-0">
+              <div id="invCompanyLogoContainer" class="hidden shrink-0 relative group">
                 <img id="invCompanyLogoImg" src="" alt="Company Logo"
-                  class="max-h-16 max-w-[160px] w-auto object-contain rounded-lg" />
+                  class="max-h-16 max-w-[160px] w-auto object-contain rounded-lg cursor-pointer hover:opacity-90 transition"
+                  onclick="document.getElementById('gstInvoiceLogoFileInput')?.click()"
+                  title="Click to change Company Logo" />
+                <button type="button" id="invCompanyLogoRemoveBadge"
+                  onclick="event.stopPropagation(); saveCompanyLogoDataUrl('');"
+                  class="print:hidden hidden group-hover:flex absolute -top-1.5 -right-1.5 w-4 h-4 rounded-full bg-rose-600 hover:bg-rose-700 text-white text-[9px] font-black items-center justify-center shadow-xs cursor-pointer"
+                  title="Remove Company Logo">✕</button>
               </div>
               <!-- On-screen Prompt to Upload Logo (Hidden automatically on Print) -->
               <button type="button" id="invCompanyLogoPlaceholder"
@@ -8955,6 +8961,7 @@
       const STORAGE_KEY_TENANTS = "rpm_tenants_v3";
       const STORAGE_KEY_MCD = "rpm_mcd_tax_v3";
       const STORAGE_KEY_LANDLORD = "rpm_landlord_meta_v3";
+      const STORAGE_KEY_LANDLORD_PROFILE = "rpm_landlord_profile_v1";
       const STORAGE_KEY_LEDGER_INSTALLMENTS = "rpm_ledger_installments_v3";
       const STORAGE_KEY_SUPABASE_URL = "rpm_supabase_url";
       const STORAGE_KEY_SUPABASE_KEY = "rpm_supabase_key";
@@ -10982,6 +10989,12 @@
 
           if (storedLandlord) {
             state.landlord = JSON.parse(storedLandlord);
+          }
+          const storedProfile = localStorage.getItem(STORAGE_KEY_LANDLORD_PROFILE);
+          if (storedProfile) {
+            try {
+              state.landlord = Object.assign({}, state.landlord || {}, JSON.parse(storedProfile));
+            } catch (e) { }
           }
         } catch (e) {
           console.error("Failed to load local storage", e);
@@ -16586,9 +16599,14 @@
                 <img src="${t.photo}" alt="${escapeHtml(t.name)}" class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl object-cover border-2 border-indigo-200 shadow-2xs group-hover:scale-105 group-hover:border-indigo-500 transition duration-150" />
                 <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] border border-white font-bold" title="Photo Verified">✓</span>
                </div>`
-            : `<div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 text-white font-black text-sm flex items-center justify-center shadow-2xs border border-indigo-200/60 uppercase tracking-wider shrink-0">
-                ${escapeHtml((t.name || "T").split(" ").map(w => w[0]).filter(Boolean).slice(0, 2).join("") || "T")}
-               </div>`;
+            : (t.b2bLogo
+              ? `<div class="relative group cursor-pointer shrink-0" data-action="tm-view-photo" data-id="${t.id}" title="Commercial Brand Logo">
+                  <img src="${t.b2bLogo}" alt="${escapeHtml(t.businessName || t.name)}" class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl object-contain p-1 bg-white border-2 border-indigo-200 shadow-2xs group-hover:scale-105 group-hover:border-indigo-500 transition duration-150" />
+                  <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-indigo-600 text-white flex items-center justify-center text-[8px] border border-white font-bold" title="Brand Logo">🏢</span>
+                 </div>`
+              : `<div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 text-white font-black text-sm flex items-center justify-center shadow-2xs border border-indigo-200/60 uppercase tracking-wider shrink-0">
+                  ${escapeHtml((t.name || "T").split(" ").map(w => w[0]).filter(Boolean).slice(0, 2).join("") || "T")}
+                 </div>`);
 
           let b2bChips = "";
           if (t.isB2B || t.areaSqFt || t.rentPerSqFt || t.camAmount || t.incrementPeriod || t.lockInPeriod || t.leasePeriod) {
@@ -18355,6 +18373,8 @@
           recalculateModalB2bSqFtAndCam("init");
           currentModalTenantPhoto = existingTenant.photo || null;
           updateTenantPhotoPreviewUI("modalTenantPhotoImg", "modalTenantPhotoPlaceholder", "modalTenantPhotoRemoveBtn", null, currentModalTenantPhoto);
+          currentModalB2bLogo = existingTenant.b2bLogo || null;
+          updateB2bLogoPreviewUI("modalTenantB2bLogoContainer", "modalTenantB2bLogoPreviewImg", "modalTenantB2bLogoPlaceholder", "modalTenantB2bLogoRemoveBtn", "modalTenantB2bLogoUploadBtn", currentModalB2bLogo);
 
           currentModalPanDoc = existingTenant.panDoc || null;
           currentModalAadhaarDoc = existingTenant.aadhaarDoc || null;
@@ -18407,6 +18427,10 @@
             if (mCamAmt) mCamAmt.value = firstUnassigned.camAmount || "";
             if (mAutoCam) mAutoCam.checked = firstUnassigned.autoBillCamSeparateInvoice !== false;
             recalculateModalB2bSqFtAndCam("init");
+            currentModalTenantPhoto = firstUnassigned.photo || null;
+            updateTenantPhotoPreviewUI("modalTenantPhotoImg", "modalTenantPhotoPlaceholder", "modalTenantPhotoRemoveBtn", null, currentModalTenantPhoto);
+            currentModalB2bLogo = firstUnassigned.b2bLogo || null;
+            updateB2bLogoPreviewUI("modalTenantB2bLogoContainer", "modalTenantB2bLogoPreviewImg", "modalTenantB2bLogoPlaceholder", "modalTenantB2bLogoRemoveBtn", "modalTenantB2bLogoUploadBtn", currentModalB2bLogo);
             currentModalPanDoc = firstUnassigned.panDoc || null;
             currentModalAadhaarDoc = firstUnassigned.aadhaarDoc || null;
             updateDocChipUI("modalTenantPanDocChip", "modalTenantPanDocEmpty", "modalTenantPanDocName", null, currentModalPanDoc);
@@ -18453,6 +18477,8 @@
             recalculateModalB2bSqFtAndCam("init");
             currentModalTenantPhoto = null;
             updateTenantPhotoPreviewUI("modalTenantPhotoImg", "modalTenantPhotoPlaceholder", "modalTenantPhotoRemoveBtn", null, null);
+            currentModalB2bLogo = null;
+            updateB2bLogoPreviewUI("modalTenantB2bLogoContainer", "modalTenantB2bLogoPreviewImg", "modalTenantB2bLogoPlaceholder", "modalTenantB2bLogoRemoveBtn", "modalTenantB2bLogoUploadBtn", null);
             currentModalPanDoc = null;
             currentModalAadhaarDoc = null;
             updateDocChipUI("modalTenantPanDocChip", "modalTenantPanDocEmpty", "modalTenantPanDocName", null, null);
@@ -21583,6 +21609,8 @@
               if (mBillAddr) mBillAddr.value = "";
               currentModalTenantPhoto = null;
               updateTenantPhotoPreviewUI("modalTenantPhotoImg", "modalTenantPhotoPlaceholder", "modalTenantPhotoRemoveBtn", null, null);
+              currentModalB2bLogo = null;
+              updateB2bLogoPreviewUI("modalTenantB2bLogoContainer", "modalTenantB2bLogoPreviewImg", "modalTenantB2bLogoPlaceholder", "modalTenantB2bLogoRemoveBtn", "modalTenantB2bLogoUploadBtn", null);
               currentModalPanDoc = null;
               currentModalAadhaarDoc = null;
               updateDocChipUI("modalTenantPanDocChip", "modalTenantPanDocEmpty", "modalTenantPanDocName", null, null);
@@ -21636,6 +21664,8 @@
                 recalculateModalB2bSqFtAndCam("init");
                 currentModalTenantPhoto = selectedTenant.photo || null;
                 updateTenantPhotoPreviewUI("modalTenantPhotoImg", "modalTenantPhotoPlaceholder", "modalTenantPhotoRemoveBtn", null, currentModalTenantPhoto);
+                currentModalB2bLogo = selectedTenant.b2bLogo || null;
+                updateB2bLogoPreviewUI("modalTenantB2bLogoContainer", "modalTenantB2bLogoPreviewImg", "modalTenantB2bLogoPlaceholder", "modalTenantB2bLogoRemoveBtn", "modalTenantB2bLogoUploadBtn", currentModalB2bLogo);
                 currentModalPanDoc = selectedTenant.panDoc || null;
                 currentModalAadhaarDoc = selectedTenant.aadhaarDoc || null;
                 updateDocChipUI("modalTenantPanDocChip", "modalTenantPanDocEmpty", "modalTenantPanDocName", null, currentModalPanDoc);
@@ -21754,10 +21784,10 @@
               delete targetTenant._escalatedRentApplied;
               targetTenant.depositMonths = depositMonths;
               targetTenant.deposit = deposit;
-              targetTenant.photo = currentModalTenantPhoto || targetTenant.photo || null;
+              targetTenant.photo = currentModalTenantPhoto || null;
               targetTenant.isB2B = isB2B;
               targetTenant.businessName = isB2B ? businessName : "";
-              targetTenant.b2bLogo = isB2B ? (currentModalB2bLogo || targetTenant.b2bLogo || null) : null;
+              targetTenant.b2bLogo = isB2B ? (currentModalB2bLogo || null) : null;
               targetTenant.gstin = isB2B ? gstin : "";
               targetTenant.billingAddress = isB2B ? billingAddress : "";
               targetTenant.areaSqFt = isB2B ? areaSqFt : 0;
@@ -22415,6 +22445,7 @@
         document.getElementById("tmB2bLogoInput")?.addEventListener("change", (e) => {
           const file = e.target.files?.[0];
           if (!file) return;
+          e.target.value = "";
           processFileUpload(file, (doc) => {
             currentTmB2bLogo = doc.dataUrl;
             updateB2bLogoPreviewUI("tmB2bLogoContainer", "tmB2bLogoPreviewImg", "tmB2bLogoPlaceholder", "tmB2bLogoRemoveBtn", "tmB2bLogoUploadTextBtn", currentTmB2bLogo);
@@ -22439,6 +22470,7 @@
         document.getElementById("modalTenantB2bLogoInput")?.addEventListener("change", (e) => {
           const file = e.target.files?.[0];
           if (!file) return;
+          e.target.value = "";
           processFileUpload(file, (doc) => {
             currentModalB2bLogo = doc.dataUrl;
             updateB2bLogoPreviewUI("modalTenantB2bLogoContainer", "modalTenantB2bLogoPreviewImg", "modalTenantB2bLogoPlaceholder", "modalTenantB2bLogoRemoveBtn", "modalTenantB2bLogoUploadBtn", currentModalB2bLogo);
@@ -25838,8 +25870,6 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
       // 🏢 LANDLORD PROFILE & STATUTORY GST INVOICING STUDIO
       // Manages Lessor Identity, Banking & Dynamic GST Invoicing Configuration
       // ============================================================================
-      const STORAGE_KEY_LANDLORD_PROFILE = "rpm_landlord_profile_v1";
-
       function ensureLandlordGstDefaults() {
         state.landlord = state.landlord || {};
         try {
@@ -25913,14 +25943,14 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
           if (invLogoImg) invLogoImg.src = logoUrl;
           if (invLogoContainer) invLogoContainer.classList.remove("hidden");
           if (invLogoPlaceholder) invLogoPlaceholder.classList.add("hidden");
-          if (gstRemoveLogoBtn) gstRemoveLogoBtn.classList.remove("hidden");
-          if (gstUploadLogoBtn) gstUploadLogoBtn.innerHTML = "<span>🖼️ Change Logo</span>";
+          if (gstRemoveLogoBtn) gstRemoveLogoBtn.classList.add("hidden");
+          if (gstUploadLogoBtn) gstUploadLogoBtn.classList.add("hidden");
         } else {
           if (invLogoImg) invLogoImg.src = "";
           if (invLogoContainer) invLogoContainer.classList.add("hidden");
           if (invLogoPlaceholder) invLogoPlaceholder.classList.remove("hidden");
           if (gstRemoveLogoBtn) gstRemoveLogoBtn.classList.add("hidden");
-          if (gstUploadLogoBtn) gstUploadLogoBtn.innerHTML = "<span>🖼️ Upload Logo</span>";
+          if (gstUploadLogoBtn) gstUploadLogoBtn.classList.add("hidden");
         }
 
         // 2. Landlord Profile Modal Logo Preview
@@ -25949,7 +25979,11 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         state.landlord.companyLogo = dataUrl || "";
         try {
           localStorage.setItem(STORAGE_KEY_LANDLORD_PROFILE, JSON.stringify(state.landlord));
+          localStorage.setItem(STORAGE_KEY_LANDLORD, JSON.stringify(state.landlord));
         } catch (e) { }
+        if (typeof saveState === "function") {
+          try { saveState(true); } catch(e) {}
+        }
         updateInvoiceCompanyLogoUI(state.landlord.companyLogo);
         if (typeof toast !== "undefined" && toast.success) {
           toast.success(dataUrl ? "Company Logo uploaded and set on Tax Invoice!" : "Company Logo removed from Tax Invoice.");
@@ -26179,7 +26213,11 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         // Persist
         try {
           localStorage.setItem(STORAGE_KEY_LANDLORD_PROFILE, JSON.stringify(state.landlord));
+          localStorage.setItem(STORAGE_KEY_LANDLORD, JSON.stringify(state.landlord));
         } catch (e) { }
+        if (typeof saveState === "function") {
+          try { saveState(true); } catch(e) {}
+        }
 
         // Keep Auth session updated
         if (currentAuthUser) {
