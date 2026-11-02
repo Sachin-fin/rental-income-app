@@ -2974,49 +2974,74 @@
       </section>
 
       <!-- Tenant Master Directory Section -->
-      <section class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
-        <div
-          class="px-6 py-4 border-b border-slate-200 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3 bg-slate-50/50">
-          <div>
-            <h2 class="text-base font-bold text-slate-900">Tenant Master Directory &amp; Status Control</h2>
-            <p class="text-xs text-slate-500">Manage tenant profiles, change occupancy status, click <strong>Mark
-                Vacant</strong> to vacate the unit, or generate rent receipts.</p>
+      <section class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/90 dark:border-slate-800 shadow-xs overflow-hidden">
+        <div class="px-5 py-4 border-b border-slate-100 dark:border-slate-800 bg-gradient-to-r from-slate-50/90 via-white to-indigo-50/30 dark:from-slate-800/70 dark:via-slate-900 dark:to-indigo-950/20">
+          <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-xl bg-indigo-600/10 dark:bg-indigo-500/20 border border-indigo-200 dark:border-indigo-800 flex items-center justify-center text-indigo-600 dark:text-indigo-400 font-bold shrink-0 shadow-2xs">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+              </div>
+              <div>
+                <div class="flex items-center gap-2">
+                  <h2 class="text-base font-bold text-slate-900 dark:text-slate-100 tracking-tight">Tenant Master Directory &amp; Status Control</h2>
+                  <span id="tmDirectoryCountBadge"
+                    class="text-xs font-bold text-indigo-700 dark:text-indigo-300 bg-indigo-50 dark:bg-indigo-950/60 border border-indigo-200/80 dark:border-indigo-800 px-2.5 py-0.5 rounded-full whitespace-nowrap shadow-2xs">0
+                    Tenants Registered</span>
+                </div>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Live roster of active &amp; vacated tenancies, lease agreements, KYC records, and one-click billing actions.</p>
+              </div>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2.5">
+              <!-- Tenant Master Search Bar -->
+              <div class="relative w-full sm:w-64">
+                <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs">🔍</span>
+                <input type="text" id="tmSearchInput" placeholder="Search tenant, unit, phone, PAN, Aadhaar..."
+                  class="w-full pl-8 pr-7 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-xs text-slate-800 dark:text-slate-100 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-2xs transition" />
+                <button type="button" id="tmSearchClearBtn"
+                  class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs cursor-pointer p-0.5"
+                  title="Clear search">✕</button>
+              </div>
+
+              <!-- Filter Pills for Tenant Master -->
+              <div id="tmFilterBtnGroup"
+                class="flex items-center gap-1 bg-slate-100/90 dark:bg-slate-800 p-1 rounded-xl border border-slate-200/80 dark:border-slate-700 shadow-2xs">
+                <button type="button" data-tm-filter="all"
+                  class="px-3 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-xs transition">All (<span
+                    id="tmAllCount">0</span>)</button>
+                <button type="button" data-tm-filter="active"
+                  class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-white dark:hover:bg-slate-700 hover:text-slate-900 dark:hover:text-white transition">Active (<span
+                    id="tmActiveCount">0</span>)</button>
+                <button type="button" data-tm-filter="vacated"
+                  class="px-3 py-1 rounded-lg text-xs font-semibold text-amber-700 dark:text-amber-400 hover:bg-amber-100/80 dark:hover:bg-amber-950/60 transition">Vacated (<span
+                    id="tmVacatedCount">0</span>)</button>
+              </div>
+            </div>
           </div>
 
-          <div class="flex flex-wrap items-center gap-2.5">
-            <!-- Tenant Master Search Bar -->
-            <div class="relative w-full sm:w-64">
-              <span class="absolute left-2.5 top-1/2 -translate-y-1/2 text-slate-400 text-xs">🔍</span>
-              <input type="text" id="tmSearchInput" placeholder="Search tenant, unit, phone, PAN, Aadhaar..."
-                class="w-full pl-8 pr-7 py-1.5 rounded-xl border border-slate-200 bg-white text-xs text-slate-800 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-2xs transition" />
-              <button type="button" id="tmSearchClearBtn"
-                class="hidden absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 text-xs cursor-pointer p-0.5"
-                title="Clear search">✕</button>
+          <!-- Quick Metrics Bar (High-Density Strip) -->
+          <div id="tmStatsQuickBar" class="mt-3 pt-3 border-t border-slate-200/70 dark:border-slate-800 grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs">
+            <div class="bg-white/90 dark:bg-slate-800/80 rounded-xl px-3 py-1.5 border border-slate-200/70 dark:border-slate-700/80 flex items-center justify-between shadow-2xs">
+              <span class="text-slate-500 dark:text-slate-400 font-medium text-[11px]">Active Tenancies</span>
+              <span id="tmStatActiveCount" class="font-bold text-emerald-700 dark:text-emerald-400">0</span>
             </div>
-
-            <!-- Filter Pills for Tenant Master -->
-            <div id="tmFilterBtnGroup"
-              class="flex items-center gap-1 bg-white p-1 rounded-xl border border-slate-200 shadow-2xs">
-              <button type="button" data-tm-filter="all"
-                class="px-3 py-1 rounded-lg text-xs font-bold bg-indigo-600 text-white shadow-xs">All (<span
-                  id="tmAllCount">0</span>)</button>
-              <button type="button" data-tm-filter="active"
-                class="px-3 py-1 rounded-lg text-xs font-semibold text-slate-600 hover:bg-slate-100">Active (<span
-                  id="tmActiveCount">0</span>)</button>
-              <button type="button" data-tm-filter="vacated"
-                class="px-3 py-1 rounded-lg text-xs font-semibold text-amber-700 hover:bg-amber-50">Vacated (<span
-                  id="tmVacatedCount">0</span>)</button>
+            <div class="bg-white/90 dark:bg-slate-800/80 rounded-xl px-3 py-1.5 border border-slate-200/70 dark:border-slate-700/80 flex items-center justify-between shadow-2xs">
+              <span class="text-slate-500 dark:text-slate-400 font-medium text-[11px]">Monthly Rent Roll</span>
+              <span id="tmStatTotalRent" class="font-bold font-mono text-slate-900 dark:text-slate-100">₹0</span>
             </div>
-
-            <!-- Total count badge -->
-            <span id="tmDirectoryCountBadge"
-              class="text-xs font-bold text-indigo-700 bg-indigo-50 border border-indigo-200 px-3 py-1 rounded-full whitespace-nowrap">0
-              Tenants Registered</span>
+            <div class="bg-white/90 dark:bg-slate-800/80 rounded-xl px-3 py-1.5 border border-slate-200/70 dark:border-slate-700/80 flex items-center justify-between shadow-2xs">
+              <span class="text-slate-500 dark:text-slate-400 font-medium text-[11px]">Total Security Deposit</span>
+              <span id="tmStatTotalDeposit" class="font-bold font-mono text-indigo-700 dark:text-indigo-400">₹0</span>
+            </div>
+            <div class="bg-white/90 dark:bg-slate-800/80 rounded-xl px-3 py-1.5 border border-slate-200/70 dark:border-slate-700/80 flex items-center justify-between shadow-2xs">
+              <span class="text-slate-500 dark:text-slate-400 font-medium text-[11px]">Vacated / Archived</span>
+              <span id="tmStatVacatedCount" class="font-bold text-amber-700 dark:text-amber-400">0</span>
+            </div>
           </div>
         </div>
 
         <!-- Tenant Master Directory List Container -->
-        <div id="tenantMasterListContainer" class="divide-y divide-slate-100"></div>
+        <div id="tenantMasterListContainer" class="divide-y divide-slate-100 dark:divide-slate-800"></div>
       </section>
 
     </div>
@@ -16400,6 +16425,23 @@
         if (vacatedCountEl) vacatedCountEl.textContent = vacatedTenants.length;
         if (countBadge) countBadge.textContent = `${allTenants.length} Tenants Registered`;
 
+        // Update quick summary strip
+        const statActive = document.getElementById("tmStatActiveCount");
+        const statRent = document.getElementById("tmStatTotalRent");
+        const statDeposit = document.getElementById("tmStatTotalDeposit");
+        const statVacated = document.getElementById("tmStatVacatedCount");
+        if (statActive || statRent || statDeposit || statVacated) {
+          const totalActiveRent = activeTenants.reduce((sum, t) => sum + (Number(t.rent) || 0), 0);
+          const totalActiveDeposit = activeTenants.reduce((sum, t) => {
+            const dAmt = t.deposit !== undefined ? Number(t.deposit) : (Number(t.rent || 0) * (t.depositMonths !== undefined ? Number(t.depositMonths) : 2));
+            return sum + (Number(dAmt) || 0);
+          }, 0);
+          if (statActive) statActive.textContent = activeTenants.length;
+          if (statRent) statRent.textContent = formatINR(totalActiveRent);
+          if (statDeposit) statDeposit.textContent = formatINR(totalActiveDeposit);
+          if (statVacated) statVacated.textContent = vacatedTenants.length;
+        }
+
         let filtered = allTenants;
         if (state.tmActiveFilter === "active") {
           filtered = activeTenants;
@@ -16506,318 +16548,347 @@
           const isVacated = t.status === "Vacated";
           const os = Number(t.osAmount) || 0;
           const hasOs = os > 0;
-          const depositAmt = t.deposit || (Number(t.rent || 0) * (t.depositMonths !== undefined ? Number(t.depositMonths) : 2));
+          const depositAmt = t.deposit !== undefined ? Number(t.deposit) : (Number(t.rent || 0) * (t.depositMonths !== undefined ? Number(t.depositMonths) : 2));
           const depositMonths = t.depositMonths !== undefined ? t.depositMonths : 2;
 
           const card = document.createElement("div");
-          card.className = `p-5 sm:p-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 transition ${isVacated ? "bg-amber-50/20 hover:bg-amber-50/40" : "hover:bg-slate-50/80"
-            }`;
+          card.className = `p-3.5 sm:p-4 transition hover:bg-slate-50/70 dark:hover:bg-slate-800/50 border-b border-slate-100 dark:border-slate-800/80 last:border-b-0 ${
+            isVacated ? "bg-amber-50/15 dark:bg-amber-950/20" : "bg-white dark:bg-slate-900"
+          }`;
+
+          const photoHtml = t.photo
+            ? `<div class="relative group cursor-pointer shrink-0" data-action="tm-view-photo" data-id="${t.id}" title="Click to view full photo">
+                <img src="${t.photo}" alt="${escapeHtml(t.name)}" class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl object-cover border-2 border-indigo-200 shadow-2xs group-hover:scale-105 group-hover:border-indigo-500 transition duration-150" />
+                <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] border border-white font-bold" title="Photo Verified">✓</span>
+               </div>`
+            : `<div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 text-white font-black text-sm flex items-center justify-center shadow-2xs border border-indigo-200/60 uppercase tracking-wider shrink-0">
+                ${escapeHtml((t.name || "T").split(" ").map(w => w[0]).filter(Boolean).slice(0, 2).join("") || "T")}
+               </div>`;
+
+          let b2bChips = "";
+          if (t.isB2B || t.areaSqFt || t.rentPerSqFt || t.camAmount || t.incrementPeriod || t.lockInPeriod || t.leasePeriod) {
+            const unitArea = Number(t.areaSqFt) || (typeof getPropertyAreaForUnit === "function" ? getPropertyAreaForUnit(t.unit) : 0) || 0;
+            const effRentSqFt = Number(t.rentPerSqFt) || (unitArea > 0 && Number(t.rent) > 0 ? Math.round((Number(t.rent) / unitArea) * 100) / 100 : 0);
+            const camAmt = Number(t.camAmount) || (unitArea > 0 && Number(t.camRatePerSqFt) > 0 ? Math.round(unitArea * Number(t.camRatePerSqFt)) : 0);
+            const camRate = Number(t.camRatePerSqFt) || (unitArea > 0 && camAmt > 0 ? Math.round((camAmt / unitArea) * 100) / 100 : 0);
+
+            if (unitArea > 0 || effRentSqFt > 0) {
+              b2bChips += `<span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-900 border border-indigo-200 font-bold text-[11px]">📐 Rent/Sq.Ft: ₹${effRentSqFt.toLocaleString("en-IN")}/Sq.Ft/mo${unitArea > 0 ? ` (${unitArea.toLocaleString("en-IN")} Sq.Ft)` : ""}</span>`;
+            }
+            if (camAmt > 0) {
+              b2bChips += `<span class="px-2 py-0.5 rounded-md bg-teal-50 text-teal-900 border border-teal-200 font-bold text-[11px]">🛠️ CAM: ${formatINR(camAmt)}/mo${camRate > 0 ? ` (₹${camRate}/Sq.Ft)` : ""} · ${t.autoBillCamSeparateInvoice !== false ? "🧾 Separate Auto-Invoice" : "Manual"}</span>`;
+            }
+            b2bChips += `<span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-800 border border-indigo-200 font-medium text-[11px]">📈 Increment: +${t.incrementPct !== undefined ? t.incrementPct : 10}% (${escapeHtml(t.incrementPeriod || "Every Year")})</span>`;
+            if (t.isRentEscalated && t.baseRent && t.baseRent !== t.rent) {
+              b2bChips += `<span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900 border border-emerald-300 font-bold text-[11px]">✓ Auto-Escalated: ${formatINR(t.rent)}/mo (Base ${formatINR(t.baseRent)} · Cycle #${t.completedIncrementCycles || 1})</span>`;
+            } else if (t.nextIncrementMonth && t.nextEscalatedRent) {
+              b2bChips += `<span class="px-2 py-0.5 rounded-md bg-violet-50 text-violet-900 border border-violet-200 font-medium text-[11px]">⏳ Next Auto-Increase: ${escapeHtml(t.nextIncrementMonth)} → ${formatINR(t.nextEscalatedRent)}/mo</span>`;
+            }
+            if (t.lockInPeriod) {
+              b2bChips += `<span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 border border-amber-200 font-medium text-[11px]">🔒 Lock-in: ${escapeHtml(t.lockInPeriod)}</span>`;
+            }
+            if (t.leasePeriod) {
+              b2bChips += `<span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-medium text-[11px]">🗓️ Lease Period: ${escapeHtml(t.leasePeriod)}</span>`;
+            }
+          }
 
           card.innerHTML = `
-            <div class="flex items-start gap-3.5 sm:gap-4 flex-1">
-              <!-- Tenant Profile Photo Avatar -->
-              <div class="shrink-0 pt-0.5">
-                ${t.photo
-              ? `<div class="relative group cursor-pointer" data-action="tm-view-photo" data-id="${t.id}" title="Click to view full photo">
-                        <img src="${t.photo}" alt="${escapeHtml(t.name)}" class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl object-cover border-2 border-indigo-200 shadow-xs group-hover:scale-105 group-hover:border-indigo-500 transition duration-150" />
-                        <span class="absolute -bottom-1 -right-1 w-4 h-4 rounded-full bg-emerald-500 text-white flex items-center justify-center text-[9px] border border-white font-bold" title="Photo Verified">✓</span>
-                       </div>`
-              : `<div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-indigo-500 via-indigo-600 to-purple-600 text-white font-black text-sm sm:text-base flex items-center justify-center shadow-xs border-2 border-indigo-200/60 uppercase tracking-wider">
-                        ${escapeHtml((t.name || "T").split(" ").map(w => w[0]).filter(Boolean).slice(0, 2).join("") || "T")}
-                       </div>`
-            }
+            <!-- Top Strip: Identity, Lease Commercials, Primary Actions -->
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+              <!-- Left: Avatar + Identity + Commercials -->
+              <div class="flex items-start sm:items-center gap-3 min-w-0 flex-1">
+                ${photoHtml}
+
+                <div class="min-w-0 flex-1 space-y-1">
+                  <!-- Row 1: Name, Status, Unit, B2B & Dues -->
+                  <div class="flex flex-wrap items-center gap-1.5">
+                    <h3 class="font-bold text-slate-900 dark:text-slate-100 text-sm tracking-tight">${escapeHtml(t.name)}</h3>
+
+                    <span class="text-[11px] px-2 py-0.5 rounded-full font-bold ${
+                      isVacated
+                        ? "bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1"
+                        : "bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1"
+                    }">
+                      <span class="w-1.5 h-1.5 rounded-full ${isVacated ? "bg-amber-500" : "bg-emerald-500"}"></span>
+                      ${isVacated ? "⚠️ Vacated (Left Property)" : "🟢 Active Tenancy"}
+                    </span>
+
+                    <span class="text-[11px] px-2 py-0.5 rounded-md font-semibold ${
+                      isVacated
+                        ? "bg-slate-100 text-slate-500 line-through"
+                        : "bg-indigo-50 text-indigo-700 border border-indigo-100"
+                    }">
+                      🏢 ${escapeHtml(t.unit || "Unassigned")}
+                    </span>
+
+                    ${
+                      t.isB2B || t.gstin
+                        ? `<span class="text-[10px] px-2 py-0.5 rounded-full font-extrabold bg-indigo-600 text-white shadow-2xs flex items-center gap-1" title="Registered B2B Business Tenant">
+                            ${t.b2bLogo ? `<img src="${t.b2bLogo}" alt="Logo" class="w-3.5 h-3.5 rounded-xs object-contain bg-white/95 p-0.5 shrink-0" />` : `<span>🏢</span>`}
+                            <span>B2B Business</span>
+                            ${t.businessName ? `<span class="font-normal opacity-90 max-w-[150px] truncate">· ${escapeHtml(t.businessName)}</span>` : ""}
+                           </span>`
+                        : ""
+                    }
+
+                    ${
+                      hasOs
+                        ? `<span class="text-[11px] px-2 py-0.5 rounded font-bold bg-amber-50 text-amber-700 border border-amber-200">
+                            O/S Due: ${formatINR(os)}
+                           </span>`
+                        : `<span class="text-[11px] px-2 py-0.5 rounded font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200">
+                            ₹0 Dues Settled
+                           </span>`
+                    }
+                  </div>
+
+                  <!-- Row 2: Phone, Email, Rent, Security Deposit, Rent Start -->
+                  <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-slate-600 dark:text-slate-400">
+                    <span class="font-mono text-slate-700 dark:text-slate-300">📱 ${escapeHtml(t.mobile || "N/A")}</span>
+                    ${t.email ? `<span class="text-slate-500 dark:text-slate-400 truncate max-w-[180px]">✉️ ${escapeHtml(t.email)}</span>` : ""}
+                    <span class="text-slate-300 dark:text-slate-700 hidden sm:inline">|</span>
+                    <span>Agreed Rent: <strong class="text-slate-900 dark:text-slate-100 font-bold font-mono">${formatINR(t.rent)}</strong>/mo</span>
+                    <span>Security Deposit: <strong class="text-emerald-800 font-mono">${formatINR(depositAmt)}</strong> <span class="text-slate-500 font-semibold">(${depositMonths} Mo)</span></span>
+                    ${
+                      (t.rentStartDate || t.startDate)
+                        ? `<span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold text-[11px]" title="Actual rent & advance invoice start from this date">🚀 Rent Start: ${escapeHtml(t.rentStartDate || t.startDate)} (Advance Invoice)</span>`
+                        : ""
+                    }
+                    ${
+                      t.startDate && t.endDate
+                        ? `<span class="text-[11px] text-slate-400">📅 Term: ${t.startDate} to ${t.endDate}</span>`
+                        : ""
+                    }
+                    ${
+                      isVacated && t.vacatedDate
+                        ? `<span class="text-amber-700 font-semibold text-[11px]">Vacated Date: ${t.vacatedDate}</span>`
+                        : ""
+                    }
+                  </div>
+                </div>
               </div>
 
-              <div class="space-y-2 flex-1 min-w-0">
-                <div class="flex flex-wrap items-center gap-2">
-                  <h3 class="font-bold text-slate-900 text-base">${escapeHtml(t.name)}</h3>
-                  ${t.isB2B || t.gstin
-              ? `<span class="text-[11px] px-2.5 py-0.5 rounded-full font-extrabold bg-indigo-600 text-white shadow-2xs flex items-center gap-1.5" title="Registered B2B Business Tenant">
-                          ${t.b2bLogo ? `<img src="${t.b2bLogo}" alt="Logo" class="w-4 h-4 rounded-xs object-contain bg-white/95 p-0.5 shrink-0" />` : `<span>🏢</span>`}
-                          <span>B2B Business</span>
-                          ${t.businessName ? `<span class="font-normal opacity-90">· ${escapeHtml(t.businessName)}</span>` : ""}
-                         </span>`
-              : ""
-            }
-                <span class="text-xs px-2.5 py-0.5 rounded-full font-bold ${isVacated
-              ? "bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1"
-              : "bg-emerald-100 text-emerald-800 border border-emerald-200 flex items-center gap-1"
-            }">
-                  <span class="w-1.5 h-1.5 rounded-full ${isVacated ? "bg-amber-500" : "bg-emerald-500"}"></span>
-                  ${isVacated ? "⚠️ Vacated (Left Property)" : "🟢 Active Tenancy"}
-                </span>
-                <span class="text-xs px-2.5 py-0.5 rounded-md font-semibold ${isVacated ? "bg-slate-100 text-slate-500 line-through" : "bg-indigo-50 text-indigo-700 border border-indigo-100"
-            }">
-                  ${escapeHtml(t.unit || "Unassigned")}
-                </span>
-                ${hasOs
-              ? `<span class="text-xs px-2 py-0.5 rounded font-bold bg-amber-50 text-amber-700 border border-amber-200">
-                        O/S Due: ${formatINR(os)}
-                       </span>`
-              : `<span class="text-xs px-2 py-0.5 rounded font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200">
-                        ₹0 Dues Settled
-                       </span>`
-            }
-              </div>
+              <!-- Right: Primary Actions Hub -->
+              <div class="flex items-center gap-1.5 shrink-0 pt-1 lg:pt-0">
+                <button
+                  type="button"
+                  data-action="tm-edit-tenant"
+                  data-id="${t.id}"
+                  class="px-2.5 py-1.5 rounded-lg border border-indigo-200 bg-indigo-50/80 hover:bg-indigo-100 text-indigo-700 text-xs font-bold transition flex items-center gap-1 shadow-2xs cursor-pointer"
+                  title="Edit tenant details, security deposit, PAN & Aadhaar"
+                >
+                  <span>✏️ Edit</span>
+                </button>
 
-              <!-- Contact & Terms Info Row -->
-              <div class="flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-slate-600">
-                <span>📱 ${escapeHtml(t.mobile || "N/A")}</span>
-                ${t.email ? `<span>✉️ ${escapeHtml(t.email)}</span>` : ""}
-                <span>Agreed Rent: <strong class="text-slate-900">${formatINR(t.rent)}</strong>/mo</span>
-                <span>Security Deposit: <strong class="text-emerald-800 font-mono">${formatINR(depositAmt)}</strong> <span class="text-slate-500 font-semibold">(${depositMonths} Mo)</span></span>
-                ${t.startDate && t.endDate
-              ? `<span class="text-slate-500">📅 Term: ${t.startDate} to ${t.endDate}</span>`
-              : ""
-            }
-                ${(t.rentStartDate || t.startDate)
-              ? `<span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-bold text-[11px]" title="Actual rent & advance invoice start from this date">🚀 Rent Start: ${escapeHtml(t.rentStartDate || t.startDate)} (Advance Invoice)</span>`
-              : ""
-            }
-                ${isVacated && t.vacatedDate
-              ? `<span class="text-amber-700 font-semibold">Vacated Date: ${t.vacatedDate}</span>`
-              : ""
-            }
-              </div>
+                ${
+                  !isVacated
+                    ? `<button
+                        type="button"
+                        data-action="tm-vacate-tenant"
+                        data-id="${t.id}"
+                        class="px-2.5 py-1.5 rounded-lg border border-rose-200 text-rose-700 hover:bg-rose-50 text-xs font-bold transition flex items-center gap-1 shadow-2xs cursor-pointer"
+                        title="Mark tenant as vacated and release the property as VACANT"
+                      >
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                        <span>Mark Vacant</span>
+                      </button>`
+                    : `<button
+                        type="button"
+                        data-action="tm-reassign-tenant"
+                        data-id="${t.id}"
+                        class="px-2.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-xs flex items-center gap-1 cursor-pointer"
+                        title="Re-assign this tenant to an available vacant unit"
+                      >
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
+                        <span>+ Re-assign Unit</span>
+                      </button>`
+                }
 
-              <!-- Separate GSTIN, PAN & Aadhaar Badges with Document Viewers -->
-              <div class="flex flex-wrap items-center gap-2 pt-0.5 text-xs">
-                ${t.gstin
-              ? `<span class="inline-flex items-center gap-1.5 font-mono bg-violet-50/90 text-violet-950 px-2.5 py-1 rounded-lg border border-violet-300 shadow-2xs">
+                <button
+                  type="button"
+                  data-action="tm-receipt"
+                  data-id="${t.id}"
+                  class="px-2.5 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-100 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-semibold transition shadow-2xs flex items-center gap-1 cursor-pointer"
+                  title="Generate Rent Receipt"
+                >
+                  <span>🧾 Receipt</span>
+                </button>
+
+                <button
+                  type="button"
+                  data-action="tm-agreement"
+                  data-id="${t.id}"
+                  class="px-2.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold transition shadow-2xs cursor-pointer"
+                  title="Prepare Agreement"
+                >
+                  <span>Draft Agreement &rarr;</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Bottom Sub-Strip: KYC Badges & Secondary Quick Actions Bar -->
+            <div class="mt-2.5 pt-2 border-t border-slate-100 flex flex-col md:flex-row md:items-center justify-between gap-2 text-xs">
+              <!-- Left: KYC / Compliance Badges -->
+              <div class="flex flex-wrap items-center gap-1.5">
+                ${
+                  t.gstin
+                    ? `<span class="inline-flex items-center gap-1 font-mono bg-violet-50 text-violet-950 px-2 py-0.5 rounded-md border border-violet-200 text-[11px]">
                         <span class="w-1.5 h-1.5 rounded-full bg-violet-600 shrink-0"></span>
                         <span class="font-bold">GSTIN:</span>
                         <span class="tracking-wider uppercase font-extrabold text-violet-900">${escapeHtml(t.gstin)}</span>
                        </span>`
-              : ""
-            }
-                ${t.pan
-              ? `<span class="inline-flex items-center gap-1.5 font-mono bg-indigo-50/70 text-indigo-950 px-2.5 py-1 rounded-lg border border-indigo-200">
+                    : ""
+                }
+                ${
+                  t.pan
+                    ? `<span class="inline-flex items-center gap-1 font-mono bg-indigo-50/70 text-indigo-950 px-2 py-0.5 rounded-md border border-indigo-200 text-[11px]">
                         <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0"></span>
                         <span class="font-bold">PAN:</span>
                         <span class="tracking-wider uppercase font-semibold">${escapeHtml(t.pan)}</span>
-                        ${t.panDoc
-                ? `<button type="button" data-action="tm-view-doc" data-id="${t.id}" data-doctype="pan" class="ml-1 px-1.5 py-0.5 rounded bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold transition flex items-center gap-1 cursor-pointer">
+                        ${
+                          t.panDoc
+                            ? `<button type="button" data-action="tm-view-doc" data-id="${t.id}" data-doctype="pan" class="ml-1 px-1.5 py-0.5 rounded bg-indigo-600 hover:bg-indigo-700 text-white text-[10px] font-bold transition flex items-center gap-0.5 cursor-pointer">
                                 <span>📎 View Doc</span>
                                </button>`
-                : `<span class="text-[10px] text-slate-400 font-sans italic ml-1">(No doc)</span>`
-              }
+                            : `<span class="text-[9px] text-slate-400 font-sans italic ml-0.5">(No doc)</span>`
+                        }
                        </span>`
-              : ""
-            }
-                ${t.aadhaar
-              ? `<span class="inline-flex items-center gap-1.5 font-mono bg-emerald-50/70 text-emerald-950 px-2.5 py-1 rounded-lg border border-emerald-200">
+                    : ""
+                }
+                ${
+                  t.aadhaar
+                    ? `<span class="inline-flex items-center gap-1 font-mono bg-emerald-50/70 text-emerald-950 px-2 py-0.5 rounded-md border border-emerald-200 text-[11px]">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
                         <span class="font-bold">Aadhaar:</span>
                         <span class="tracking-wider font-semibold">${escapeHtml(t.aadhaar)}</span>
-                        ${t.aadhaarDoc
-                ? `<button type="button" data-action="tm-view-doc" data-id="${t.id}" data-doctype="aadhaar" class="ml-1 px-1.5 py-0.5 rounded bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold transition flex items-center gap-1 cursor-pointer">
+                        ${
+                          t.aadhaarDoc
+                            ? `<button type="button" data-action="tm-view-doc" data-id="${t.id}" data-doctype="aadhaar" class="ml-1 px-1.5 py-0.5 rounded bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] font-bold transition flex items-center gap-0.5 cursor-pointer">
                                 <span>📎 View Doc</span>
                                </button>`
-                : `<span class="text-[10px] text-slate-400 font-sans italic ml-1">(No doc)</span>`
-              }
+                            : `<span class="text-[9px] text-slate-400 font-sans italic ml-0.5">(No doc)</span>`
+                        }
                        </span>`
-              : ""
-            }
-                ${!t.pan && !t.aadhaar && t.tenantIdNumber
-              ? `<span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 px-2.5 py-1 rounded-lg border border-slate-200">
+                    : ""
+                }
+                ${
+                  !t.pan && !t.aadhaar && t.tenantIdNumber
+                    ? `<span class="inline-flex items-center gap-1 bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md border border-slate-200 text-[11px]">
                         <span>🪪</span>
                         <span>${escapeHtml(t.tenantIdNumber)}</span>
                        </span>`
-              : ""
-            }
-                ${Array.isArray(t.agreementDocs) && t.agreementDocs.length > 0
-              ? `<span class="inline-flex items-center gap-1.5 font-medium bg-blue-50/80 text-blue-950 px-2.5 py-1 rounded-lg border border-blue-200">
+                    : ""
+                }
+                ${
+                  Array.isArray(t.agreementDocs) && t.agreementDocs.length > 0
+                    ? `<span class="inline-flex items-center gap-1 font-medium bg-blue-50/80 text-blue-950 px-2 py-0.5 rounded-md border border-blue-200 text-[11px]">
                         <span class="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"></span>
                         <span class="font-bold">Signed Copy:</span>
                         <span class="font-semibold text-blue-800">${t.agreementDocs.length} Doc${t.agreementDocs.length > 1 ? "s" : ""}</span>
-                        <button type="button" data-action="tm-view-agreements" data-id="${t.id}" class="ml-1 px-1.5 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold transition flex items-center gap-1 cursor-pointer">
+                        <button type="button" data-action="tm-view-agreements" data-id="${t.id}" class="ml-1 px-1.5 py-0.5 rounded bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold transition flex items-center gap-0.5 cursor-pointer">
                           <span>📎 View / Manage</span>
                         </button>
                        </span>`
-              : `<span class="inline-flex items-center gap-1.5 font-medium bg-slate-50 text-slate-500 px-2.5 py-1 rounded-lg border border-slate-200">
+                    : `<span class="inline-flex items-center gap-1 font-medium bg-slate-50 text-slate-500 px-2 py-0.5 rounded-md border border-slate-200 text-[11px]">
                         <span class="w-1.5 h-1.5 rounded-full bg-slate-400 shrink-0"></span>
                         <span class="font-bold">Signed Copy:</span>
-                        <span class="italic text-[11px]">0 Files</span>
+                        <span class="italic text-[10px]">0 Files</span>
                         <button type="button" data-action="tm-upload-agreements" data-id="${t.id}" class="ml-1 px-1.5 py-0.5 rounded bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-[10px] font-bold border border-indigo-200 transition flex items-center gap-0.5 cursor-pointer">
                           <span>+ Upload</span>
                         </button>
                        </span>`
-            }
+                }
+                ${b2bChips}
               </div>
 
-              ${t.isB2B || t.areaSqFt || t.rentPerSqFt || t.camAmount || t.incrementPeriod || t.lockInPeriod || t.leasePeriod
-              ? `<div class="flex flex-wrap items-center gap-1.5 pt-0.5 text-[11px]">
-                      ${(() => {
-                        const unitArea = Number(t.areaSqFt) || getPropertyAreaForUnit(t.unit) || 0;
-                        const effRentSqFt = Number(t.rentPerSqFt) || (unitArea > 0 && Number(t.rent) > 0 ? Math.round((Number(t.rent) / unitArea) * 100) / 100 : 0);
-                        const camAmt = Number(t.camAmount) || (unitArea > 0 && Number(t.camRatePerSqFt) > 0 ? Math.round(unitArea * Number(t.camRatePerSqFt)) : 0);
-                        const camRate = Number(t.camRatePerSqFt) || (unitArea > 0 && camAmt > 0 ? Math.round((camAmt / unitArea) * 100) / 100 : 0);
-                        let chips = "";
-                        if (unitArea > 0 || effRentSqFt > 0) {
-                          chips += `<span class="px-2 py-0.5 rounded-md bg-indigo-100/90 text-indigo-950 border border-indigo-300 font-extrabold">📐 Rent/Sq.Ft: ₹${effRentSqFt.toLocaleString("en-IN")}/Sq.Ft/mo${unitArea > 0 ? ` (${unitArea.toLocaleString("en-IN")} Sq.Ft)` : ""}</span>`;
-                        }
-                        if (camAmt > 0) {
-                          chips += `<span class="px-2 py-0.5 rounded-md bg-teal-100/90 text-teal-950 border border-teal-300 font-extrabold">🛠️ CAM: ${formatINR(camAmt)}/mo${camRate > 0 ? ` (₹${camRate}/Sq.Ft)` : ""} · ${t.autoBillCamSeparateInvoice !== false ? "🧾 Separate Auto-Invoice" : "Manual"}</span>`;
-                        }
-                        return chips;
-                      })()}
-                      <span class="px-2 py-0.5 rounded-md bg-indigo-50 text-indigo-800 border border-indigo-200 font-bold">📈 Increment: +${t.incrementPct !== undefined ? t.incrementPct : 10}% (${escapeHtml(t.incrementPeriod || "Every Year")})</span>
-                      ${t.isRentEscalated && t.baseRent && t.baseRent !== t.rent
-                ? `<span class="px-2 py-0.5 rounded-md bg-emerald-100 text-emerald-900 border border-emerald-300 font-extrabold">✓ Auto-Escalated: ${formatINR(t.rent)}/mo (Base ${formatINR(t.baseRent)} · Cycle #${t.completedIncrementCycles || 1})</span>`
-                : (t.nextIncrementMonth && t.nextEscalatedRent
-                  ? `<span class="px-2 py-0.5 rounded-md bg-violet-50 text-violet-900 border border-violet-200 font-semibold">⏳ Next Auto-Increase: ${escapeHtml(t.nextIncrementMonth)} → ${formatINR(t.nextEscalatedRent)}/mo</span>`
-                  : "")
-              }
-                      ${t.lockInPeriod ? `<span class="px-2 py-0.5 rounded-md bg-amber-50 text-amber-800 border border-amber-200 font-semibold">🔒 Lock-in: ${escapeHtml(t.lockInPeriod)}</span>` : ""}
-                      ${t.leasePeriod ? `<span class="px-2 py-0.5 rounded-md bg-emerald-50 text-emerald-800 border border-emerald-200 font-semibold">🗓️ Lease Period: ${escapeHtml(t.leasePeriod)}</span>` : ""}
-                     </div>`
-              : ""
-            }
-              ${t.b2bIncrementClause
-              ? `<p class="text-[11px] text-slate-700 bg-slate-50 border border-slate-200/80 rounded-lg px-2.5 py-1 font-medium leading-relaxed">📜 <strong class="font-bold text-indigo-900">Rental Increment Clause:</strong> ${escapeHtml(t.b2bIncrementClause)}</p>`
-              : ""
-            }
-              ${t.billingAddress
-              ? `<p class="text-xs text-indigo-900 bg-indigo-50/60 border border-indigo-100 rounded-lg px-2.5 py-1 font-medium">🏢 <strong class="font-bold">B2B Billing Address:</strong> ${escapeHtml(t.billingAddress)}</p>`
-              : ""
-            }
-              ${t.permAddress
-              ? `<p class="text-xs text-slate-500 font-medium">Home: ${escapeHtml(t.permAddress)}</p>`
-              : ""
-            }
+              <!-- Right: Secondary Quick Action Buttons -->
+              <div class="flex flex-wrap items-center gap-1 shrink-0">
+                <button
+                  type="button"
+                  data-action="tm-gst-invoice"
+                  data-id="${t.id}"
+                  class="px-2 py-1 rounded-md bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 text-[11px] font-semibold transition cursor-pointer flex items-center gap-1 shadow-2xs"
+                  title="Generate &amp; Send Monthly Rent GST Tax Invoice (Rule 46 CGST Act)"
+                >
+                  <span>🏛️ GST Invoice</span>
+                </button>
+
+                ${
+                  (t.isB2B || Number(t.camAmount) > 0 || Number(t.camRatePerSqFt) > 0)
+                    ? `<button
+                        type="button"
+                        data-action="tm-cam-invoice"
+                        data-id="${t.id}"
+                        class="px-2 py-1 rounded-md bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-[11px] font-bold transition cursor-pointer flex items-center gap-1 shadow-2xs"
+                        title="Open Separate Monthly CAM GST Tax Invoice"
+                      >
+                        <span>🛠️ CAM Invoice</span>
+                      </button>`
+                    : ""
+                }
+
+                <button
+                  type="button"
+                  data-action="tm-police"
+                  data-id="${t.id}"
+                  class="px-2 py-1 rounded-md bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-[11px] font-semibold transition cursor-pointer flex items-center gap-1 shadow-2xs"
+                  title="Generate State Police Verification Form for this tenant"
+                >
+                  <span>👮 Police Form</span>
+                </button>
+
+                <button
+                  type="button"
+                  data-action="tm-invite"
+                  data-id="${t.id}"
+                  class="px-2 py-1 rounded-md bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 text-[11px] font-semibold transition cursor-pointer flex items-center gap-1 shadow-2xs"
+                  title="Send download &amp; portal access link via WhatsApp, Email or SMS"
+                >
+                  <span>📲 Share App</span>
+                </button>
+
+                <button
+                  type="button"
+                  data-action="tm-chat"
+                  data-id="${t.id}"
+                  class="px-2 py-1 rounded-md bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 text-[11px] font-semibold transition cursor-pointer flex items-center gap-1 shadow-2xs"
+                  title="Open live direct chat with this tenant"
+                >
+                  <span>💬 Chat</span>
+                </button>
+
+                <button
+                  type="button"
+                  data-action="tm-upload-agreements"
+                  data-id="${t.id}"
+                  class="px-2 py-1 rounded-md bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-[11px] font-semibold transition cursor-pointer flex items-center gap-1 shadow-2xs"
+                  title="Upload or view signed rent agreement copies (PDF, Image, Doc)"
+                >
+                  <span>📑 Signed Copy ${t.agreementDocs?.length ? `(${t.agreementDocs.length})` : "(+)"}</span>
+                </button>
+
+                <button
+                  type="button"
+                  data-action="tm-delete"
+                  data-id="${t.id}"
+                  class="px-2 py-1 rounded-md border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-[11px] font-bold transition flex items-center gap-1 shadow-2xs cursor-pointer active:scale-95"
+                  title="Permanently delete tenant profile '${escapeHtml(t.name)}' from Tenant Master"
+                >
+                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                  <span>Delete Tenant</span>
+                </button>
+              </div>
             </div>
 
-            </div>
-            </div>
-
-            <!-- Actions for Tenant Master -->
-            <div class="flex flex-wrap items-center gap-2 shrink-0 pt-2 lg:pt-0">
-              <button
-                type="button"
-                data-action="tm-edit-tenant"
-                data-id="${t.id}"
-                class="px-3 py-2 rounded-xl border border-indigo-200 bg-indigo-50/80 hover:bg-indigo-100 text-indigo-700 text-xs font-bold transition flex items-center gap-1 shadow-2xs cursor-pointer"
-                title="Edit tenant details, security deposit, PAN & Aadhaar"
-              >
-                <span>✏️ Edit</span>
-              </button>
-
-              ${!isVacated
-              ? `<button
-                      type="button"
-                      data-action="tm-vacate-tenant"
-                      data-id="${t.id}"
-                      class="px-3.5 py-2 rounded-xl border border-rose-300 text-rose-700 hover:bg-rose-50 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs cursor-pointer"
-                      title="Mark tenant as vacated and release the property as VACANT"
-                    >
-                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
-                      <span>Mark Vacant</span>
-                    </button>`
-              : `<button
-                      type="button"
-                      data-action="tm-reassign-tenant"
-                      data-id="${t.id}"
-                      class="px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold transition shadow-xs flex items-center gap-1.5 cursor-pointer"
-                      title="Re-assign this tenant to an available vacant unit"
-                    >
-                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/></svg>
-                      <span>+ Re-assign Unit</span>
-                    </button>`
+            ${
+              t.b2bIncrementClause || t.billingAddress || t.permAddress
+                ? `<div class="mt-1.5 pt-1.5 border-t border-dashed border-slate-100 flex flex-wrap items-center gap-2 text-[11px] text-slate-500">
+                    ${t.b2bIncrementClause ? `<span class="bg-slate-50 border border-slate-200/80 rounded px-2 py-0.5 font-medium truncate max-w-md">📜 <strong class="text-indigo-900">Increment Clause:</strong> ${escapeHtml(t.b2bIncrementClause)}</span>` : ""}
+                    ${t.billingAddress ? `<span class="bg-indigo-50/50 border border-indigo-100 rounded px-2 py-0.5 font-medium truncate max-w-sm">🏢 <strong class="text-indigo-900">Billing Address:</strong> ${escapeHtml(t.billingAddress)}</span>` : ""}
+                    ${t.permAddress ? `<span class="text-slate-400 truncate max-w-xs">Home: ${escapeHtml(t.permAddress)}</span>` : ""}
+                   </div>`
+                : ""
             }
-
-              <button
-                type="button"
-                data-action="tm-receipt"
-                data-id="${t.id}"
-                class="px-3 py-2 rounded-xl border border-slate-300 bg-white hover:bg-slate-100 text-slate-800 text-xs font-semibold transition shadow-2xs flex items-center gap-1 cursor-pointer"
-                title="Generate Rent Receipt"
-              >
-                <span>🧾 Receipt</span>
-              </button>
-
-                            <button
-                type="button"
-                data-action="tm-gst-invoice"
-                data-id="${t.id}"
-                class="px-3 py-2 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 text-xs font-semibold transition cursor-pointer flex items-center gap-1 shadow-2xs"
-                title="Generate &amp; Send Monthly Rent GST Tax Invoice (Rule 46 CGST Act)"
-              >
-                <span>🏛️ GST Invoice</span>
-              </button>
-
-              ${(t.isB2B || Number(t.camAmount) > 0 || Number(t.camRatePerSqFt) > 0)
-              ? `<button
-                type="button"
-                data-action="tm-cam-invoice"
-                data-id="${t.id}"
-                class="px-3 py-2 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 text-xs font-bold transition cursor-pointer flex items-center gap-1 shadow-2xs"
-                title="Open Separate Monthly CAM (Common Area Maintenance) GST Tax Invoice"
-              >
-                <span>🛠️ CAM Invoice</span>
-              </button>`
-              : ""}
-
-<button
-                type="button"
-                data-action="tm-chat"
-                data-id="${t.id}"
-                class="px-3 py-2 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 text-xs font-semibold transition cursor-pointer flex items-center gap-1 shadow-2xs"
-                title="Open live direct chat with this tenant"
-              >
-                <span>💬 Chat</span>
-              </button>
-
-              <button
-                type="button"
-                data-action="tm-invite"
-                data-id="${t.id}"
-                class="px-3 py-2 rounded-xl bg-teal-50 hover:bg-teal-100 text-teal-800 border border-teal-200 text-xs font-semibold transition cursor-pointer flex items-center gap-1 shadow-2xs"
-                title="Send download & portal access link via WhatsApp, Email or SMS"
-              >
-                <span>📲 Share App</span>
-              </button>
-
-              <button
-                type="button"
-                data-action="tm-police"
-                data-id="${t.id}"
-                class="px-3 py-2 rounded-xl bg-cyan-50 hover:bg-cyan-100 text-cyan-800 border border-cyan-200 text-xs font-semibold transition cursor-pointer flex items-center gap-1 shadow-2xs"
-                title="Generate State Police Verification Form for this tenant"
-              >
-                <span>👮 Police Form</span>
-              </button>
-
-              <button
-                type="button"
-                data-action="tm-agreement"
-                data-id="${t.id}"
-                class="px-3 py-2 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 text-xs font-semibold transition cursor-pointer"
-                title="Prepare Agreement"
-              >
-                <span>Draft Agreement &rarr;</span>
-              </button>
-
-              <button
-                type="button"
-                data-action="tm-upload-agreements"
-                data-id="${t.id}"
-                class="px-3 py-2 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 text-xs font-semibold transition cursor-pointer flex items-center gap-1 shadow-2xs"
-                title="Upload or view signed rent agreement copies (PDF, Image, Doc)"
-              >
-                <span>📑 Signed Copy ${t.agreementDocs?.length ? `(${t.agreementDocs.length})` : "(+)"}</span>
-              </button>
-
-              <button
-                type="button"
-                data-action="tm-delete"
-                data-id="${t.id}"
-                class="px-3 py-2 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 text-xs font-bold transition flex items-center gap-1.5 shadow-2xs cursor-pointer active:scale-95"
-                title="Permanently delete tenant profile '${escapeHtml(t.name)}' from Tenant Master"
-              >
-                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
-                <span>Delete Tenant</span>
-              </button>
-            </div>
           `;
 
           container.appendChild(card);

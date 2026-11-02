@@ -79,14 +79,14 @@ function getEl(id) {
         if (!listeners[evt]) return;
         listeners[evt] = listeners[evt].filter(f => f !== fn);
       },
-      setAttribute: () => {},
+      setAttribute: () => { },
       getAttribute: () => null,
-      removeAttribute: () => {},
+      removeAttribute: () => { },
       click: function () {
         this.dispatchEvent({ type: "click" });
       },
-      focus: () => {},
-      reset: () => {}
+      focus: () => { },
+      reset: () => { }
     };
   }
   return elements[id];
@@ -101,7 +101,7 @@ const sandbox = {
     if (evt === "DOMContentLoaded") sandbox._domReady = fn;
     if (evt === "afterprint") sandbox._afterPrint = fn;
   },
-  removeEventListener: () => {},
+  removeEventListener: () => { },
   document: {
     getElementById: (id) => getEl(id),
     querySelector: () => null,
@@ -120,22 +120,22 @@ const sandbox = {
     removeItem(k) { delete this._store[k]; },
     clear() { this._store = {}; }
   },
-  navigator: { userAgent: "Node", clipboard: { writeText: async () => {} } },
+  navigator: { userAgent: "Node", clipboard: { writeText: async () => { } } },
   location: { origin: "https://rental-income.app", pathname: "/", search: "" },
   URLSearchParams,
-  Blob: function () {},
-  URL: { createObjectURL: () => "blob:test", revokeObjectURL: () => {} },
-  FileReader: function () {},
+  Blob: function () { },
+  URL: { createObjectURL: () => "blob:test", revokeObjectURL: () => { } },
+  FileReader: function () { },
   confirm: () => true,
   prompt: () => "0",
-  alert: () => {},
+  alert: () => { },
   setTimeout: (fn) => {
     pendingTimers.push(fn);
     return pendingTimers.length;
   },
-  clearTimeout: () => {},
+  clearTimeout: () => { },
   setInterval: () => 1,
-  clearInterval: () => {},
+  clearInterval: () => { },
   console
 };
 
@@ -143,7 +143,7 @@ const pendingTimers = [];
 sandbox.runPendingTimers = () => {
   while (pendingTimers.length) {
     const fn = pendingTimers.shift();
-    try { fn(); } catch (e) {}
+    try { fn(); } catch (e) { }
   }
 };
 
