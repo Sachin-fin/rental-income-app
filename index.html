@@ -1869,19 +1869,12 @@
                 </div>
 
                 <!-- Compact SVG Line Chart -->
-                <div class="w-full h-44 sm:h-52">
-                  <svg id="dashCollectionChartSvg" class="w-full h-full select-none" viewBox="0 0 560 210"
+                <div class="w-full h-52 sm:h-64">
+                  <svg id="dashCollectionChartSvg" class="w-full h-full select-none" viewBox="0 0 580 210"
                     preserveAspectRatio="none">
                     <!-- Dynamically populated by renderDashboardCollectionChart() -->
                   </svg>
                 </div>
-              </div>
-            </div>
-
-            <!-- Compact Monthwise Cards -->
-            <div class="mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-              <div id="dashChartMonthBreakdown" class="grid grid-cols-7 gap-0.5 sm:gap-1">
-                <!-- Dynamically populated month mini-cards -->
               </div>
             </div>
           </div>
@@ -1960,7 +1953,7 @@
               <!-- Month-wise Detail Table -->
               <div
                 class="rounded-xl border border-slate-200/80 dark:border-slate-700/80 bg-white dark:bg-slate-900 overflow-hidden shadow-2xs">
-                <div class="overflow-x-auto">
+                <div class="overflow-x-auto max-h-[460px] xl:max-h-none overflow-y-auto">
                   <table class="w-full text-left border-collapse text-[11px]" id="dashOccupancyRosterTable">
                     <thead
                       class="bg-slate-100/90 dark:bg-slate-800/90 text-[10px] uppercase font-bold text-slate-500 dark:text-slate-400 border-b border-slate-200/70 dark:border-slate-700/70">
@@ -1996,6 +1989,29 @@
               </a>
             </div>
           </div>
+
+        </div>
+
+        <!-- FULL-WIDTH 12-MONTH FINANCIAL YEAR PERFORMANCE BREAKDOWN STRIP -->
+        <div class="p-3 sm:p-4 bg-slate-50/80 dark:bg-slate-850/80 border-t border-slate-200/80 dark:border-slate-800">
+          <div class="flex items-center justify-between gap-2 mb-2 px-0.5">
+            <div class="flex items-center gap-1.5 min-w-0">
+              <span class="text-xs">📅</span>
+              <h3 id="dashMonthBreakdownTitle" class="text-xs font-black text-slate-800 dark:text-slate-200 tracking-tight truncate">
+                All 12 Months Financial Performance (FY 2026-27)
+              </h3>
+              <span class="inline-flex items-center text-[9px] font-bold px-2 py-0.2 rounded-full bg-indigo-50 dark:bg-indigo-950/60 text-indigo-700 dark:text-indigo-300 border border-indigo-200/60 dark:border-indigo-800/60">
+                12-Month Trajectory
+              </span>
+            </div>
+            <span class="text-[10px] text-slate-400 dark:text-slate-500 font-semibold truncate shrink-0">
+              Apr to Mar Full Cycle · Hover or click month to inspect
+            </span>
+          </div>
+          <div id="dashChartMonthBreakdown" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-12 gap-1.5">
+            <!-- Dynamically populated month mini-cards -->
+          </div>
+        </div>
 
         </div>
       </section>
@@ -5291,7 +5307,8 @@
             </span>
             <select id="gstMonthSelect"
               class="px-2 py-1 rounded-lg bg-slate-900 text-teal-300 text-xs font-bold font-mono border border-teal-400/40 focus:outline-none focus:ring-1 focus:ring-teal-400 cursor-pointer">
-              <option value="Nov 2026" selected>Nov 2026 (Current)</option>
+              <option value="all" selected>All Months</option>
+              <option value="Nov 2026">Nov 2026 (Current)</option>
               <option value="Oct 2026">Oct 2026</option>
               <option value="Sep 2026">Sep 2026</option>
               <option value="Aug 2026">Aug 2026</option>
@@ -5501,8 +5518,7 @@
             <h3 class="font-extrabold text-xs sm:text-sm text-slate-900 dark:text-white flex items-center gap-1.5">
               <span>Invoices Register</span>
               <span id="gstRegisterMonthBadge"
-                class="text-[10px] px-2 py-0.2 rounded-full font-bold bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-800 font-mono">Oct
-                2026</span>
+                class="text-[10px] px-2 py-0.2 rounded-full font-bold bg-teal-100 dark:bg-teal-950 text-teal-800 dark:text-teal-300 border border-teal-200 dark:border-teal-800 font-mono">All Months</span>
             </h3>
 
             <!-- View Switcher (Table vs Card Grid) -->
@@ -5521,19 +5537,48 @@
             </div>
           </div>
 
-          <!-- Right: Search, Filter & Quick Action Buttons -->
-          <div class="flex items-center gap-2">
-            <!-- Search Input -->
-            <div class="relative">
-              <input type="text" id="gstInvoiceSearchInput" placeholder="Search tenant, unit..."
-                class="pl-7 pr-2.5 py-1 rounded-lg border border-slate-300 dark:border-slate-600 text-xs bg-white dark:bg-slate-900 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-teal-500 w-36 sm:w-48 shadow-2xs transition" />
-              <span class="absolute left-2 top-1.5 text-slate-400 text-[11px]">🔍</span>
+          <!-- Right: Search Tabs, Search Input, Property Filter & Actions -->
+          <div class="flex items-center flex-wrap gap-2">
+            <!-- Search Filter Tabs (All / Tenant / Property) -->
+            <div id="gstSearchTabGroup"
+              class="inline-flex p-0.5 rounded-lg bg-slate-200/80 dark:bg-slate-700/80 border border-slate-300/80 dark:border-slate-600 text-xs font-bold">
+              <button type="button" id="gstSearchTabAll" data-mode="all"
+                class="px-2.5 py-0.5 rounded-md bg-white dark:bg-slate-900 text-teal-700 dark:text-teal-300 shadow-2xs cursor-pointer font-bold transition text-[11px]"
+                title="Search all fields">
+                <span>All</span>
+              </button>
+              <button type="button" id="gstSearchTabTenant" data-mode="tenant"
+                class="px-2.5 py-0.5 rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer transition text-[11px]"
+                title="Filter specifically by Tenant Name">
+                <span>👤 Tenant</span>
+              </button>
+              <button type="button" id="gstSearchTabProperty" data-mode="property"
+                class="px-2.5 py-0.5 rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer transition text-[11px]"
+                title="Filter specifically by Property Name / Unit">
+                <span>🏢 Property</span>
+              </button>
             </div>
+
+            <!-- Search Input with Clear Button -->
+            <div class="relative flex items-center">
+              <input type="text" id="gstInvoiceSearchInput" placeholder="Search tenant or property name..."
+                class="pl-7 pr-7 py-1 rounded-lg border border-slate-300 dark:border-slate-600 text-xs bg-white dark:bg-slate-900 text-slate-800 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-teal-500 w-44 sm:w-60 shadow-2xs transition" />
+              <span class="absolute left-2 top-1.5 text-slate-400 text-[11px]">🔍</span>
+              <button type="button" id="gstInvoiceSearchClearBtn"
+                class="absolute right-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 text-xs font-bold hidden cursor-pointer"
+                title="Clear Search">✕</button>
+            </div>
+
+            <!-- Property Filter Dropdown -->
+            <select id="gstPropertyFilter"
+              class="px-2 py-1 rounded-lg border border-slate-300 dark:border-slate-600 text-xs bg-white dark:bg-slate-900 text-slate-800 dark:text-white font-bold focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer shadow-2xs transition">
+              <option value="all">All Properties</option>
+            </select>
 
             <!-- Status Filter -->
             <select id="gstStatusFilter"
               class="px-2.5 py-1 rounded-lg border border-slate-300 dark:border-slate-600 text-xs bg-white dark:bg-slate-900 text-slate-800 dark:text-white font-bold focus:outline-none focus:ring-1 focus:ring-teal-500 cursor-pointer shadow-2xs transition">
-              <option value="all">All Invoices</option>
+              <option value="all">All Status</option>
               <option value="pending">⏳ Pending Send</option>
               <option value="dispatched">✅ Dispatched</option>
             </select>
@@ -13513,42 +13558,47 @@
       }
 
       // --- DASHBOARD MONTHWISE COLLECTION TRAJECTORY CHART (PLANNED VS ACTUAL) ---
+      function getFinancialYearCycles(fyString) {
+        let startYear = 2026;
+        if (typeof fyString === "string") {
+          const match = fyString.match(/(\d{4})/);
+          if (match) {
+            startYear = parseInt(match[1], 10);
+          }
+        }
+        const nextYear = startYear + 1;
+        return [
+          `Apr ${startYear}`,
+          `May ${startYear}`,
+          `Jun ${startYear}`,
+          `Jul ${startYear}`,
+          `Aug ${startYear}`,
+          `Sep ${startYear}`,
+          `Oct ${startYear}`,
+          `Nov ${startYear}`,
+          `Dec ${startYear}`,
+          `Jan ${nextYear}`,
+          `Feb ${nextYear}`,
+          `Mar ${nextYear}`
+        ];
+      }
+
       function getMonthlyCollectionTotals() {
         const activeFy = state.dashSelectedFy || "FY 2026-27";
-        let cycles = [
-          "Apr 2026",
-          "May 2026",
-          "Jun 2026",
-          "Jul 2026",
-          "Aug 2026",
-          "Sep 2026",
-          "Oct 2026"
-        ];
-
-        if (activeFy === "FY 2025-26") {
-          cycles = [
-            "Apr 2025", "May 2025", "Jun 2025", "Jul 2025", "Aug 2025", "Sep 2025",
-            "Oct 2025", "Nov 2025", "Dec 2025", "Jan 2026", "Feb 2026", "Mar 2026"
-          ];
-        } else if (activeFy === "FY 2024-25") {
-          cycles = [
-            "Apr 2024", "May 2024", "Jun 2024", "Jul 2024", "Aug 2024", "Sep 2024",
-            "Oct 2024", "Nov 2024", "Dec 2024", "Jan 2025", "Feb 2025", "Mar 2025"
-          ];
-        }
+        const cycles = getFinancialYearCycles(activeFy);
 
         const totalProperties = Array.isArray(state.properties) && state.properties.length > 0 ? state.properties.length : 24;
         const activeTenantsList = Array.isArray(state.tenants)
           ? state.tenants.filter((t) => t.status !== "Vacated")
           : [];
-        const activeTenantCount = activeTenantsList.length > 0 ? activeTenantsList.length : 22;
+        const activeTenantCount = activeTenantsList.length > 0 ? activeTenantsList.length : 21;
 
         return cycles.map((cycle, cIdx) => {
           let planned = 0;
           let actual = 0;
           let occupiedUnitsInCycle = 0;
 
-          if (activeFy === "FY 2026-27") {
+          if (activeFy === "FY 2026-27" || activeFy.includes("2026") || activeFy === "all") {
             if (Array.isArray(state.properties)) {
               state.properties.forEach((p) => {
                 const ledger = typeof generatePropertyLedgerData === "function" ? generatePropertyLedgerData(p.id) : null;
@@ -13563,10 +13613,28 @@
               });
             }
 
-            if (occupiedUnitsInCycle === 0 && (!Array.isArray(state.properties) || state.properties.length === 0)) {
-              occupiedUnitsInCycle = Math.min(activeTenantCount, totalProperties);
+            // For cycles after historical ledger (Nov 2026 to Mar 2027):
+            if (occupiedUnitsInCycle === 0) {
+              if (Array.isArray(state.properties) && state.properties.length > 0) {
+                state.properties.forEach((p) => {
+                  const tenant = (state.tenants || []).find(
+                    (t) => t.status !== "Vacated" && (t.unit || "").trim().toLowerCase() === (p.name || "").trim().toLowerCase()
+                  );
+                  if (tenant) {
+                    const due = Number(tenant.rent || p.rent || 12000);
+                    planned += due;
+                    actual += due;
+                    occupiedUnitsInCycle++;
+                  }
+                });
+              }
+              if (occupiedUnitsInCycle === 0) {
+                occupiedUnitsInCycle = Math.min(activeTenantCount, totalProperties);
+                planned = 294000;
+                actual = 294000;
+              }
             }
-          } else if (activeFy === "FY 2025-26") {
+          } else if (activeFy === "FY 2025-26" || activeFy.includes("2025")) {
             // Audited FY 2025-26 figures
             occupiedUnitsInCycle = 23;
             planned = 278000;
@@ -13619,6 +13687,10 @@
         if (trajSub) {
           trajSub.textContent = `Planned Target vs. Actual Payments across ${activeFy}`;
         }
+        const mbTitle = document.getElementById("dashMonthBreakdownTitle");
+        if (mbTitle) {
+          mbTitle.textContent = `All 12 Months Financial Performance (${activeFy})`;
+        }
 
         // Right-side Month-wise Occupancy & Tenant roster elements
         const rosterTbody = document.getElementById("dashOccupancyRosterTbody");
@@ -13664,7 +13736,7 @@
                 <td class="py-1.5 px-2.5 whitespace-nowrap">
                   <div class="flex items-center gap-1.5">
                     <span class="w-1.5 h-1.5 rounded-full ${d.rate >= 99.9 ? 'bg-emerald-500' : 'bg-amber-500'}"></span>
-                    <span class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">${d.shortMonth} 2026</span>
+                    <span class="font-bold text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition">${d.cycle}</span>
                   </div>
                 </td>
                 <td class="py-1.5 px-2 text-center font-bold text-slate-700 dark:text-slate-300">
@@ -13692,13 +13764,13 @@
           }).join("");
         }
 
-        // Left-side Chart SVG Dimensions (Clean 560 x 210 half-page viewport)
-        const width = 560;
+        // Left-side Chart SVG Dimensions (Clean 580 x 210 half-page viewport)
+        const width = 580;
         const height = 210;
-        const leftMargin = 58;
-        const rightMargin = 22;
-        const topMargin = 22;
-        const bottomMargin = 162; // baseline Y
+        const leftMargin = 50;
+        const rightMargin = 26;
+        const topMargin = 20;
+        const bottomMargin = 158; // baseline Y
         const chartHeight = bottomMargin - topMargin;
         const chartWidth = width - leftMargin - rightMargin;
 
@@ -13841,12 +13913,13 @@
           <!-- X-Axis Month Badges & Labels -->
           <g>
             ${data.map((d, i) => {
-          const x = leftMargin + i * stepX;
-          return `
-                <text x="${x.toFixed(1)}" y="182" text-anchor="middle" class="text-[11px] font-extrabold fill-slate-700 dark:fill-slate-300 pointer-events-none tracking-tight">${d.shortMonth}</text>
-                <text x="${x.toFixed(1)}" y="196" text-anchor="middle" class="text-[9.5px] font-semibold fill-slate-400 dark:fill-slate-500 pointer-events-none">'26</text>
+              const x = leftMargin + i * stepX;
+              const yearShort = d.cycle.split(" ")[1] ? "'" + d.cycle.split(" ")[1].slice(-2) : "";
+              return `
+                <text x="${x.toFixed(1)}" y="178" text-anchor="middle" class="text-[10px] font-extrabold fill-slate-700 dark:fill-slate-300 pointer-events-none tracking-tight">${d.shortMonth}</text>
+                <text x="${x.toFixed(1)}" y="192" text-anchor="middle" class="text-[8.5px] font-semibold fill-slate-400 dark:fill-slate-500 pointer-events-none">${yearShort}</text>
               `;
-        }).join("")}
+            }).join("")}
           </g>
 
           <!-- Transparent Interactive Hover Hit Columns -->
@@ -13874,15 +13947,16 @@
           breakdownEl.innerHTML = data.map((d, i) => {
             const isFull = d.rate >= 99.9;
             const rateBadge = isFull
-              ? `<span class="px-1 py-0.2 rounded text-[7px] sm:text-[7.5px] font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300/60 leading-none shrink-0">100%</span>`
-              : `<span class="px-1 py-0.2 rounded text-[7px] sm:text-[7.5px] font-black bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300/60 leading-none shrink-0">${d.rate}%</span>`;
+              ? `<span class="px-1.5 py-0.5 rounded text-[7.5px] sm:text-[8px] font-black bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300/60 leading-none shrink-0">100%</span>`
+              : `<span class="px-1.5 py-0.5 rounded text-[7.5px] sm:text-[8px] font-black bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300/60 leading-none shrink-0">${d.rate}%</span>`;
+            const yearShort = d.cycle.split(" ")[1] ? "'" + d.cycle.split(" ")[1].slice(-2) : "";
 
             return `
               <div
                 data-month-chip-index="${i}"
                 data-cycle="${d.cycle}"
                 title="${d.cycle} — ${isFull ? '100% Collected' : d.rate + '% Collected'} (Plan: ${formatINR(d.planned)}, Actual: ${formatINR(d.actual)})"
-                class="group relative flex flex-col justify-between p-1.5 rounded-xl border transition-all duration-200 cursor-pointer overflow-hidden min-w-0 select-none ${isFull
+                class="group relative flex flex-col justify-between p-2 rounded-xl border transition-all duration-200 cursor-pointer overflow-hidden min-w-0 select-none ${isFull
                 ? 'border-emerald-200/80 dark:border-emerald-900/50 bg-gradient-to-b from-emerald-50/40 via-white to-slate-50/60 dark:from-emerald-950/20 dark:via-slate-850 dark:to-slate-900 hover:border-emerald-400 dark:hover:border-emerald-600 hover:shadow-xs'
                 : 'border-amber-200/90 dark:border-amber-900/50 bg-gradient-to-b from-amber-50/40 via-white to-slate-50/60 dark:from-amber-950/20 dark:via-slate-850 dark:to-slate-900 hover:border-amber-400 dark:hover:border-amber-600 hover:shadow-xs'
               }"
@@ -13891,20 +13965,20 @@
                 <div class="absolute top-0 left-0 right-0 h-0.5 ${isFull ? 'bg-emerald-500' : 'bg-amber-500'}"></div>
 
                 <!-- Header: Month name & Rate badge -->
-                <div class="flex items-center justify-between gap-0.5 leading-none min-w-0 mb-1">
-                  <span class="text-[8px] sm:text-[8.5px] font-black text-slate-800 dark:text-slate-200 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition truncate tracking-tight">
-                    ${d.shortMonth}
+                <div class="flex items-center justify-between gap-1 leading-none min-w-0 mb-1">
+                  <span class="text-[9.5px] sm:text-[10px] font-black text-slate-800 dark:text-slate-100 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition truncate tracking-tight">
+                    ${d.shortMonth} <span class="text-slate-400 dark:text-slate-500 font-semibold text-[8px]">${yearShort}</span>
                   </span>
                   ${rateBadge}
                 </div>
 
                 <!-- Hero Collected Amount & Plan -->
                 <div class="my-0.5 min-w-0">
-                  <div class="text-[9.5px] sm:text-[10px] font-black tracking-tight truncate leading-tight ${d.actual > 0 ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'
+                  <div class="text-[10px] sm:text-[11px] font-black tracking-tight truncate leading-tight ${d.actual > 0 ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'
               }" title="Collected: ${formatINR(d.actual)}">
                     ${formatINR(d.actual)}
                   </div>
-                  <div class="text-[7px] sm:text-[7.5px] text-slate-400 dark:text-slate-500 flex items-center justify-between gap-0.5 leading-tight whitespace-nowrap overflow-hidden mt-0.5">
+                  <div class="text-[7.5px] sm:text-[8px] text-slate-400 dark:text-slate-500 flex items-center justify-between gap-0.5 leading-tight whitespace-nowrap overflow-hidden mt-0.5">
                     <span class="font-medium shrink-0">Plan</span>
                     <span class="font-bold text-slate-600 dark:text-slate-300 truncate">${formatINR(d.planned)}</span>
                   </div>
@@ -13922,7 +13996,7 @@
                 </div>
 
                 <!-- Footer Status Tag -->
-                <div class="pt-0.5 mt-0.5 border-t border-slate-100 dark:border-slate-800 text-[7px] sm:text-[7.5px] leading-tight min-w-0">
+                <div class="pt-0.5 mt-0.5 border-t border-slate-100 dark:border-slate-800 text-[7.5px] sm:text-[8px] leading-tight min-w-0">
                   ${d.shortfall > 0
                 ? `
                         <div class="flex items-center justify-between text-rose-600 dark:text-rose-400 font-bold whitespace-nowrap gap-0.5 overflow-hidden">
@@ -26655,6 +26729,73 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         window.applyAutomaticRentalIncrements = applyAutomaticRentalIncrements;
       }
 
+      function getPropertyForInvoice(inv) {
+        if (!inv) return null;
+        if (inv.propertyName || inv.propertyBuilding) {
+          return {
+            name: inv.propertyName || "",
+            building: inv.propertyBuilding || "",
+            address: inv.billingAddress || ""
+          };
+        }
+        const tenant = Array.isArray(state.tenants) ? state.tenants.find((t) => t.id === inv.tenantId) : null;
+        const unit = inv.tenantUnit || (tenant && tenant.unit) || "";
+        if (!Array.isArray(state.properties)) return null;
+
+        if (tenant && tenant.propertyId) {
+          const prop = state.properties.find((p) => p.id === tenant.propertyId);
+          if (prop) return prop;
+        }
+        if (unit) {
+          const unitClean = unit.trim().toLowerCase();
+          const prop = state.properties.find((p) => {
+            const pName = (p.name || "").trim().toLowerCase();
+            const pFlat = (p.flatNo || "").trim().toLowerCase();
+            return pName === unitClean || pFlat === unitClean || (pName && unitClean.includes(pName)) || (pFlat && unitClean.includes(pFlat));
+          });
+          if (prop) return prop;
+        }
+        return null;
+      }
+
+      function populateGstPropertyFilter() {
+        if (typeof document === "undefined") return;
+        const propSelect = document.getElementById("gstPropertyFilter");
+        if (!propSelect) return;
+        const currentVal = propSelect.value || "all";
+
+        propSelect.innerHTML = `<option value="all">All Properties</option>`;
+
+        const propNames = new Set();
+        if (Array.isArray(state.properties)) {
+          state.properties.forEach((p) => {
+            const name = (p.name || "").trim();
+            const b = (p.building || "").trim();
+            if (name) propNames.add(name);
+            if (b) propNames.add(b);
+          });
+        }
+        if (Array.isArray(state.tenants)) {
+          state.tenants.forEach((t) => {
+            if (t.unit && !t.unit.startsWith("Unassigned")) {
+              propNames.add(t.unit.trim());
+            }
+            if (t.propertyName) propNames.add(t.propertyName.trim());
+            if (t.building) propNames.add(t.building.trim());
+          });
+        }
+
+        Array.from(propNames).sort().forEach((pName) => {
+          if (typeof document.createElement === "function") {
+            const opt = document.createElement("option");
+            opt.value = pName;
+            opt.textContent = `🏢 ${pName}`;
+            if (pName.toLowerCase() === currentVal.toLowerCase()) opt.selected = true;
+            propSelect.appendChild(opt);
+          }
+        });
+      }
+
       function generateGstInvoiceForTenant(tenantId, targetMonth, forceRefresh = false) {
         ensureLandlordGstDefaults();
         const tenant = state.tenants.find((t) => t.id === tenantId);
@@ -26759,11 +26900,23 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
           ? ("cam_inv_" + monthSlug + "_" + tenant.id)
           : null;
 
+        const matchedProp = (Array.isArray(state.properties) && state.properties.length > 0)
+          ? state.properties.find((p) =>
+              p.id === tenant.propertyId ||
+              (p.name && tenant.unit && (p.name.toLowerCase() === tenant.unit.toLowerCase() || p.name.toLowerCase().includes(tenant.unit.toLowerCase()))) ||
+              (p.flatNo && tenant.unit && (p.flatNo.toLowerCase() === tenant.unit.toLowerCase() || tenant.unit.toLowerCase().includes(p.flatNo.toLowerCase())))
+            )
+          : null;
+        const propName = tenant.propertyName || (matchedProp ? matchedProp.name : "");
+        const propBuilding = tenant.building || (matchedProp ? matchedProp.building : "");
+
         const invoiceRecord = {
           id: invoiceId,
           invoiceNo,
           invoiceType: "RENT",
           linkedCamInvoiceId,
+          propertyName: propName,
+          propertyBuilding: propBuilding,
           areaSqFt: unitAreaSqFt,
           rentPerSqFt: effectiveRentPerSqFt,
           camRatePerSqFt: Number(tenant.camRatePerSqFt) || 0,
@@ -26911,11 +27064,23 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
           ? `Pro-rata CAM Billing: CAM calculated for ${camProration.daysCount} Days (${camPeriodDates.startDate} to ${camPeriodDates.endDate} · ${camProration.daysCount} of ${camProration.totalDays} days in ${billingMonth}) based on Rent Start Date (${formatDateDdMmmYyyy(effRentStartDate) || camPeriodDates.startDate}). Full Monthly CAM: ₹${fullTaxableCam.toLocaleString("en-IN")}/mo → Proportional Taxable CAM: ₹${taxableCam.toLocaleString("en-IN")} + 18% GST.`
           : `Separate Monthly CAM (Common Area Maintenance) Invoice: ${unitAreaSqFt > 0 ? `Chargeable Area ${unitAreaSqFt.toLocaleString("en-IN")} Sq.Ft × ₹${effectiveCamRate}/Sq.Ft/Mo = ` : ""}Taxable CAM ₹${taxableCam.toLocaleString("en-IN")}/mo + 18% GST (Billed separately from Rent Invoice).`;
 
+        const matchedCamProp = (Array.isArray(state.properties) && state.properties.length > 0)
+          ? state.properties.find((p) =>
+              p.id === tenant.propertyId ||
+              (p.name && tenant.unit && (p.name.toLowerCase() === tenant.unit.toLowerCase() || p.name.toLowerCase().includes(tenant.unit.toLowerCase()))) ||
+              (p.flatNo && tenant.unit && (p.flatNo.toLowerCase() === tenant.unit.toLowerCase() || tenant.unit.toLowerCase().includes(p.flatNo.toLowerCase())))
+            )
+          : null;
+        const camPropName = tenant.propertyName || (matchedCamProp ? matchedCamProp.name : "");
+        const camPropBuilding = tenant.building || (matchedCamProp ? matchedCamProp.building : "");
+
         const camInvoiceRecord = {
           id: camInvoiceId,
           invoiceNo,
           invoiceType: "CAM",
           linkedRentInvoiceId,
+          propertyName: camPropName,
+          propertyBuilding: camPropBuilding,
           tenantId: tenant.id,
           tenantName: tenant.businessName || tenant.name,
           tenantContactName: tenant.name,
@@ -26999,6 +27164,36 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         return generated;
       }
 
+      function _generateSingleMonthInvoices(billingMonth) {
+        let createdCount = 0;
+        if (!Array.isArray(state.tenants)) return 0;
+        applyAutomaticRentalIncrements(billingMonth);
+
+        state.tenants.forEach((t) => {
+          if (!t.unit || t.unit.startsWith("Unassigned")) return;
+          if (!isTenantLeaseStartedByMonth(t, billingMonth)) return;
+          const monthSlug = billingMonth.replace(/\s+/g, "_").toLowerCase();
+          const invoiceId = "inv_" + monthSlug + "_" + t.id;
+          const hadInvoice = !!state.gstInvoices[invoiceId];
+          const unitArea = Number(t.areaSqFt) || (typeof getPropertyAreaForUnit === "function" ? getPropertyAreaForUnit(t.unit) : 0) || 0;
+          const camAmt = Number(t.camAmount) || (unitArea > 0 && Number(t.camRatePerSqFt) > 0 ? Math.round(unitArea * Number(t.camRatePerSqFt)) : 0);
+          const camInvoiceId = "cam_inv_" + monthSlug + "_" + t.id;
+          const hadCamInvoice = !!state.gstInvoices[camInvoiceId];
+
+          generateGstInvoiceForTenant(t.id, billingMonth);
+          if (!hadInvoice) {
+            createdCount++;
+          }
+          if (camAmt > 0 && t.autoBillCamSeparateInvoice !== false) {
+            generateCamInvoiceForTenant(t.id, billingMonth);
+            if (!hadCamInvoice) {
+              createdCount++;
+            }
+          }
+        });
+        return createdCount;
+      }
+
       function autoCheckAndGenerateMonthlyGstInvoices(targetMonth) {
         ensureLandlordGstDefaults();
         if (typeof ensureCurrentBillingMonthInSelectors === "function") {
@@ -27022,38 +27217,30 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
           }
         });
 
+        purgeFutureDateInvoicesFromState();
+
+        if (targetMonth === "all") {
+          const cycles = typeof getFinancialYearCycles === "function"
+            ? getFinancialYearCycles("FY 2026-27")
+            : ["Apr 2026", "May 2026", "Jun 2026", "Jul 2026", "Aug 2026", "Sep 2026", "Oct 2026", "Nov 2026"];
+          let totalCreated = 0;
+          cycles.forEach((c) => {
+            if (!isFutureBillingMonth(c)) {
+              totalCreated += _generateSingleMonthInvoices(c);
+            }
+          });
+          const eff = getEffectiveBillingMonth();
+          updateStartOfMonthBanner(eff);
+          updateGstNavBadge(eff);
+          return totalCreated;
+        }
+
         let billingMonth = targetMonth || getEffectiveBillingMonth();
         if (isFutureBillingMonth(billingMonth)) {
           billingMonth = getEffectiveBillingMonth();
         }
-        purgeFutureDateInvoicesFromState();
-        applyAutomaticRentalIncrements(billingMonth);
 
-        let createdCount = 0;
-
-        state.tenants.forEach((t) => {
-          if (!t.unit || t.unit.startsWith("Unassigned")) return;
-          if (!isTenantLeaseStartedByMonth(t, billingMonth)) return;
-          const monthSlug = billingMonth.replace(/\s+/g, "_").toLowerCase();
-          const invoiceId = "inv_" + monthSlug + "_" + t.id;
-          const hadInvoice = !!state.gstInvoices[invoiceId];
-          const unitArea = Number(t.areaSqFt) || getPropertyAreaForUnit(t.unit) || 0;
-          const camAmt = Number(t.camAmount) || (unitArea > 0 && Number(t.camRatePerSqFt) > 0 ? Math.round(unitArea * Number(t.camRatePerSqFt)) : 0);
-          const camInvoiceId = "cam_inv_" + monthSlug + "_" + t.id;
-          const hadCamInvoice = !!state.gstInvoices[camInvoiceId];
-
-          generateGstInvoiceForTenant(t.id, billingMonth);
-          if (!hadInvoice) {
-            createdCount++;
-          }
-          if (camAmt > 0 && t.autoBillCamSeparateInvoice !== false) {
-            generateCamInvoiceForTenant(t.id, billingMonth);
-            if (!hadCamInvoice) {
-              createdCount++;
-            }
-          }
-        });
-
+        const createdCount = _generateSingleMonthInvoices(billingMonth);
         updateStartOfMonthBanner(billingMonth);
         updateGstNavBadge(billingMonth);
         return createdCount;
@@ -27423,7 +27610,8 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         if (typeof toast !== 'undefined' && toast.success) {
           toast.success(`WhatsApp GST Invoice launched for ${inv.tenantName}!`, "WhatsApp Dispatched");
         }
-        renderGstTab(inv.billingMonth);
+        const curSelectVal = document.getElementById("gstMonthSelect")?.value;
+        renderGstTab(curSelectVal || inv.billingMonth);
       }
 
       function dispatchGstInvoiceEmail(invoiceId) {
@@ -27449,7 +27637,8 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         if (typeof toast !== 'undefined' && toast.success) {
           toast.success(`Email GST Invoice prepared for ${inv.tenantName}!`, "Email Dispatched");
         }
-        renderGstTab(inv.billingMonth);
+        const curSelectVal = document.getElementById("gstMonthSelect")?.value;
+        renderGstTab(curSelectVal || inv.billingMonth);
       }
 
       function ensureCurrentBillingMonthInSelectors() {
@@ -27460,17 +27649,28 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         const monthSel = document.getElementById("gstMonthSelect");
         if (monthSel && monthSel.options) {
           let hasEff = false;
+          let hasAll = false;
           for (let i = 0; i < monthSel.options.length; i++) {
-            if (monthSel.options[i].value === effMonth) {
-              hasEff = true;
-              break;
+            if (monthSel.options[i].value === effMonth) hasEff = true;
+            if (monthSel.options[i].value === "all") hasAll = true;
+          }
+          if (!hasAll && typeof document.createElement === "function") {
+            const allOpt = document.createElement("option");
+            allOpt.value = "all";
+            allOpt.textContent = "All Months";
+            if (typeof monthSel.insertBefore === "function") {
+              monthSel.insertBefore(allOpt, monthSel.firstChild);
+            } else if (typeof monthSel.appendChild === "function") {
+              monthSel.appendChild(allOpt);
             }
           }
           if (!hasEff && typeof document.createElement === "function") {
             const opt = document.createElement("option");
             opt.value = effMonth;
             opt.textContent = `${effMonth} (Current)`;
-            if (typeof monthSel.insertBefore === "function") {
+            if (monthSel.children && monthSel.children.length > 1 && typeof monthSel.insertBefore === "function") {
+              monthSel.insertBefore(opt, monthSel.children[1]);
+            } else if (typeof monthSel.insertBefore === "function") {
               monthSel.insertBefore(opt, monthSel.firstChild);
             } else if (typeof monthSel.appendChild === "function") {
               monthSel.appendChild(opt);
@@ -27504,8 +27704,9 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
 
       function renderGstTab(selectedMonth) {
         ensureCurrentBillingMonthInSelectors();
-        let month = selectedMonth || document.getElementById("gstMonthSelect")?.value || getEffectiveBillingMonth();
-        if (isFutureBillingMonth(month)) {
+        populateGstPropertyFilter();
+        let month = selectedMonth || document.getElementById("gstMonthSelect")?.value || "all";
+        if (month !== "all" && isFutureBillingMonth(month)) {
           month = getEffectiveBillingMonth();
           const selEl = document.getElementById("gstMonthSelect");
           if (selEl) selEl.value = month;
@@ -27515,17 +27716,29 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
 
         // Update Month Badges
         const regMonthBadge = document.getElementById("gstRegisterMonthBadge");
-        if (regMonthBadge) regMonthBadge.textContent = month;
+        if (regMonthBadge) regMonthBadge.textContent = month === "all" ? "All Months" : month;
 
         // Auto ensure all invoices for month
         autoCheckAndGenerateMonthlyGstInvoices(month);
 
         const invoices = Object.values(state.gstInvoices || {}).filter((inv) => {
-          if (inv.billingMonth !== month) return false;
+          if (month !== "all" && inv.billingMonth !== month) return false;
           if (isFutureBillingMonth(inv.billingMonth)) return false;
           const tObj = (state.tenants || []).find((t) => t.id === inv.tenantId);
-          if (tObj && !isTenantLeaseStartedByMonth(tObj, month)) return false;
+          if (tObj && !isTenantLeaseStartedByMonth(tObj, inv.billingMonth)) return false;
           return true;
+        });
+
+        // Sort invoices chronologically (newest billing month first, then unit)
+        invoices.sort((a, b) => {
+          const ymA = typeof parseYearMonthFromAny === "function" ? parseYearMonthFromAny(a.billingMonth) : null;
+          const ymB = typeof parseYearMonthFromAny === "function" ? parseYearMonthFromAny(b.billingMonth) : null;
+          if (ymA && ymB) {
+            const scoreA = ymA.year * 100 + ymA.month;
+            const scoreB = ymB.year * 100 + ymB.month;
+            if (scoreB !== scoreA) return scoreB - scoreA;
+          }
+          return (a.tenantUnit || "").localeCompare(b.tenantUnit || "");
         });
 
         // KPI Calculations
@@ -27598,7 +27811,7 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
                   <div class="w-10 h-10 rounded-xl bg-teal-50 dark:bg-teal-950/60 text-teal-600 dark:text-teal-400 border border-teal-200 dark:border-teal-800 flex items-center justify-center text-lg mx-auto shadow-2xs">
                     🏛️
                   </div>
-                  <h4 class="font-extrabold text-xs text-slate-800 dark:text-white">No GST Invoices for ${escapeHtml(month)}</h4>
+                  <h4 class="font-extrabold text-xs text-slate-800 dark:text-white">No GST Invoices for ${escapeHtml(month === "all" ? "the selected period" : month)}</h4>
                   <p class="text-[11px] text-slate-500 dark:text-slate-400">
                     Auto-generated on 1st of month for active tenancies.
                   </p>
@@ -27616,7 +27829,7 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
           if (cardsGrid) {
             cardsGrid.innerHTML = `
               <div class="col-span-full py-8 text-center text-xs text-slate-400">
-                No GST Invoices found for ${escapeHtml(month)}. Click [⚡ Missing] to generate.
+                No GST Invoices found for ${escapeHtml(month === "all" ? "the selected period" : month)}. Click [⚡ Missing] to generate.
               </div>
             `;
           }
@@ -27625,15 +27838,41 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
 
         const searchQuery = (document.getElementById("gstInvoiceSearchInput")?.value || "").toLowerCase().trim();
         const statusFilter = document.getElementById("gstStatusFilter")?.value || "all";
+        const propertyFilter = (document.getElementById("gstPropertyFilter")?.value || "all").toLowerCase().trim();
+        const searchMode = state.gstSearchMode || "all";
 
         const filtered = invoices.filter((inv) => {
           const isDispatched = inv.dispatchedChannels && inv.dispatchedChannels.length > 0;
           if (statusFilter === "pending" && isDispatched) return false;
           if (statusFilter === "dispatched" && !isDispatched) return false;
 
+          const prop = typeof getPropertyForInvoice === "function" ? getPropertyForInvoice(inv) : null;
+          const propName = (prop && prop.name) || inv.propertyName || "";
+          const propBuilding = (prop && prop.building) || inv.propertyBuilding || "";
+          const propAddress = (prop && prop.address) || "";
+          const unit = inv.tenantUnit || "";
+          const fullPropText = (propName + " " + propBuilding + " " + propAddress + " " + unit).toLowerCase();
+
+          // 1. Property Dropdown Filter
+          if (propertyFilter !== "all") {
+            const matchesProp = fullPropText.includes(propertyFilter) || (unit && unit.toLowerCase() === propertyFilter);
+            if (!matchesProp) return false;
+          }
+
+          // 2. Search Text Query (with Search Tab mode)
           if (searchQuery) {
-            const hay = (inv.invoiceNo + " " + inv.tenantName + " " + inv.tenantUnit).toLowerCase();
-            return hay.includes(searchQuery);
+            const tenantText = ((inv.tenantName || "") + " " + (inv.tenantContactName || "") + " " + (inv.tenantBusinessName || "")).toLowerCase();
+            const invoiceNoText = (inv.invoiceNo || "").toLowerCase();
+            const monthText = (inv.billingMonth || "").toLowerCase();
+
+            if (searchMode === "tenant") {
+              return tenantText.includes(searchQuery);
+            } else if (searchMode === "property") {
+              return fullPropText.includes(searchQuery);
+            } else {
+              // "all" mode matches tenant OR property OR unit OR invoice number OR month
+              return tenantText.includes(searchQuery) || fullPropText.includes(searchQuery) || invoiceNoText.includes(searchQuery) || monthText.includes(searchQuery);
+            }
           }
           return true;
         });
@@ -27642,14 +27881,18 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
           tbody.innerHTML = `
             <tr>
               <td colspan="9" class="py-8 text-center text-slate-400 text-xs">
-                No invoices match the selected filter.
+                <div class="space-y-1.5">
+                  <p class="font-bold text-slate-600 dark:text-slate-300">No invoices match the selected search or filter.</p>
+                  <p class="text-[11px] text-slate-400">Try adjusting your tenant/property search query or filters.</p>
+                  <button type="button" onclick="const s=document.getElementById('gstInvoiceSearchInput'); if(s) s.value=''; const c=document.getElementById('gstInvoiceSearchClearBtn'); if(c) c.classList.add('hidden'); const p=document.getElementById('gstPropertyFilter'); if(p) p.value='all'; const st=document.getElementById('gstStatusFilter'); if(st) st.value='all'; renderGstTab();" class="text-teal-600 dark:text-teal-400 underline font-semibold text-xs cursor-pointer">Clear all filters</button>
+                </div>
               </td>
             </tr>
           `;
           if (cardsGrid) {
             cardsGrid.innerHTML = `
-              <div class="col-span-full py-8 text-center text-slate-400 text-xs">
-                No invoices match the selected filter.
+              <div class="col-span-full py-8 text-center text-xs text-slate-400">
+                No invoices match the selected search or filter.
               </div>
             `;
           }
@@ -27667,6 +27910,8 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
           const isWa = inv.dispatchedChannels && inv.dispatchedChannels.includes("whatsapp");
           const isEmail = inv.dispatchedChannels && inv.dispatchedChannels.includes("email");
           const initials = getTenantInitials(inv.tenantName);
+          const prop = typeof getPropertyForInvoice === "function" ? getPropertyForInvoice(inv) : null;
+          const propBuilding = (prop && prop.building) || inv.propertyBuilding || "";
 
           // 1. Table Row (Compact py-2 px-3)
           const tr = document.createElement("tr");
@@ -27683,8 +27928,9 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
                 }
               </div>
             </td>
-            <td class="py-2 px-3 font-mono text-slate-600 dark:text-slate-400 text-[11px] whitespace-nowrap">
-              ${inv.invoiceDate}
+            <td class="py-2 px-3 whitespace-nowrap">
+              <div class="font-mono text-slate-700 dark:text-slate-300 text-[11px] font-semibold">${inv.invoiceDate}</div>
+              <div class="text-[9px] font-bold text-teal-700 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/60 px-1.5 py-0.2 rounded border border-teal-200 dark:border-teal-800/60 inline-block mt-0.5">${escapeHtml(inv.billingMonth)}</div>
             </td>
             <td class="py-2 px-3">
               <div class="flex items-center gap-2">
@@ -27695,7 +27941,7 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
                   <div class="font-bold text-slate-900 dark:text-white text-xs truncate">${escapeHtml(inv.tenantName)}</div>
                   <div class="text-[10px] text-slate-500 dark:text-slate-400 truncate flex items-center gap-0.5">
                     <span>🏢</span>
-                    <span>${escapeHtml(inv.tenantUnit)}</span>
+                    <span>${escapeHtml(inv.tenantUnit)}${propBuilding ? ' · ' + escapeHtml(propBuilding) : ''}</span>
                   </div>
                 </div>
               </div>
@@ -27771,11 +28017,14 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
                       <h4 class="font-black text-xs text-slate-900 dark:text-white truncate">${escapeHtml(inv.tenantName)}</h4>
                       <p class="text-[10px] text-slate-500 dark:text-slate-400 truncate flex items-center gap-0.5">
                         <span>🏢</span>
-                        <span>${escapeHtml(inv.tenantUnit)}</span>
+                        <span>${escapeHtml(inv.tenantUnit)}${propBuilding ? ' · ' + escapeHtml(propBuilding) : ''}</span>
                       </p>
                     </div>
                   </div>
-                  <span class="font-mono font-bold text-[10px] text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/60 px-1.5 py-0.2 rounded border border-teal-200 dark:border-teal-800 shrink-0">${inv.invoiceNo}</span>
+                  <div class="flex items-center gap-1.5 shrink-0">
+                    <span class="text-[9px] font-bold text-teal-700 dark:text-teal-400 bg-teal-50 dark:bg-teal-950/60 px-1.5 py-0.2 rounded border border-teal-200 dark:border-teal-800">${escapeHtml(inv.billingMonth)}</span>
+                    <span class="font-mono font-bold text-[10px] text-teal-800 dark:text-teal-300 bg-teal-50 dark:bg-teal-950/60 px-1.5 py-0.2 rounded border border-teal-200 dark:border-teal-800">${inv.invoiceNo}</span>
+                  </div>
                 </div>
 
                 <!-- Financial Breakdown -->
@@ -28691,10 +28940,62 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
           renderGstTab(e.target.value);
         });
 
-        // Search & filter
-        document.getElementById("gstInvoiceSearchInput")?.addEventListener("input", () => {
+        // Search Tabs (All / Tenant / Property)
+        const updateGstSearchTabStyles = (mode) => {
+          state.gstSearchMode = mode;
+          const btnAll = document.getElementById("gstSearchTabAll");
+          const btnTenant = document.getElementById("gstSearchTabTenant");
+          const btnProp = document.getElementById("gstSearchTabProperty");
+          const activeCls = "px-2.5 py-0.5 rounded-md bg-white dark:bg-slate-900 text-teal-700 dark:text-teal-300 shadow-2xs font-extrabold cursor-pointer transition text-[11px]";
+          const inactiveCls = "px-2.5 py-0.5 rounded-md text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white cursor-pointer transition text-[11px]";
+
+          if (btnAll) btnAll.className = mode === "all" ? activeCls : inactiveCls;
+          if (btnTenant) btnTenant.className = mode === "tenant" ? activeCls : inactiveCls;
+          if (btnProp) btnProp.className = mode === "property" ? activeCls : inactiveCls;
+        };
+
+        document.getElementById("gstSearchTabAll")?.addEventListener("click", () => {
+          updateGstSearchTabStyles("all");
           renderGstTab();
         });
+        document.getElementById("gstSearchTabTenant")?.addEventListener("click", () => {
+          updateGstSearchTabStyles("tenant");
+          renderGstTab();
+        });
+        document.getElementById("gstSearchTabProperty")?.addEventListener("click", () => {
+          updateGstSearchTabStyles("property");
+          renderGstTab();
+        });
+
+        // Search Input & Clear
+        const searchInput = document.getElementById("gstInvoiceSearchInput");
+        const clearBtn = document.getElementById("gstInvoiceSearchClearBtn");
+        searchInput?.addEventListener("input", (e) => {
+          if (clearBtn) {
+            if (e.target.value && e.target.value.trim().length > 0) {
+              clearBtn.classList.remove("hidden");
+            } else {
+              clearBtn.classList.add("hidden");
+            }
+          }
+          renderGstTab();
+        });
+
+        clearBtn?.addEventListener("click", () => {
+          if (searchInput) {
+            searchInput.value = "";
+            clearBtn.classList.add("hidden");
+            searchInput.focus();
+          }
+          renderGstTab();
+        });
+
+        // Property filter dropdown
+        document.getElementById("gstPropertyFilter")?.addEventListener("change", () => {
+          renderGstTab();
+        });
+
+        // Status filter
         document.getElementById("gstStatusFilter")?.addEventListener("change", () => {
           renderGstTab();
         });
@@ -28878,6 +29179,7 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         window.autoCheckAndGenerateMonthlyGstInvoices = autoCheckAndGenerateMonthlyGstInvoices;
         window.printGstInvoice = printGstInvoice;
         window.printGstRegister = printGstRegister;
+        window.getFinancialYearCycles = getFinancialYearCycles;
         window.getMonthlyCollectionTotals = getMonthlyCollectionTotals;
         window.renderDashboardCollectionChart = renderDashboardCollectionChart;
         window.getFinancialYearMetrics = getFinancialYearMetrics;

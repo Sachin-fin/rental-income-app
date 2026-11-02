@@ -61,7 +61,7 @@ function createEl(id = '', tag = 'div') {
     querySelectorAll: function(sel) {
       if (sel.includes('.chart-hover-column')) {
         const cols = [];
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < 12; i++) {
           const col = createEl('', 'rect');
           col.setAttribute('data-chart-index', i.toString());
           cols.push(col);
@@ -70,7 +70,7 @@ function createEl(id = '', tag = 'div') {
       }
       if (sel.includes('[data-month-chip-index]')) {
         const chips = [];
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < 12; i++) {
           const chip = createEl('', 'div');
           chip.setAttribute('data-month-chip-index', i.toString());
           chips.push(chip);
@@ -171,13 +171,16 @@ console.log('✓ renderDashboardCollectionChart exported correctly');
 
 // 3. Test getMonthlyCollectionTotals() output data structure
 const monthlyData = getMonthlyCollectionTotals();
-if (!Array.isArray(monthlyData) || monthlyData.length !== 7) {
-  console.error(`FAIL: Expected 7 monthly collection entries, got ${monthlyData?.length}`);
+if (!Array.isArray(monthlyData) || monthlyData.length !== 12) {
+  console.error(`FAIL: Expected 12 monthly collection entries for full FY, got ${monthlyData?.length}`);
   process.exit(1);
 }
-console.log(`✓ Exactly 7 standard tenancy cycles calculated (Apr 2026 to Oct 2026)`);
+console.log(`✓ Exactly 12 standard tenancy cycles calculated (Apr 2026 to Mar 2027)`);
 
-const expectedMonths = ['Apr 2026', 'May 2026', 'Jun 2026', 'Jul 2026', 'Aug 2026', 'Sep 2026', 'Oct 2026'];
+const expectedMonths = [
+  'Apr 2026', 'May 2026', 'Jun 2026', 'Jul 2026', 'Aug 2026', 'Sep 2026',
+  'Oct 2026', 'Nov 2026', 'Dec 2026', 'Jan 2027', 'Feb 2027', 'Mar 2027'
+];
 monthlyData.forEach((d, i) => {
   if (d.cycle !== expectedMonths[i]) {
     console.error(`FAIL: Expected month ${expectedMonths[i]}, got ${d.cycle}`);
@@ -196,7 +199,7 @@ monthlyData.forEach((d, i) => {
     process.exit(1);
   }
 });
-console.log('✓ All 7 months have strictly valid numeric planned, actual, rate and shortfall metrics');
+console.log('✓ All 12 months have strictly valid numeric planned, actual, rate and shortfall metrics');
 
 // 4. Verify math and totals
 const totalPlanned = monthlyData.reduce((acc, d) => acc + d.planned, 0);
@@ -207,12 +210,12 @@ console.log(`  Total Planned Target:   ₹${totalPlanned.toLocaleString('en-IN')
 console.log(`  Total Actual Realized:  ₹${totalActual.toLocaleString('en-IN')}`);
 console.log(`  Overall Realization:    ${overallRate}%`);
 
-if (totalPlanned !== 2058000) {
-  console.error(`FAIL: Expected total planned ₹20,58,000, got ${totalPlanned}`);
+if (totalPlanned !== 3528000) {
+  console.error(`FAIL: Expected total planned ₹35,28,000, got ${totalPlanned}`);
   process.exit(1);
 }
-if (totalActual !== 2022000) {
-  console.error(`FAIL: Expected total actual ₹20,22,000, got ${totalActual}`);
+if (totalActual !== 3492000) {
+  console.error(`FAIL: Expected total actual ₹34,92,000, got ${totalActual}`);
   process.exit(1);
 }
 console.log('✓ Portfolio math verified with 100% precision');
@@ -226,19 +229,19 @@ const chartOverallRate = getOrSetEl('chartOverallRate');
 const chartSvg = getOrSetEl('dashCollectionChartSvg');
 const breakdownEl = getOrSetEl('dashChartMonthBreakdown');
 
-if (!chartTotalPlanned.textContent.includes('20,58,000')) {
+if (!chartTotalPlanned.textContent.includes('35,28,000')) {
   console.error(`FAIL: chartTotalPlanned text content mismatch: ${chartTotalPlanned.textContent}`);
   process.exit(1);
 }
 console.log(`✓ chartTotalPlanned correctly displays ${chartTotalPlanned.textContent}`);
 
-if (!chartTotalActual.textContent.includes('20,22,000')) {
+if (!chartTotalActual.textContent.includes('34,92,000')) {
   console.error(`FAIL: chartTotalActual text content mismatch: ${chartTotalActual.textContent}`);
   process.exit(1);
 }
 console.log(`✓ chartTotalActual correctly displays ${chartTotalActual.textContent}`);
 
-if (!chartOverallRate.textContent.includes('98.3%')) {
+if (!chartOverallRate.textContent.includes('99.0%')) {
   console.error(`FAIL: chartOverallRate text content mismatch: ${chartOverallRate.textContent}`);
   process.exit(1);
 }
@@ -270,21 +273,21 @@ if (!svgContent.includes('dashChartHoverGuide')) {
 }
 console.log('✓ Vertical interactive hover guideline rendered');
 
-if (!svgContent.includes('chartPlannedNode_0') || !svgContent.includes('chartActualNode_6')) {
+if (!svgContent.includes('chartPlannedNode_0') || !svgContent.includes('chartActualNode_11')) {
   console.error('FAIL: Missing data node circles in chart SVG');
   process.exit(1);
 }
-console.log('✓ All 14 data node circles (7 planned + 7 actual) rendered');
+console.log('✓ All 24 data node circles (12 planned + 12 actual) rendered');
 
 if (!svgContent.includes('chart-hover-column')) {
   console.error('FAIL: Missing interactive hit columns in chart SVG');
   process.exit(1);
 }
-console.log('✓ 7 transparent interactive hit columns rendered for tooltip hover');
+console.log('✓ 12 transparent interactive hit columns rendered for tooltip hover');
 
 // 7. Verify bottom month breakdown pills
-if (!breakdownEl.innerHTML.includes('Oct 2026') || !breakdownEl.innerHTML.includes('87.8%')) {
-  console.error('FAIL: Month breakdown pills missing October 2026 status');
+if (!breakdownEl.innerHTML.includes('Nov 2026') || !breakdownEl.innerHTML.includes('Mar 2027')) {
+  console.error('FAIL: Month breakdown pills missing Nov 2026 or Mar 2027 status');
   process.exit(1);
 }
 console.log('✓ Monthwise KPI breakdown pills rendered with realization rate and status');

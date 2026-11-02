@@ -170,8 +170,8 @@ const { getMonthlyCollectionTotals, renderDashboardCollectionChart } = sandbox.w
 // 3. Verify occupancy data structure in getMonthlyCollectionTotals()
 const data = getMonthlyCollectionTotals();
 console.log('Cycles data:', JSON.stringify(data.map(d => ({ cycle: d.cycle, occupied: d.occupied, available: d.available, vacant: d.vacant, tenants: d.tenants }))));
-if (!Array.isArray(data) || data.length !== 7) {
-  console.error(`FAIL: Expected 7 months in collection totals, got ${data?.length}`);
+if (!Array.isArray(data) || data.length !== 12) {
+  console.error(`FAIL: Expected 12 months in collection totals, got ${data?.length}`);
   process.exit(1);
 }
 
@@ -198,7 +198,7 @@ data.forEach((monthData, idx) => {
     process.exit(1);
   }
 });
-console.log('✓ All 7 months have verified metrics: available (24), full (21), vacant (3), tenants (21), occRate (87.5%)');
+console.log('✓ All 12 months have verified metrics: available (24), full (21), vacant (3), tenants (21), occRate (87.5%)');
 
 // 4. Test renderDashboardCollectionChart() execution and Right-hand elements update
 renderDashboardCollectionChart();
@@ -247,9 +247,12 @@ if (!capacityEl.textContent.includes('87.5% Full (3 Vacant)')) {
 }
 console.log(`✓ dashRosterCapacityText displays: ${capacityEl.textContent}`);
 
-// 5. Verify tbody HTML content contains all 7 month cycles and metrics
+// 5. Verify tbody HTML content contains all 12 month cycles and metrics
 const tbodyHtml = tbodyEl.innerHTML;
-const months = ['Apr 2026', 'May 2026', 'Jun 2026', 'Jul 2026', 'Aug 2026', 'Sep 2026', 'Oct 2026'];
+const months = [
+  'Apr 2026', 'May 2026', 'Jun 2026', 'Jul 2026', 'Aug 2026', 'Sep 2026',
+  'Oct 2026', 'Nov 2026', 'Dec 2026', 'Jan 2027', 'Feb 2027', 'Mar 2027'
+];
 months.forEach((m) => {
   if (!tbodyHtml.includes(m)) {
     console.error(`FAIL: Table missing month row for ${m}`);
@@ -260,7 +263,7 @@ if (!tbodyHtml.includes('data-roster-row-index')) {
   console.error('FAIL: Table missing data-roster-row-index attribute for chart hover interaction');
   process.exit(1);
 }
-console.log('✓ Right-side table rendered all 7 month cycles with data-roster-row-index hover rows');
+console.log('✓ Right-side table rendered all 12 month cycles with data-roster-row-index hover rows');
 
 console.log('\n========================================================================');
 console.log('ALL MONTH-WISE OCCUPANCY & TENANT ROSTER TESTS PASSED! (Code 0)');
