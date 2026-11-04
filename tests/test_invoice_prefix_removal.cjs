@@ -111,8 +111,8 @@ sandbox.state.tenants = [{
 const nonGstInv = sandbox.generateGstInvoiceForTenant("t_nobill_1", "Oct 2026", true);
 assert(nonGstInv, "Invoice should be generated");
 assert(!nonGstInv.invoiceNo.startsWith("BILL/"), "Invoice number must NOT start with 'BILL/'. Actual: " + nonGstInv.invoiceNo);
-assert(nonGstInv.invoiceNo.includes("26-27/OCT/105"), "Invoice number should contain fiscal year, month and unit: " + nonGstInv.invoiceNo);
-assert.strictEqual(nonGstInv.invoiceNo, "26-27/OCT/105", "Invoice number must be '26-27/OCT/105' without 'BILL/' prefix");
+assert(nonGstInv.invoiceNo.includes("26-27/"), "Invoice number should contain fiscal year: " + nonGstInv.invoiceNo);
+assert.strictEqual(nonGstInv.invoiceNo, "26-27/001", "Invoice number must be '26-27/001' in continuous series without 'BILL/' prefix");
 console.log("PASS 2: When GST is disabled, rent invoiceNo is '" + nonGstInv.invoiceNo + "' (without 'BILL/' prefix)");
 
 // Test 3: generateCamInvoiceForTenant when GST is disabled (gstEnabled = false)
@@ -130,7 +130,7 @@ const nonGstCam = sandbox.generateCamInvoiceForTenant("t_nobill_cam", "Oct 2026"
 assert(nonGstCam, "CAM Invoice should be generated");
 assert(!nonGstCam.invoiceNo.startsWith("CAM-BILL/"), "CAM Invoice number must NOT start with 'CAM-BILL/'. Actual: " + nonGstCam.invoiceNo);
 assert(nonGstCam.invoiceNo.startsWith("CAM/"), "CAM Invoice number should start with 'CAM/'. Actual: " + nonGstCam.invoiceNo);
-assert.strictEqual(nonGstCam.invoiceNo, "CAM/26-27/OCT/204", "CAM Invoice number must be 'CAM/26-27/OCT/204'");
+assert.strictEqual(nonGstCam.invoiceNo, "CAM/26-27/001", "CAM Invoice number must be 'CAM/26-27/001'");
 console.log("PASS 3: When GST is disabled, CAM invoiceNo is '" + nonGstCam.invoiceNo + "' (without 'BILL/' prefix)");
 
 // Test 4: generateGstInvoiceForTenant when GST is enabled (gstEnabled = true)
@@ -146,7 +146,7 @@ const gstInv = sandbox.generateGstInvoiceForTenant("t_nobill_gst", "Oct 2026", t
 assert(gstInv, "GST Invoice should be generated");
 assert(gstInv.invoiceNo.startsWith("GST/"), "GST Invoice should start with 'GST/'. Actual: " + gstInv.invoiceNo);
 assert(!gstInv.invoiceNo.includes("BILL"), "GST Invoice must not contain 'BILL'");
-assert.strictEqual(gstInv.invoiceNo, "GST/26-27/OCT/105", "GST Invoice number must be 'GST/26-27/OCT/105'");
+assert.strictEqual(gstInv.invoiceNo, "GST/26-27/002", "GST Invoice number must follow continuous series 'GST/26-27/002'");
 console.log("PASS 4: When GST is enabled, rent invoiceNo starts with 'GST/' ('" + gstInv.invoiceNo + "')");
 
 console.log("\n🎉 ALL INVOICE PREFIX 'BILL/' REMOVAL TESTS PASSED 100%!");

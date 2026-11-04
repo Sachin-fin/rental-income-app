@@ -239,15 +239,27 @@ assert.strictEqual(addlInv.taxableRent, 10000);
 assert.strictEqual(addlInv.cgstAmount, 900); // 9%
 assert.strictEqual(addlInv.sgstAmount, 900); // 9%
 assert.strictEqual(addlInv.totalAmount, 11800); // 10000 + 1800
-assert(addlInv.invoiceNo.includes("-ADD1"), `Invoice number should have -ADD1 suffix: ${addlInv.invoiceNo}`);
+// Continuous series: Must NOT contain -ADD suffix and must follow continuous sequence
+assert(!addlInv.invoiceNo.includes("-ADD"), `Invoice number must NOT have -ADD suffix: ${addlInv.invoiceNo}`);
+assert(addlInv.invoiceNo.startsWith("GST/26-27/"), `Invoice number must start with GST/26-27/: ${addlInv.invoiceNo}`);
+assert.strictEqual(addlInv.invoiceNo, "GST/26-27/002", `Invoice number must be next in continuous series 'GST/26-27/002'`);
 
-// Verify display in modal
+// Verify display in modal: The word "Addition" / "Additional" must be removed from the invoice
 sandbox.openGstInvoiceModal(addlInv.id);
-assert.strictEqual(getEl("invHeaderDocTitle").textContent, "ADDITIONAL TAX INVOICE");
+assert.strictEqual(getEl("invHeaderDocTitle").textContent, "TAX INVOICE", "Doc title must be TAX INVOICE without Additional word");
+assert(!getEl("invHeaderDocTitle").textContent.includes("ADDITIONAL"), "Doc title must NOT contain word ADDITIONAL");
+assert(!getEl("gstModalTitleInvoiceNo").textContent.includes("ADDITIONAL"), "Modal title must NOT contain word ADDITIONAL");
 assert(getEl("invHeaderServiceSubtitle").textContent.includes("Electricity & DG Backup Charges"));
+assert(!getEl("invHeaderServiceSubtitle").textContent.includes("Additional"), "Subtitle must NOT contain word Additional");
 assert.strictEqual(getEl("invItemTaxable").textContent, "₹10,000.00");
 assert.strictEqual(getEl("invItemTotal").textContent, "₹11,800.00");
 assert.strictEqual(getEl("invEscalationBanner").classList.contains("hidden"), true, "Escalation banner should be hidden on Additional Invoice");
+
+// Verify share text removes "Addition" / "Additional" word
+const addlShareText = sandbox.getGstInvoiceShareText(addlInv);
+assert(addlShareText.startsWith("🏛️ TAX INVOICE:"), "Share text must be titled TAX INVOICE");
+assert(!addlShareText.includes("ADDITIONAL TAX INVOICE"), "Share text must NOT contain ADDITIONAL TAX INVOICE");
+assert(!addlShareText.includes("Additional Commercial Services"), "Share text must NOT contain Additional Commercial Services");
 
 console.log("  ✔ B2B Additional Tax Invoice successfully generated and verified in Modal!");
 

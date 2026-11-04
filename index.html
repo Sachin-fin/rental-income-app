@@ -30,6 +30,32 @@
     href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cinzel:wght@700&display=swap"
     rel="stylesheet">
   <style>
+    /* Custom Sleek Scrollbars */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(241, 245, 249, 0.6);
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #94a3b8;
+    }
+    .dark .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(30, 41, 59, 0.6);
+    }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #475569;
+    }
+    .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #64748b;
+    }
+
     /* Custom Sleek Scrollbar for tables */
     .overflow-x-auto::-webkit-scrollbar {
       height: 7px;
@@ -1410,7 +1436,7 @@
     <!-- =========================================================
          TAB 1: DASHBOARD & TENANT-WISE TRACK RECORD
          ========================================================= -->
-    <div id="tabViewDashboard" class="space-y-3 sm:space-y-3.5">
+    <div id="tabViewDashboard" class="space-y-2.5 sm:space-y-3">
       <!-- 3. Start-of-Month Automated GST Invoices Dispatch Banner (Slim Single-Line Alert Strip) -->
       <div id="gstStartOfMonthAlertBanner"
         class="px-3.5 py-2 rounded-xl bg-teal-50 dark:bg-teal-950/30 border border-teal-200/90 dark:border-teal-800/60 shadow-2xs flex flex-wrap sm:flex-nowrap items-center justify-between gap-2.5">
@@ -1460,7 +1486,7 @@
       </div>
 
       <!-- Financial Year KPI Header & Switcher Strip -->
-      <div class="flex flex-wrap items-center justify-between gap-2.5 pb-0.5 pt-1">
+      <div class="flex flex-wrap items-center justify-between gap-2 py-0.5">
         <div class="flex items-center gap-2.5">
           <div
             class="w-8 h-8 rounded-xl bg-gradient-to-tr from-indigo-600 to-indigo-800 text-white flex items-center justify-center text-sm shadow-xs border border-indigo-400/30 shrink-0">
@@ -1516,11 +1542,11 @@
 
       <!-- 4. Upgraded Executive KPI Suite (5 Compact Cards in 1 Row, Height ~105-115px) -->
       <section aria-label="Rent and Portfolio KPIs"
-        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 items-stretch">
+        class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2 sm:gap-2.5 items-stretch">
         <!-- Card 1: Total Units & Occupancy Rate -->
         <div id="kpiBoxOccupancy" role="button" tabindex="0"
           title="Click to view full Unit Occupancy breakdown & assign tenants"
-          class="bg-white dark:bg-slate-900 rounded-xl p-3 sm:p-3.5 border border-slate-200/90 dark:border-slate-800/90 border-l-4 border-l-indigo-500 shadow-2xs hover:shadow-md hover:-translate-y-0.5 hover:border-indigo-400 transition-all duration-150 flex flex-col justify-between cursor-pointer group">
+          class="bg-white dark:bg-slate-900 rounded-xl p-2.5 sm:p-3 border border-slate-200/90 dark:border-slate-800/90 border-l-4 border-l-indigo-500 shadow-2xs hover:shadow-md hover:-translate-y-0.5 hover:border-indigo-400 transition-all duration-150 flex flex-col justify-between cursor-pointer group">
           <div class="flex items-center justify-between gap-1">
             <span
               class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors truncate">
@@ -1560,7 +1586,7 @@
         <!-- Card 2: Contracted Rent Roll & Gross Capacity -->
         <div id="kpiBoxRentRoll" role="button" tabindex="0"
           title="Click to view Monthly Rent Roll & building-wise revenue share"
-          class="bg-white dark:bg-slate-900 rounded-xl p-3 sm:p-3.5 border border-slate-200/90 dark:border-slate-800/90 border-l-4 border-l-blue-500 shadow-2xs hover:shadow-md hover:-translate-y-0.5 hover:border-blue-400 transition-all duration-150 flex flex-col justify-between cursor-pointer group">
+          class="bg-white dark:bg-slate-900 rounded-xl p-2.5 sm:p-3 border border-slate-200/90 dark:border-slate-800/90 border-l-4 border-l-blue-500 shadow-2xs hover:shadow-md hover:-translate-y-0.5 hover:border-blue-400 transition-all duration-150 flex flex-col justify-between cursor-pointer group">
           <div class="flex items-center justify-between gap-1">
             <span
               class="text-[10px] font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 flex items-center gap-1.5 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
@@ -1788,7 +1814,7 @@
           class="grid grid-cols-1 lg:grid-cols-2 divide-y lg:divide-y-0 lg:divide-x divide-slate-200/80 dark:divide-slate-800/80">
 
           <!-- LEFT HALF (50%): Monthly Collection Trajectory Line Chart (Compact) -->
-          <div class="flex flex-col justify-between p-3.5 sm:p-4 bg-white dark:bg-slate-900 min-w-0">
+          <div class="flex flex-col justify-between p-2.5 sm:p-3 bg-white dark:bg-slate-900 min-w-0">
             <div>
               <!-- Left Header: Title + Subtitle + Live Badge + Legend -->
               <div
@@ -1833,7 +1859,7 @@
               </div>
 
               <!-- 4 Compact KPI Tiles in Left Half -->
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 my-2.5">
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 my-1.5">
                 <div
                   class="p-2 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200/70 dark:border-slate-700/70">
                   <span
@@ -1865,7 +1891,7 @@
               </div>
 
               <!-- Chart Canvas Body (Compact SVG with Tooltip) -->
-              <div class="relative w-full overflow-hidden" id="dashCollectionChartWrapper">
+              <div class="relative w-full overflow-hidden h-36 sm:h-40" id="dashCollectionChartWrapper">
                 <!-- Floating Tooltip -->
                 <div id="dashChartTooltip"
                   class="hidden absolute z-30 pointer-events-none -translate-x-1/2 -translate-y-full mb-3 px-3 py-2 rounded-xl bg-slate-900/95 dark:bg-slate-950/95 text-white shadow-xl backdrop-blur-xl border border-slate-700/80 text-[11px] transition-all duration-75 min-w-[190px]"
@@ -1959,7 +1985,7 @@
               </div>
 
               <!-- 4 Snapshot Tiles for Right Half -->
-              <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 my-2.5">
+              <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5 my-1.5">
                 <div
                   class="p-2 rounded-xl bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 shadow-2xs">
                   <span
@@ -8431,7 +8457,7 @@
           </div>
           <div>
             <h3 class="font-extrabold text-sm text-white flex items-center gap-2">
-              <span id="gstModalTitleInvoiceNo">TAX INVOICE: GST/26-27/OCT/101</span>
+              <span id="gstModalTitleInvoiceNo">TAX INVOICE: GST/26-27/001</span>
               <span
                 class="text-[10px] font-black px-2 py-0.2 rounded-full bg-teal-500/30 text-teal-200 border border-teal-400/30">Original
                 for Recipient</span>
@@ -8649,7 +8675,7 @@
           class="grid grid-cols-2 sm:grid-cols-4 gap-2 text-[11px] bg-slate-100 p-2 rounded-xl border border-slate-200">
           <div>
             <span class="text-[9.5px] font-bold text-slate-500 uppercase block">Invoice Number</span>
-            <span id="invMetaNo" class="font-mono font-black text-slate-900 text-xs">GST/26-27/OCT/101</span>
+            <span id="invMetaNo" class="font-mono font-black text-slate-900 text-xs">GST/26-27/001</span>
           </div>
           <div>
             <span class="text-[9.5px] font-bold text-slate-500 uppercase block">Invoice Date (Issue)</span>
@@ -8887,7 +8913,7 @@
                 <option value="Parking Space Charges">🚗 Dedicated Parking Space Charges</option>
                 <option value="Facility & Security Charges">🛡️ Facility &amp; Security Charges</option>
                 <option value="Supplemental Commercial Services">📦 Supplemental Commercial Services</option>
-                <option value="Other Additional Charges">📝 Other Additional Charges</option>
+                <option value="Other Commercial Charges">📝 Other Commercial Charges</option>
               </select>
             </div>
           </div>
@@ -16701,7 +16727,7 @@
         if (state.dashViewMode === "table") {
           const wrapper = document.createElement("div");
           // Scroll-free responsive container: zero horizontal scrollbar on standard displays
-          wrapper.className = "rounded-2xl border border-slate-200/80 bg-white shadow-xs overflow-hidden";
+          wrapper.className = "rounded-xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xs overflow-hidden overflow-y-auto max-h-[220px] sm:max-h-[250px] xl:max-h-[280px] custom-scrollbar";
 
           let tableHtml = `
             <table class="w-full text-left border-collapse text-xs">
@@ -29060,6 +29086,125 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         });
       }
 
+      function getNextSequentialInvoiceNo(fy, isGstEnabled, isCam) {
+        state.gstInvoices = state.gstInvoices || {};
+        const prefix = isCam
+          ? (isGstEnabled ? "CAM-GST/" + fy + "/" : "CAM/" + fy + "/")
+          : (isGstEnabled ? "GST/" + fy + "/" : fy + "/");
+
+        let maxSeq = 0;
+        Object.values(state.gstInvoices).forEach((inv) => {
+          if (!inv || !inv.invoiceNo) return;
+          const no = String(inv.invoiceNo);
+          if (isCam) {
+            if (no.startsWith("CAM-GST/" + fy + "/") || no.startsWith("CAM/" + fy + "/")) {
+              const parts = no.split("/");
+              const lastPart = parts[parts.length - 1];
+              const num = parseInt(lastPart, 10);
+              if (!isNaN(num) && num > maxSeq) maxSeq = num;
+            }
+          } else {
+            // Regular rent and additional tax invoices share the exact same continuous series
+            if ((no.startsWith("GST/" + fy + "/") || no.startsWith(fy + "/")) && !no.startsWith("CAM") && !no.startsWith("CN/")) {
+              const parts = no.split("/");
+              const lastPart = parts[parts.length - 1].replace(/-ADD\d+$/i, "");
+              const num = parseInt(lastPart, 10);
+              if (!isNaN(num) && num > maxSeq) maxSeq = num;
+            }
+          }
+        });
+        const nextSeq = maxSeq + 1;
+        return prefix + String(nextSeq).padStart(3, "0");
+      }
+
+      function resequenceInvoicesToContinuousSeries(targetFy) {
+        if (!state.gstInvoices || Object.keys(state.gstInvoices).length === 0) return;
+        const fy = targetFy || "26-27";
+        const isGstEnabled = state.landlord.gstEnabled !== false;
+
+        const allInvs = Object.values(state.gstInvoices).filter((inv) => inv && inv.invoiceNo);
+        if (allInvs.length === 0) return;
+
+        // Check if resequencing is needed (legacy unit-based numbers like /101, /104, /105, /201, /204, /3, -ADD, or month letters in invoice number)
+        const needsResequencing = allInvs.some((inv) => {
+          const no = String(inv.invoiceNo);
+          return no.includes("-ADD") || /\/[A-Z]{3}\//i.test(no) || !/^(?:GST\/|CAM-GST\/|CAM\/|\d{2}-\d{2}\/)\d{2}-\d{2}\/\d{3,}$/.test(no);
+        });
+
+        if (!needsResequencing) return;
+
+        const regularAndAddl = [];
+        const camInvoices = [];
+        const creditNotes = [];
+
+        allInvs.forEach((inv) => {
+          if (inv.invoiceType === "CREDIT_NOTE" || String(inv.id).startsWith("cn_") || inv.isCreditNote) {
+            creditNotes.push(inv);
+          } else if (inv.invoiceType === "CAM" || String(inv.id).startsWith("cam_inv_")) {
+            camInvoices.push(inv);
+          } else {
+            regularAndAddl.push(inv);
+          }
+        });
+
+        const FISCAL_MONTH_ORDER = {
+          "apr": 1, "may": 2, "jun": 3, "jul": 4, "aug": 5, "sep": 6,
+          "oct": 7, "nov": 8, "dec": 9, "jan": 10, "feb": 11, "mar": 12
+        };
+        const getMonthScore = (m) => {
+          if (!m) return 99;
+          const k = String(m).toLowerCase().slice(0, 3);
+          return FISCAL_MONTH_ORDER[k] || 50;
+        };
+
+        regularAndAddl.sort((a, b) => {
+          const mScoreA = getMonthScore(a.billingMonth);
+          const mScoreB = getMonthScore(b.billingMonth);
+          if (mScoreA !== mScoreB) return mScoreA - mScoreB;
+
+          const tIdxA = (state.tenants || []).findIndex((t) => t.id === a.tenantId);
+          const tIdxB = (state.tenants || []).findIndex((t) => t.id === b.tenantId);
+          if (tIdxA !== tIdxB) return tIdxA - tIdxB;
+
+          const isAddA = a.invoiceType === "ADDITIONAL" ? 1 : 0;
+          const isAddB = b.invoiceType === "ADDITIONAL" ? 1 : 0;
+          if (isAddA !== isAddB) return isAddA - isAddB;
+
+          return String(a.id).localeCompare(String(b.id));
+        });
+
+        const regPrefix = isGstEnabled ? "GST/" + fy + "/" : fy + "/";
+        regularAndAddl.forEach((inv, idx) => {
+          const oldNo = inv.invoiceNo;
+          const newNo = regPrefix + String(idx + 1).padStart(3, "0");
+          inv.invoiceNo = newNo;
+          creditNotes.forEach((cn) => {
+            if (cn.originalInvoiceNo === oldNo || cn.originalInvoiceId === inv.id) {
+              cn.originalInvoiceNo = newNo;
+              cn.invoiceNo = "CN/" + newNo.replace(/^GST\//, "");
+            }
+          });
+        });
+
+        camInvoices.sort((a, b) => {
+          const mScoreA = getMonthScore(a.billingMonth);
+          const mScoreB = getMonthScore(b.billingMonth);
+          if (mScoreA !== mScoreB) return mScoreA - mScoreB;
+          const tIdxA = (state.tenants || []).findIndex((t) => t.id === a.tenantId);
+          const tIdxB = (state.tenants || []).findIndex((t) => t.id === b.tenantId);
+          return tIdxA - tIdxB;
+        });
+
+        const camPrefix = isGstEnabled ? "CAM-GST/" + fy + "/" : "CAM/" + fy + "/";
+        camInvoices.forEach((inv, idx) => {
+          inv.invoiceNo = camPrefix + String(idx + 1).padStart(3, "0");
+        });
+
+        try {
+          localStorage.setItem(STORAGE_KEY_GST, JSON.stringify(state.gstInvoices));
+        } catch (e) { }
+      }
+
       function generateGstInvoiceForTenant(tenantId, targetMonth, forceRefresh = false) {
         ensureLandlordGstDefaults();
         const tenant = state.tenants.find((t) => t.id === tenantId);
@@ -29106,23 +29251,17 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         const existingChannels = state.gstInvoices[invoiceId]?.dispatchedChannels || [];
         const existingDispatchedAt = state.gstInvoices[invoiceId]?.dispatchedAt || null;
 
-        // Generate consecutive invoice number: GST/YY-YY/MMM/UNIT or YY-YY/MMM/UNIT
+        // Continuous invoice series for all tenants: GST/YY-YY/NNN or YY-YY/NNN
         const parsedBillingYm = parseYearMonthFromAny(billingMonth);
         const curYear = parsedBillingYm ? parsedBillingYm.year : new Date().getFullYear();
         const nextYearShort = String(curYear + 1).slice(-2);
         const curYearShort = String(curYear).slice(-2);
         const fy = curYearShort + "-" + nextYearShort;
-        const monthPart = billingMonth.slice(0, 3).toUpperCase();
-
-        let unitCode = "101";
-        if (tenant.unit) {
-          const m = tenant.unit.match(/\d+/);
-          if (m) unitCode = m[0];
-          else unitCode = tenant.unit.replace(/[^a-zA-Z0-9]/g, "").slice(0, 4).toUpperCase();
-        }
 
         const isGstEnabled = state.landlord.gstEnabled !== false;
-        const invoiceNo = (isGstEnabled ? "GST/" : "") + fy + "/" + monthPart + "/" + unitCode;
+        const invoiceNo = (state.gstInvoices[invoiceId] && state.gstInvoices[invoiceId].invoiceNo && !state.gstInvoices[invoiceId].invoiceNo.includes("-ADD") && !/\/[A-Z]{3}\//i.test(state.gstInvoices[invoiceId].invoiceNo))
+          ? state.gstInvoices[invoiceId].invoiceNo
+          : getNextSequentialInvoiceNo(fy, isGstEnabled, false);
 
         let cgstRate = 0;
         let sgstRate = 0;
@@ -29291,17 +29430,11 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         const nextYearShort = String(curYear + 1).slice(-2);
         const curYearShort = String(curYear).slice(-2);
         const fy = curYearShort + "-" + nextYearShort;
-        const monthPart = billingMonth.slice(0, 3).toUpperCase();
-
-        let unitCode = "101";
-        if (tenant.unit) {
-          const m = tenant.unit.match(/\d+/);
-          if (m) unitCode = m[0];
-          else unitCode = tenant.unit.replace(/[^a-zA-Z0-9]/g, "").slice(0, 4).toUpperCase();
-        }
 
         const isGstEnabled = state.landlord.gstEnabled !== false;
-        const invoiceNo = (isGstEnabled ? "CAM-GST/" : "CAM/") + fy + "/" + monthPart + "/" + unitCode;
+        const invoiceNo = (state.gstInvoices[camInvoiceId] && state.gstInvoices[camInvoiceId].invoiceNo && !/\/[A-Z]{3}\//i.test(state.gstInvoices[camInvoiceId].invoiceNo))
+          ? state.gstInvoices[camInvoiceId].invoiceNo
+          : getNextSequentialInvoiceNo(fy, isGstEnabled, true);
 
         let cgstRate = 0;
         let sgstRate = 0;
@@ -29481,6 +29614,9 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
           }
         });
 
+        // Ensure clean, continuous invoice series across all tenants
+        resequenceInvoicesToContinuousSeries();
+
         purgeFutureDateInvoicesFromState();
 
         if (targetMonth === "all") {
@@ -29493,6 +29629,7 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
               totalCreated += _generateSingleMonthInvoices(c);
             }
           });
+          resequenceInvoicesToContinuousSeries();
           const eff = getEffectiveBillingMonth();
           updateStartOfMonthBanner(eff);
           updateGstNavBadge(eff);
@@ -29562,7 +29699,7 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         let modalTitlePrefix = "TAX INVOICE: ";
         if (isCreditNote) modalTitlePrefix = "CREDIT NOTE (SEC 34 CGST): ";
         else if (isCamInv) modalTitlePrefix = "SEPARATE CAM TAX INVOICE: ";
-        else if (isAddlInv) modalTitlePrefix = "ADDITIONAL TAX INVOICE: ";
+        else if (isAddlInv) modalTitlePrefix = "TAX INVOICE: ";
         document.getElementById("gstModalTitleInvoiceNo").textContent = modalTitlePrefix + inv.invoiceNo;
 
         // Configure 1-click Switcher between Rent Invoice and Separate CAM Invoice
@@ -29689,7 +29826,7 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
         if (headerPanBadge) headerPanBadge.textContent = "PAN: " + supplierPanText;
         const headerDocTitle = document.getElementById("invHeaderDocTitle");
         if (headerDocTitle) {
-          headerDocTitle.textContent = isCreditNote ? "CREDIT NOTE" : (isCamInv ? "CAM TAX INVOICE" : (isAddlInv ? "ADDITIONAL TAX INVOICE" : "TAX INVOICE"));
+          headerDocTitle.textContent = isCreditNote ? "CREDIT NOTE" : (isCamInv ? "CAM TAX INVOICE" : "TAX INVOICE");
         }
         const headerServiceSub = document.getElementById("invHeaderServiceSubtitle");
         if (headerServiceSub) {
@@ -29698,7 +29835,8 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
           } else if (isCamInv) {
             headerServiceSub.textContent = "Common Area Maintenance (CAM) Services · SAC 997222";
           } else if (isAddlInv) {
-            headerServiceSub.textContent = (inv.serviceCategory || "Commercial Property & Additional Services") + " · SAC " + (inv.sacCode || "997212");
+            const cleanSub = (inv.serviceCategory || "Commercial Property Services").replace(/additional/gi, "").trim();
+            headerServiceSub.textContent = (cleanSub || "Commercial Property & Utility Services") + " · SAC " + (inv.sacCode || "997212");
           } else {
             headerServiceSub.textContent = "Commercial Property & Rental Services · SAC " + (inv.sacCode || "997212");
           }
@@ -29738,7 +29876,8 @@ Save or Add to Home Screen for instant 1-tap mobile access!`;
           document.getElementById("invItemPeriodNote").textContent = "Adjustment Period: " + exactPeriodRange + " · Original Ref: " + (inv.originalInvoiceNo || "") + " (" + (inv.originalInvoiceDate || inv.invoiceDate) + ")" + (inv.remarks ? " · " + inv.remarks : "");
           document.getElementById("invMetaDueDate").textContent = inv.originalInvoiceNo ? ("Ref: " + inv.originalInvoiceNo) : "Immediate Credit";
         } else if (isAddlInv) {
-          document.getElementById("invItemDescription").textContent = inv.description || ((inv.serviceCategory || "Additional Services") + " for Unit: " + inv.tenantUnit);
+          const cleanDesc = (inv.description || ((inv.serviceCategory || "Commercial Utility Services") + " for Unit: " + inv.tenantUnit)).replace(/additional\s*/gi, "").trim();
+          document.getElementById("invItemDescription").textContent = cleanDesc;
           document.getElementById("invItemPeriodNote").textContent = "Service Period: " + exactPeriodRange + (inv.remarks ? " · " + inv.remarks : "");
         } else {
           const prorationSuffix = inv.isProrated ? ` — Rent calculated for ${inv.proratedDays} Days` : "";
@@ -29902,12 +30041,13 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         }
 
         if (inv.invoiceType === "ADDITIONAL") {
-          return `🏛️ ADDITIONAL TAX INVOICE: ${inv.invoiceNo}
+          const cleanCat = (inv.serviceCategory || "Commercial Services").replace(/additional\s*/gi, "").trim();
+          return `🏛️ TAX INVOICE: ${inv.invoiceNo}
 (Issued under Rule 46 of CGST Act, 2017)
 
 Dear ${inv.tenantName},
 Greetings from ${lName}!
-Your Additional Tax Invoice for ${inv.serviceCategory || "Additional Commercial Services"} (${inv.tenantUnit}) for ${inv.billingMonth} is ready.
+Your Tax Invoice for ${cleanCat || "Commercial Services"} (${inv.tenantUnit}) for ${inv.billingMonth} is ready.
 
 📋 INVOICE PARTICULARS:
 • Invoice No: ${inv.invoiceNo}
@@ -30720,25 +30860,13 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         const nextYearShort = String(curYear + 1).slice(-2);
         const curYearShort = String(curYear).slice(-2);
         const fy = curYearShort + "-" + nextYearShort;
-        const monthPart = billingMonth.slice(0, 3).toUpperCase();
 
-        let unitCode = "101";
-        if (tenant.unit) {
-          const m = tenant.unit.match(/\d+/);
-          if (m) unitCode = m[0];
-          else unitCode = tenant.unit.replace(/[^a-zA-Z0-9]/g, "").slice(0, 4).toUpperCase();
-        }
-
-        const existingAddl = Object.values(state.gstInvoices || {}).filter(
-          (inv) => inv.tenantId === tenant.id && inv.billingMonth === billingMonth && inv.invoiceType === "ADDITIONAL"
-        );
-        const addIndex = existingAddl.length + 1;
         const id = "add_inv_" + monthSlug + "_" + tenant.id + "_" + Date.now();
-        const invoiceNo = (isGstEnabled ? "GST/" : "") + fy + "/" + monthPart + "/" + unitCode + "-ADD" + addIndex;
+        const invoiceNo = getNextSequentialInvoiceNo(fy, isGstEnabled, false);
 
         const periodDates = getBillingMonthDateRange(billingMonth);
-        const category = params.serviceCategory || "Electricity & DG Backup Charges";
-        const desc = params.description || (category + " for Unit: " + (tenant.unit || "Premises"));
+        const category = (params.serviceCategory || "Electricity & DG Backup Charges").replace(/additional/gi, "").trim() || "Commercial Utility Charges";
+        const desc = (params.description || (category + " for Unit: " + (tenant.unit || "Premises"))).replace(/additional\s*/gi, "").trim();
 
         const matchedProp = (Array.isArray(state.properties) && state.properties.length > 0)
           ? state.properties.find((p) => p.id === tenant.propertyId || (p.name && tenant.unit && p.name.toLowerCase().includes(tenant.unit.toLowerCase())))
@@ -30913,7 +31041,7 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
           openGstInvoiceModal(inv.id);
           renderGstTab(billingMonth);
           if (typeof showFeedback === "function") {
-            showFeedback(`Additional Tax Invoice ${inv.invoiceNo} generated successfully!`, "success");
+            showFeedback(`Tax Invoice ${inv.invoiceNo} generated successfully!`, "success");
           }
         }
       }
@@ -32072,6 +32200,8 @@ Supplier: ${lName} (GSTIN: ${lGstin})`;
         window.switchB2bBillingTab = switchB2bBillingTab;
         window.generateB2bAdditionalInvoice = generateB2bAdditionalInvoice;
         window.generateB2bCreditNote = generateB2bCreditNote;
+        window.getNextSequentialInvoiceNo = getNextSequentialInvoiceNo;
+        window.resequenceInvoicesToContinuousSeries = resequenceInvoicesToContinuousSeries;
         window.getGstInvoiceShareText = getGstInvoiceShareText;
         window.autoCheckAndGenerateMonthlyGstInvoices = autoCheckAndGenerateMonthlyGstInvoices;
         window.printGstInvoice = printGstInvoice;
