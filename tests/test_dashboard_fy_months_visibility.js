@@ -201,7 +201,14 @@ required25Months.forEach((m) => {
     process.exit(1);
   }
 });
-console.log('✓ FY 2025-26 dynamically switched all 12 months (Apr 2025 to Mar 2026)');
+console.log('✓ FY 2025-26 dynamically switched all 12 months (Apr 2025 to Mar 2026) with zero dummy data');
+const totals25 = getMonthlyCollectionTotals();
+totals25.forEach((item) => {
+  if (item.planned !== 0 || item.actual !== 0 || item.occupied !== 0) {
+    console.error(`FAIL: Expected 0 dummy data in FY 2025-26 for ${item.cycle}, got planned=${item.planned}, actual=${item.actual}, occupied=${item.occupied}`);
+    process.exit(1);
+  }
+});
 
 // 5. Test Dynamic Switch to FY 2024-25
 state.dashSelectedFy = "FY 2024-25";
@@ -225,7 +232,14 @@ required24Months.forEach((m) => {
     process.exit(1);
   }
 });
-console.log('✓ FY 2024-25 dynamically switched all 12 months (Apr 2024 to Mar 2025)');
+const totals24 = getMonthlyCollectionTotals();
+totals24.forEach((item) => {
+  if (item.planned !== 0 || item.actual !== 0 || item.occupied !== 0) {
+    console.error(`FAIL: Expected 0 dummy data in FY 2024-25 for ${item.cycle}, got planned=${item.planned}, actual=${item.actual}, occupied=${item.occupied}`);
+    process.exit(1);
+  }
+});
+console.log('✓ FY 2024-25 dynamically switched all 12 months (Apr 2024 to Mar 2025) with zero dummy data');
 
 console.log('\n========================================================================');
 console.log('ALL DASHBOARD FY MONTHS VISIBILITY & SWITCHING TESTS PASSED! (Code 0)');

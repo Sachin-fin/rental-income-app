@@ -169,23 +169,29 @@ assert.strictEqual(fy26.defaultersCount, 1, "Expected 1 defaulter");
 assert.strictEqual(fy26.mcdTaxPendingAmount, 18400, "MCD tax should be 18,400 pending");
 console.log(`  ✓ FY 2026-27 Annual Demand: ${formatINR(fy26.annualDemand)}, Realized: ${formatINR(fy26.realizedCollections)}, O/S: ${formatINR(fy26.outstandingOverdue)}, Rate: ${fy26.collectionEfficiency}%`);
 
-// Test 2.2: Verify getFinancialYearMetrics for FY 2025-26 (Audited)
-console.log("\n--- Testing 2.2: Financial Metrics for FY 2025-26 (Audited) ---");
+// Test 2.2: Verify getFinancialYearMetrics for FY 2025-26 (No Dummy Data)
+console.log("\n--- Testing 2.2: Financial Metrics for FY 2025-26 (No Dummy Data) ---");
 const fy25 = sandbox.getFinancialYearMetrics("FY 2025-26");
 assert.strictEqual(fy25.fyLabel, "FY 2025-26");
 assert.ok(fy25.statusBadge.includes("Audited"), "Status badge should mention Audited");
-assert.strictEqual(fy25.mcdTaxPendingAmount, 0, "Prior year MCD tax should be fully paid");
-assert.ok(fy25.annualDemand > 0, "Annual demand should be positive");
-assert.ok(Number(fy25.collectionEfficiency) > 90, "Collection efficiency should be > 90%");
-console.log(`  ✓ FY 2025-26 Audited Annual Demand: ${formatINR(fy25.annualDemand)}, Realized: ${formatINR(fy25.realizedCollections)}, Rate: ${fy25.collectionEfficiency}%`);
+assert.strictEqual(fy25.mcdTaxPendingAmount, 0, "Prior year MCD tax should be 0");
+assert.strictEqual(fy25.annualDemand, 0, "FY 2025-26 dummy demand should be deleted (0)");
+assert.strictEqual(fy25.realizedCollections, 0, "FY 2025-26 dummy collections should be deleted (0)");
+assert.strictEqual(fy25.outstandingOverdue, 0, "FY 2025-26 dummy overdue should be deleted (0)");
+assert.strictEqual(fy25.occupiedCount, 0, "FY 2025-26 dummy occupied count should be deleted (0)");
+assert.strictEqual(fy25.collectionEfficiency, "0.0", "Collection efficiency should be 0.0% when no dummy data exists");
+console.log(`  ✓ FY 2025-26 Dummy Data Deleted — Demand: ${formatINR(fy25.annualDemand)}, Realized: ${formatINR(fy25.realizedCollections)}, Rate: ${fy25.collectionEfficiency}%`);
 
-// Test 2.3: Verify getFinancialYearMetrics for FY 2024-25 (Archived)
-console.log("\n--- Testing 2.3: Financial Metrics for FY 2024-25 (Archived) ---");
+// Test 2.3: Verify getFinancialYearMetrics for FY 2024-25 (No Dummy Data)
+console.log("\n--- Testing 2.3: Financial Metrics for FY 2024-25 (No Dummy Data) ---");
 const fy24 = sandbox.getFinancialYearMetrics("FY 2024-25");
 assert.strictEqual(fy24.fyLabel, "FY 2024-25");
 assert.ok(fy24.statusBadge.includes("Archived"), "Status badge should mention Archived");
-assert.ok(fy24.annualDemand > 0, "Annual demand should be positive");
-console.log(`  ✓ FY 2024-25 Archived Demand: ${formatINR(fy24.annualDemand)}, Realized: ${formatINR(fy24.realizedCollections)}, Rate: ${fy24.collectionEfficiency}%`);
+assert.strictEqual(fy24.annualDemand, 0, "FY 2024-25 dummy demand should be deleted (0)");
+assert.strictEqual(fy24.realizedCollections, 0, "FY 2024-25 dummy collections should be deleted (0)");
+assert.strictEqual(fy24.outstandingOverdue, 0, "FY 2024-25 dummy overdue should be deleted (0)");
+assert.strictEqual(fy24.occupiedCount, 0, "FY 2024-25 dummy occupied count should be deleted (0)");
+console.log(`  ✓ FY 2024-25 Dummy Data Deleted — Demand: ${formatINR(fy24.annualDemand)}, Realized: ${formatINR(fy24.realizedCollections)}, Rate: ${fy24.collectionEfficiency}%`);
 
 // Test 2.4: Verify Cumulative All-Time Metrics
 console.log("\n--- Testing 2.4: Financial Metrics for All-Time (Cumulative) ---");

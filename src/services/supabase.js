@@ -420,16 +420,20 @@ export async function pullFromSupabase(state, onUpdate = null) {
       state.ledgerInstallments = instMap;
     }
 
-    // 4. Landlord
+    // 4. Landlord (preserve extended GST & statutory settings)
     const { data: landlords, error: lErr } = await supabaseClient.from("landlord_settings").select("*").eq("id", "primary");
     if (!lErr && landlords && landlords.length > 0) {
-      state.landlord = {
+      state.landlord = Object.assign({}, state.landlord || {}, {
         name: landlords[0].name || state.landlord.name,
         pan: landlords[0].pan || state.landlord.pan,
-        phone: landlords[0].phone || "",
-        email: landlords[0].email || "abcltd9925@gmail.com",
-        address: landlords[0].address || ""
-      };
+        phone: landlords[0].phone || state.landlord.phone || "",
+        email: landlords[0].email || state.landlord.email || "abcltd9925@gmail.com",
+        address: landlords[0].address || state.landlord.address || "",
+        gstin: landlords[0].gstin || state.landlord.gstin || "07AAAAA0000A1Z5",
+        tradeName: landlords[0].trade_name || landlords[0].tradeName || state.landlord.tradeName || "",
+        state: landlords[0].state || state.landlord.state || "07 - Delhi",
+        sacCode: landlords[0].sac_code || landlords[0].sacCode || state.landlord.sacCode || "997212"
+      });
       const nameInput = document.getElementById("landlordNameInput");
       const panInput = document.getElementById("landlordPanInput");
       const emailInput = document.getElementById("landlordEmailInput");
